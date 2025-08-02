@@ -1,0 +1,1158 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Stopper Tech - Cyber Cafe & IT Solutions</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/swiper@9/swiper-bundle.min.css">
+    <style>
+        /* Reset and Base Styles */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Poppins', sans-serif;
+        }
+        
+        body {
+            line-height: 1.6;
+            color: #333;
+            background-color: #f5f5f5;
+            overflow-x: hidden;
+        }
+        
+        /* Custom Cursor */
+        .cursor {
+            width: 20px;
+            height: 20px;
+            border: 2px solid #3498db;
+            border-radius: 50%;
+            position: absolute;
+            transform: translate(-50%, -50%);
+            pointer-events: none;
+            z-index: 999;
+            transition: all 0.1s ease;
+            transition-property: transform, background, border;
+            transform-origin: 100% 100%;
+        }
+        
+        .cursor-grow {
+            transform: scale(2);
+            background: rgba(52, 152, 219, 0.3);
+        }
+        
+        /* Header Styles */
+        header {
+            background-color: #2c3e50;
+            color: white;
+            padding: 1rem 0;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.2);
+            position: fixed;
+            width: 100%;
+            top: 0;
+            z-index: 100;
+            transition: all 0.3s ease;
+        }
+        
+        header.scrolled {
+            padding: 0.5rem 0;
+            background-color: rgba(44, 62, 80, 0.95);
+            backdrop-filter: blur(5px);
+        }
+        
+        .header-container {
+            width: 90%;
+            max-width: 1200px;
+            margin: 0 auto;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        
+        .logo {
+            font-size: 1.8rem;
+            font-weight: bold;
+            cursor: pointer;
+        }
+        
+        .logo span {
+            color: #3498db;
+        }
+        
+        nav ul {
+            display: flex;
+            list-style: none;
+        }
+        
+        nav ul li {
+            margin-left: 1.8rem;
+            position: relative;
+        }
+        
+        nav ul li a {
+            color: white;
+            text-decoration: none;
+            font-weight: 500;
+            transition: color 0.3s;
+            position: relative;
+        }
+        
+        nav ul li a::after {
+            content: '';
+            position: absolute;
+            width: 0;
+            height: 2px;
+            background: #3498db;
+            bottom: -5px;
+            left: 0;
+            transition: width 0.3s;
+        }
+        
+        nav ul li a:hover::after {
+            width: 100%;
+        }
+        
+        nav ul li a:hover {
+            color: #3498db;
+        }
+        
+        /* Hero Section */
+        .hero {
+            background: linear-gradient(rgba(0,0,0,0.7), rgba(0,0,0,0.7)), url('https://images.unsplash.com/photo-1550751827-4bd374c3f58b?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1470&q=80');
+            background-size: cover;
+            background-position: center;
+            background-attachment: fixed;
+            color: white;
+            text-align: center;
+            padding: 10rem 1rem 5rem;
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+        }
+        
+        .hero h1 {
+            font-size: 3rem;
+            margin-bottom: 1.5rem;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+            animation: fadeInDown 1s ease;
+        }
+        
+        .hero p {
+            font-size: 1.2rem;
+            max-width: 700px;
+            margin: 0 auto 3rem;
+            animation: fadeInUp 1s ease 0.3s both;
+        }
+        
+        .btn {
+            display: inline-block;
+            background-color: #3498db;
+            color: white;
+            padding: 1rem 2rem;
+            border: none;
+            border-radius: 50px;
+            text-decoration: none;
+            font-weight: bold;
+            transition: all 0.3s;
+            animation: fadeIn 1s ease 0.6s both;
+            box-shadow: 0 5px 15px rgba(52, 152, 219, 0.4);
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .btn:hover {
+            background-color: #2980b9;
+            transform: translateY(-3px);
+            box-shadow: 0 8px 20px rgba(52, 152, 219, 0.6);
+        }
+        
+        .btn:active {
+            transform: translateY(1px);
+        }
+        
+        .btn::after {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(255,255,255,0.1);
+            transform: translateX(-100%);
+            transition: transform 0.4s ease;
+        }
+        
+        .btn:hover::after {
+            transform: translateX(0);
+        }
+        
+        /* Services Section */
+        .services {
+            padding: 6rem 1rem;
+            background-color: white;
+        }
+        
+        .section-title {
+            text-align: center;
+            margin-bottom: 4rem;
+        }
+        
+        .section-title h2 {
+            font-size: 2.5rem;
+            color: #2c3e50;
+            position: relative;
+            display: inline-block;
+            padding-bottom: 0.5rem;
+        }
+        
+        .section-title h2::after {
+            content: '';
+            position: absolute;
+            bottom: 0;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 100px;
+            height: 4px;
+            background-color: #3498db;
+            border-radius: 2px;
+        }
+        
+        .services-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 2.5rem;
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+        
+        .service-card {
+            background-color: #f9f9f9;
+            border-radius: 10px;
+            overflow: hidden;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+            transition: all 0.3s ease;
+            position: relative;
+        }
+        
+        .service-card:hover {
+            transform: translateY(-10px);
+            box-shadow: 0 15px 30px rgba(0,0,0,0.2);
+        }
+        
+        .service-img {
+            height: 200px;
+            background-size: cover;
+            background-position: center;
+            display: flex;
+            align-items: flex-end;
+            justify-content: center;
+            color: white;
+            position: relative;
+        }
+        
+        .service-img::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(to top, rgba(0,0,0,0.7), transparent);
+        }
+        
+        .service-content {
+            padding: 2rem;
+        }
+        
+        .service-content h3 {
+            margin-bottom: 1rem;
+            color: #2c3e50;
+            font-size: 1.4rem;
+        }
+        
+        .service-content p {
+            margin-bottom: 1.5rem;
+            color: #666;
+        }
+        
+        .service-icon {
+            font-size: 3rem;
+            margin-bottom: 1rem;
+            color: #3498db;
+            position: relative;
+            z-index: 1;
+        }
+        
+        /* Student Registration Section */
+        .student-registration {
+            padding: 6rem 1rem;
+            background: linear-gradient(rgba(44, 62, 80, 0.9), rgba(44, 62, 80, 0.9)), url('https://images.unsplash.com/photo-1523050854058-8df90110c9f1?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1470&q=80');
+            background-size: cover;
+            background-position: center;
+            background-attachment: fixed;
+            color: white;
+        }
+        
+        .registration-container {
+            max-width: 1200px;
+            margin: 0 auto;
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 3rem;
+            align-items: center;
+        }
+        
+        .registration-content h2 {
+            font-size: 2.5rem;
+            margin-bottom: 1.5rem;
+        }
+        
+        .registration-content ul {
+            list-style: none;
+            margin: 2rem 0;
+        }
+        
+        .registration-content ul li {
+            margin-bottom: 1rem;
+            position: relative;
+            padding-left: 2rem;
+        }
+        
+        .registration-content ul li::before {
+            content: '\f00c';
+            font-family: 'Font Awesome 6 Free';
+            font-weight: 900;
+            position: absolute;
+            left: 0;
+            color: #3498db;
+        }
+        
+        .registration-form {
+            background-color: white;
+            padding: 2.5rem;
+            border-radius: 10px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.2);
+        }
+        
+        .registration-form h3 {
+            color: #2c3e50;
+            margin-bottom: 1.5rem;
+            text-align: center;
+            font-size: 1.5rem;
+        }
+        
+        .form-group {
+            margin-bottom: 1.5rem;
+        }
+        
+        .form-group label {
+            display: block;
+            margin-bottom: 0.5rem;
+            color: #2c3e50;
+            font-weight: 500;
+        }
+        
+        .form-group input,
+        .form-group select,
+        .form-group textarea {
+            width: 100%;
+            padding: 0.8rem 1rem;
+            border: 1px solid #ddd;
+            border-radius: 5px;
+            font-size: 1rem;
+            transition: border 0.3s;
+        }
+        
+        .form-group input:focus,
+        .form-group select:focus,
+        .form-group textarea:focus {
+            border-color: #3498db;
+            outline: none;
+        }
+        
+        /* Testimonials Slider */
+        .testimonials {
+            padding: 6rem 1rem;
+            background-color: #f5f5f5;
+        }
+        
+        .swiper {
+            width: 100%;
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 2rem 0;
+        }
+        
+        .testimonial-slide {
+            background-color: white;
+            padding: 2.5rem;
+            border-radius: 10px;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+            text-align: center;
+            margin: 0 1rem;
+        }
+        
+        .testimonial-slide .quote {
+            font-size: 1.2rem;
+            color: #666;
+            margin-bottom: 1.5rem;
+            font-style: italic;
+        }
+        
+        .testimonial-slide .author {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+        
+        .testimonial-slide .author-img {
+            width: 60px;
+            height: 60px;
+            border-radius: 50%;
+            object-fit: cover;
+            margin-right: 1rem;
+        }
+        
+        .testimonial-slide .author-info h4 {
+            color: #2c3e50;
+            margin-bottom: 0.3rem;
+        }
+        
+        .testimonial-slide .author-info p {
+            color: #7f8c8d;
+            font-size: 0.9rem;
+        }
+        
+        .swiper-pagination-bullet {
+            width: 12px;
+            height: 12px;
+            background-color: #bdc3c7;
+            opacity: 1;
+        }
+        
+        .swiper-pagination-bullet-active {
+            background-color: #3498db;
+        }
+        
+        /* Footer */
+        footer {
+            background-color: #2c3e50;
+            color: white;
+            padding: 5rem 1rem 2rem;
+        }
+        
+        .footer-container {
+            max-width: 1200px;
+            margin: 0 auto;
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 3rem;
+        }
+        
+        .footer-col h3 {
+            margin-bottom: 1.5rem;
+            font-size: 1.3rem;
+            position: relative;
+            padding-bottom: 0.5rem;
+        }
+        
+        .footer-col h3::after {
+            content: '';
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            width: 50px;
+            height: 3px;
+            background-color: #3498db;
+            border-radius: 3px;
+        }
+        
+        .footer-col ul {
+            list-style: none;
+        }
+        
+        .footer-col ul li {
+            margin-bottom: 0.8rem;
+        }
+        
+        .footer-col ul li a {
+            color: #bdc3c7;
+            text-decoration: none;
+            transition: color 0.3s;
+        }
+        
+        .footer-col ul li a:hover {
+            color: #3498db;
+        }
+        
+        .social-links {
+            display: flex;
+            gap: 1rem;
+            margin-top: 1.5rem;
+        }
+        
+        .social-links a {
+            color: white;
+            background-color: #34495e;
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: all 0.3s;
+        }
+        
+        .social-links a:hover {
+            background-color: #3498db;
+            transform: translateY(-3px);
+        }
+        
+        .newsletter-form {
+            display: flex;
+            margin-top: 1.5rem;
+        }
+        
+        .newsletter-form input {
+            flex: 1;
+            padding: 0.8rem;
+            border: none;
+            border-radius: 5px 0 0 5px;
+        }
+        
+        .newsletter-form button {
+            background-color: #3498db;
+            color: white;
+            border: none;
+            padding: 0 1.2rem;
+            border-radius: 0 5px 5px 0;
+            cursor: pointer;
+            transition: background-color 0.3s;
+        }
+        
+        .newsletter-form button:hover {
+            background-color: #2980b9;
+        }
+        
+        .copyright {
+            text-align: center;
+            padding-top: 3rem;
+            margin-top: 3rem;
+            border-top: 1px solid #34495e;
+            color: #bdc3c7;
+            font-size: 0.9rem;
+        }
+        
+        /* Animations */
+        @keyframes fadeIn {
+            from { opacity: 0; }
+            to { opacity: 1; }
+        }
+        
+        @keyframes fadeInDown {
+            from {
+                opacity: 0;
+                transform: translateY(-30px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+        
+        @keyframes fadeInUp {
+            from {
+                opacity: 0;
+                transform: translateY(30px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+        
+        /* Responsive Design */
+        @media (max-width: 992px) {
+            .registration-container {
+                grid-template-columns: 1fr;
+            }
+            
+            .registration-form {
+                order: -1;
+            }
+        }
+        
+        @media (max-width: 768px) {
+            .header-container {
+                flex-direction: column;
+                text-align: center;
+            }
+            
+            nav ul {
+                margin-top: 1.5rem;
+                flex-wrap: wrap;
+                justify-content: center;
+            }
+            
+            nav ul li {
+                margin: 0.5rem 1rem;
+            }
+            
+            .hero h1 {
+                font-size: 2.2rem;
+            }
+            
+            .section-title h2 {
+                font-size: 2rem;
+            }
+        }
+        
+        @media (max-width: 576px) {
+            .hero {
+                padding: 8rem 1rem 4rem;
+            }
+            
+            .hero h1 {
+                font-size: 1.8rem;
+            }
+            
+            .btn {
+                padding: 0.8rem 1.5rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Custom Cursor -->
+    <div class="cursor"></div>
+
+    <!-- Header Section -->
+    <header id="header">
+        <div class="header-container">
+            <div class="logo">Stopper<span>Tech</span></div>
+            <nav>
+                <ul>
+                    <li><a href="#home">Home</a></li>
+                    <li><a href="#services">Services</a></li>
+                    <li><a href="#registration">Student Registration</a></li>
+                    <li><a href="#testimonials">Testimonials</a></li>
+                    <li><a href="#contact">Contact</a></li>
+                </ul>
+            </nav>
+        </div>
+    </header>
+
+    <!-- Hero Section -->
+    <section class="hero" id="home">
+        <h1>Your Complete IT & Cyber Cafe Solution</h1>
+        <p>Providing top-notch computer services, government document assistance, student registration, and more with expert care and affordable prices.</p>
+        <a href="#services" class="btn">Explore Our Services</a>
+    </section>
+
+    <!-- Services Section -->
+    <section class="services" id="services">
+        <div class="section-title">
+            <h2>Our Comprehensive Services</h2>
+        </div>
+        <div class="services-grid">
+            <!-- Cyber Cafe Services -->
+            <div class="service-card">
+                <div class="service-img" style="background-image: url('https://images.unsplash.com/photo-1550751827-4bd374c3f58b?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1470&q=80');">
+                    <div class="service-icon"><i class="fas fa-desktop"></i></div>
+                </div>
+                <div class="service-content">
+                    <h3>Cyber Cafe Services</h3>
+                    <p>High-speed internet, printing, scanning, gaming stations, and comfortable workspace for all your computing needs.</p>
+                    <ul>
+                        <li>Internet browsing & research</li>
+                        <li>Document printing & scanning</li>
+                        <li>Gaming zone with premium PCs</li>
+                        <li>Photocopy & laminating services</li>
+                    </ul>
+                </div>
+            </div>
+            
+            <!-- Software & OS Installation -->
+            <div class="service-card">
+                <div class="service-img" style="background-image: url('https://images.unsplash.com/photo-1517430816045-df4b7de11d1d?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1471&q=80');">
+                    <div class="service-icon"><i class="fas fa-download"></i></div>
+                </div>
+                <div class="service-content">
+                    <h3>OS & Software Installation</h3>
+                    <p>Professional installation of operating systems and all necessary software with proper licensing.</p>
+                    <ul>
+                        <li>Windows 10/11 installation</li>
+                        <li>Linux distribution setup</li>
+                        <li>Antivirus & security software</li>
+                        <li>MS Office & productivity tools</li>
+                        <li>Driver updates & system optimization</li>
+                    </ul>
+                </div>
+            </div>
+            
+            <!-- Government Services -->
+            <div class="service-card">
+                <div class="service-img" style="background-image: url('https://images.unsplash.com/photo-1450101499163-c8848c66ca85?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1470&q=80');">
+                    <div class="service-icon"><i class="fas fa-file-contract"></i></div>
+                </div>
+                <div class="service-content">
+                    <h3>Government Services</h3>
+                    <p>Assistance with all government-related documentation and online services.</p>
+                    <ul>
+                        <li>Aadhaar card registration & update</li>
+                        <li>PAN card application</li>
+                        <li>Voter ID registration</li>
+                        <li>Passport application assistance</li>
+                        <li>Ration card & other govt. schemes</li>
+                    </ul>
+                </div>
+            </div>
+            
+            <!-- Student Services -->
+            <div class="service-card">
+                <div class="service-img" style="background-image: url('https://images.unsplash.com/photo-1523050854058-8df90110c9f1?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1470&q=80');">
+                    <div class="service-icon"><i class="fas fa-user-graduate"></i></div>
+                </div>
+                <div class="service-content">
+                    <h3>Student Services</h3>
+                    <p>Specialized services tailored for students' academic needs.</p>
+                    <ul>
+                        <li>University/College registration</li>
+                        <li>Online form filling assistance</li>
+                        <li>Project printing & binding</li>
+                        <li>Exam form submission</li>
+                        <li>Scholarship applications</li>
+                    </ul>
+                </div>
+            </div>
+            
+            <!-- Computer Repair -->
+            <div class="service-card">
+                <div class="service-img" style="background-image: url('https://images.unsplash.com/photo-1581093450021-4a7360e9aabf?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1470&q=80');">
+                    <div class="service-icon"><i class="fas fa-tools"></i></div>
+                </div>
+                <div class="service-content">
+                    <h3>Computer Repair</h3>
+                    <p>Comprehensive hardware and software repair services.</p>
+                    <ul>
+                        <li>Virus removal & protection</li>
+                        <li>Hardware diagnostics & repair</li>
+                        <li>Data recovery services</li>
+                        <li>Laptop screen replacement</li>
+                        <li>Component upgrades</li>
+                    </ul>
+                </div>
+            </div>
+            
+            <!-- Mobile Services -->
+            <div class="service-card">
+                <div class="service-img" style="background-image: url('https://images.unsplash.com/photo-1511707171634-5f897ff02aa9?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1480&q=80');">
+                    <div class="service-icon"><i class="fas fa-mobile-alt"></i></div>
+                </div>
+                <div class="service-content">
+                    <h3>Mobile Services</h3>
+                    <p>Complete solutions for your smartphone needs.</p>
+                    <ul>
+                        <li>Mobile software installation</li>
+                        <li>App installation & setup</li>
+                        <li>Data transfer services</li>
+                        <li>Mobile printing solutions</li>
+                        <li>Basic troubleshooting</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Student Registration Section -->
+    <section class="student-registration" id="registration">
+        <div class="registration-container">
+            <div class="registration-content">
+                <h2>Student Registration Services</h2>
+                <p>We specialize in assisting students with all their academic registration needs. Our expert team will guide you through every step of the process to ensure your applications are completed accurately and submitted on time.</p>
+                
+                <ul>
+                    <li>University/College admission forms</li>
+                    <li>Online course registration</li>
+                    <li>Scholarship & financial aid applications</li>
+                    <li>Exam registration & hall ticket download</li>
+                    <li>Project submission assistance</li>
+                    <li>Resume & cover letter preparation</li>
+                </ul>
+                
+                <a href="#contact" class="btn">Get Assistance Now</a>
+            </div>
+            
+            <div class="registration-form">
+                <h3>Student Registration Form</h3>
+<form id="registrationForm">
+    <div class="form-group">
+        <label for="fullname">Full Name</label>
+        <input type="text" id="fullname" required>
+    </div>
+    
+    <div class="form-group">
+        <label for="email">Email Address</label>
+        <input type="email" id="email" required>
+    </div>
+    
+    <div class="form-group">
+        <label for="phone">Phone Number</label>
+        <input type="tel" id="phone" required>
+    </div>
+    
+    <div class="form-group">
+        <label for="institution">Educational Institution</label>
+        <input type="text" id="institution" required>
+    </div>
+    
+    <div class="form-group">
+        <label for="service">Required Service</label>
+        <select id="service" required>
+            <option value="">Select a service</option>
+            <option value="admission">Admission Form</option>
+            <option value="exam">Exam Registration</option>
+            <option value="scholarship">Scholarship Application</option>
+            <option value="project">Project Submission</option>
+            <option value="other">Other</option>
+        </select>
+    </div>
+    
+    <div class="form-group">
+        <label for="message">Additional Information</label>
+        <textarea id="message" rows="4"></textarea>
+    </div>
+    
+    <button type="submit" class="btn" id="submitBtn">Submit Registration</button>
+    <p id="formMessage" style="margin-top: 1rem; font-weight: bold;"></p>
+    <div id="loadingIndicator" style="display: none; text-align: center; margin-top: 1rem;">
+        <i class="fas fa-spinner fa-spin" style="font-size: 24px; color: #3498db;"></i>
+        <p style="margin-top: 0.5rem;">Processing your registration...</p>
+    </div>
+</form>
+            </div>
+        </div>
+    </section>
+
+    <!-- Testimonials Slider -->
+    <section class="testimonials" id="testimonials">
+        <div class="section-title">
+            <h2>What Our Customers Say</h2>
+        </div>
+        
+        <div class="swiper mySwiper">
+            <div class="swiper-wrapper">
+                <div class="swiper-slide">
+                    <div class="testimonial-slide">
+                        <div class="quote">"Stopper Tech helped me with my college admission process. Their guidance was invaluable and saved me so much time. Highly recommended for students!"</div>
+                        <div class="author">
+                            <img src="https://randomuser.me/api/portraits/women/32.jpg" alt="Riya Sharma" class="author-img">
+                            <div class="author-info">
+                                <h4>Jane Kagwiria</h4>
+                                <p>College Student</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="swiper-slide">
+                    <div class="testimonial-slide">
+                        <div class="quote">"I got my Windows reinstalled with all necessary software in less than an hour. Professional service at affordable prices."</div>
+                        <div class="author">
+                            <img src="https://randomuser.me/api/portraits/men/45.jpg" alt="Amit Patel" class="author-img">
+                            <div class="author-info">
+                                <h4>Alex Sieyo</h4>
+                                <p>Small Business Owner</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="swiper-slide">
+                    <div class="testimonial-slide">
+                        <div class="quote">"The team at Stopper Tech made my passport application process so smooth. They know all the government procedures inside out."</div>
+                        <div class="author">
+                            <img src="https://randomuser.me/api/portraits/women/68.jpg" alt="Priya Nair" class="author-img">
+                            <div class="author-info">
+                                <h4>Weddy Gatwiri</h4>
+                                <p>University Student</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="swiper-slide">
+                    <div class="testimonial-slide">
+                        <div class="quote">"Best cyber cafe in town! Fast internet, clean environment, and helpful staff. I come here daily for my work."</div>
+                        <div class="author">
+                            <img src="https://randomuser.me/api/portraits/men/22.jpg" alt="Rahul Verma" class="author-img">
+                            <div class="author-info">
+                                <h4>John Kithinji</h4>
+                                <p>Freelancer</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="swiper-pagination"></div>
+        </div>
+    </section>
+
+    <!-- Contact Section -->
+    <section class="contact" id="contact">
+        <div class="section-title">
+            <h2>Contact Us</h2>
+        </div>
+        
+        <div class="footer-container">
+            <div class="footer-col">
+                <h3>Stopper Tech</h3>
+                <p>Your trusted partner for all IT and cyber cafe services. We provide quality services with customer satisfaction as our top priority.</p>
+                <div class="social-links">
+                    <a href="#"><i class="fab fa-facebook-f"></i></a>
+                    <a href="#"><i class="fab fa-twitter"></i></a>
+                    <a href="#"><i class="fab fa-instagram"></i></a>
+                    <a href="#"><i class="fab fa-linkedin-in"></i></a>
+                </div>
+            </div>
+            
+            <div class="footer-col">
+                <h3>Quick Links</h3>
+                <ul>
+                    <li><a href="#home">Home</a></li>
+                    <li><a href="#services">Services</a></li>
+                    <li><a href="#registration">Student Registration</a></li>
+                    <li><a href="#testimonials">Testimonials</a></li>
+                    <li><a href="#contact">Contact</a></li>
+                </ul>
+            </div>
+            
+            <div class="footer-col">
+                <h3>Services</h3>
+                <ul>
+                    <li><a href="#">Cyber Cafe Services</a></li>
+                    <li><a href="#">Windows Installation</a></li>
+                    <li><a href="#">Government Services</a></li>
+                    <li><a href="#">Student Services</a></li>
+                    <li><a href="#">Computer Repair</a></li>
+                    <li><a href="#">Mobile Services</a></li>
+                </ul>
+            </div>
+            
+            <div class="footer-col">
+                <h3>Contact Info</h3>
+                <ul>
+                    <li><i class="fas fa-map-marker-alt"></i> Kisima, Nkabune, Timau</li>
+                    <li><i class="fas fa-phone"></i> 0710590670, 0798692574</li>
+                    <li><i class="fas fa-envelope"></i> info@stoppertech.com</li>
+                    <li><i class="fas fa-clock"></i> Mon-Sun: 8:00 AM - 9:00 PM</li>
+                </ul>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer>
+        <div class="footer-container">
+            <div class="footer-col">
+                <h3>About Us</h3>
+                <p>Stopper Tech has been serving the community since 2023 with reliable IT solutions and cyber cafe services. We're committed to providing quality service with a personal touch.</p>
+            </div>
+            
+            <div class="footer-col">
+                <h3>Our Services</h3>
+                <ul>
+                    <li><a href="#">Cyber Cafe</a></li>
+                    <li><a href="#">Software Installation</a></li>
+                    <li><a href="#">Government Services</a></li>
+                    <li><a href="#">Student Registration</a></li>
+                    <li><a href="#">Computer Repair</a></li>
+                </ul>
+            </div>
+            
+            <div class="footer-col">
+                <h3>Help & Support</h3>
+                <ul>
+                    <li><a href="#">FAQs</a></li>
+                    <li><a href="#">Privacy Policy</a></li>
+                    <li><a href="#">Terms & Conditions</a></li>
+                    <li><a href="#">Service Charges</a></li>
+                    <li><a href="#">Support Center</a></li>
+                </ul>
+            </div>
+            
+            <div class="footer-col">
+                <h3>Newsletter</h3>
+                <p>Subscribe to our newsletter for updates on new services and special offers.</p>
+                <form class="newsletter-form">
+                    <input type="email" placeholder="Your Email" required>
+                    <button type="submit"><i class="fas fa-paper-plane"></i></button>
+                </form>
+            </div>
+        </div>
+        
+        <div class="copyright">
+            <p>&copy; 2019 Stopper Tech. All Rights Reserved. | Designed with <i class="fas fa-heart" style="color: #e74c3c;"></i> by Stopper Tech Team</p>
+        </div>
+    </footer>
+
+    <!-- Scripts -->
+    <script src="https://cdn.jsdelivr.net/npm/swiper@9/swiper-bundle.min.js"></script>
+    <script>
+        // Initialize Swiper
+        var swiper = new Swiper(".mySwiper", {
+            slidesPerView: 1,
+            spaceBetween: 30,
+            loop: true,
+            pagination: {
+                el: ".swiper-pagination",
+                clickable: true,
+            },
+            autoplay: {
+                delay: 5000,
+                disableOnInteraction: false,
+            },
+            breakpoints: {
+                768: {
+                    slidesPerView: 2,
+                }
+            }
+        });
+        
+        // Custom Cursor
+        const cursor = document.querySelector('.cursor');
+        
+        document.addEventListener('mousemove', (e) => {
+            cursor.style.left = e.pageX + 'px';
+            cursor.style.top = e.pageY + 'px';
+        });
+        
+        // Cursor grow effect when hovering over clickable elements
+        const clickables = document.querySelectorAll('a, button, input[type="submit"], .service-card, .swiper-slide');
+        
+        clickables.forEach(item => {
+            item.addEventListener('mouseover', () => {
+                cursor.classList.add('cursor-grow');
+            });
+            item.addEventListener('mouseleave', () => {
+                cursor.classList.remove('cursor-grow');
+            });
+        });
+        
+        // Header scroll effect
+        window.addEventListener('scroll', () => {
+            const header = document.getElementById('header');
+            if (window.scrollY > 50) {
+                header.classList.add('scrolled');
+            } else {
+                header.classList.remove('scrolled');
+            }
+        });
+        
+        // Smooth scrolling for anchor links
+        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+            anchor.addEventListener('click', function (e) {
+                e.preventDefault();
+                
+                document.querySelector(this.getAttribute('href')).scrollIntoView({
+                    behavior: 'smooth'
+                });
+            });
+        });
+        
+        // Animation on scroll
+        const animateOnScroll = () => {
+            const elements = document.querySelectorAll('.service-card, .section-title, .registration-content, .registration-form');
+            
+            elements.forEach(element => {
+                const elementPosition = element.getBoundingClientRect().top;
+                const screenPosition = window.innerHeight / 1.3;
+                
+                if (elementPosition < screenPosition) {
+                    element.style.opacity = '1';
+                    element.style.transform = 'translateY(0)';
+                }
+            });
+        };
+        
+        // Set initial state for animated elements
+        document.querySelectorAll('.service-card, .section-title, .registration-content, .registration-form').forEach(el => {
+            el.style.opacity = '0';
+            el.style.transform = 'translateY(20px)';
+            el.style.transition = 'all 0.6s ease';
+        });
+        
+        window.addEventListener('load', animateOnScroll);
+        window.addEventListener('scroll', animateOnScroll);
+    // Existing scripts...
+
+    // Add form submission handler
+    const registrationForm = document.getElementById('registrationForm');
+    const formMessage = document.getElementById('formMessage');
+    const loadingIndicator = document.getElementById('loadingIndicator');
+    const submitBtn = document.getElementById('submitBtn');
+
+    registrationForm.addEventListener('submit', async (e) => {
+        e.preventDefault();
+
+        // Reset messages
+        formMessage.textContent = '';
+        formMessage.style.color = '';
+        
+        // Show loading indicator and disable submit button
+        loadingIndicator.style.display = 'block';
+        submitBtn.disabled = true;
+        submitBtn.textContent = 'Submitting...';
+
+        const formData = {
+            fullname: document.getElementById('fullname').value.trim(),
+            email: document.getElementById('email').value.trim(),
+            phone: document.getElementById('phone').value.trim(),
+            institution: document.getElementById('institution').value.trim(),
+            service: document.getElementById('service').value,
+            message: document.getElementById('message').value.trim()
+        };
+
+        try {
+            const response = await fetch('/api/register', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify(formData)
+            });
+
+            const result = await response.json();
+
+            if (response.ok) {
+                formMessage.style.color = 'green';
+                formMessage.textContent = result.message || 'Registration successful!';
+                registrationForm.reset();
+            } else {
+                formMessage.style.color = 'red';
+                // Display detailed error messages
+                if (result.details) {
+                    formMessage.textContent = result.details;
+                } else if (result.error) {
+                    formMessage.textContent = result.error;
+                } else {
+                    formMessage.textContent = 'An error occurred. Please try again.';
+                }
+            }
+        } catch (error) {
+            formMessage.style.color = 'red';
+            formMessage.textContent = 'Failed to submit. Please check your connection and try again.';
+        } finally {
+            // Hide loading indicator and re-enable submit button
+            loadingIndicator.style.display = 'none';
+            submitBtn.disabled = false;
+            submitBtn.textContent = 'Submit Registration';
+        }
+    });
+</script>
+</body>
+</html>

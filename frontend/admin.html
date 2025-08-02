@@ -1,0 +1,206 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Admin - User Registrations</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 2rem;
+            background-color: #f4f6f8;
+            color: #333;
+        }
+        h1 {
+            text-align: center;
+            margin-bottom: 1.5rem;
+            color: #2c3e50;
+        }
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            background: white;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+        }
+        th, td {
+            padding: 0.75rem 1rem;
+            border: 1px solid #ddd;
+            text-align: left;
+        }
+        th {
+            background-color: #3498db;
+            color: white;
+        }
+        tr:nth-child(even) {
+            background-color: #f9fbfd;
+        }
+        .no-data {
+            text-align: center;
+            padding: 2rem;
+            font-size: 1.2rem;
+            color: #777;
+        }
+        .loading-container {
+            text-align: center;
+            padding: 2rem;
+        }
+        .spinner {
+            border: 4px solid #f3f3f3;
+            border-top: 4px solid #3498db;
+            border-radius: 50%;
+            width: 40px;
+            height: 40px;
+            animation: spin 1s linear infinite;
+            margin: 0 auto 1rem;
+        }
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+        .refresh-btn {
+            background-color: #3498db;
+            color: white;
+            border: none;
+            padding: 0.5rem 1rem;
+            border-radius: 4px;
+            cursor: pointer;
+            margin-bottom: 1rem;
+            float: right;
+        }
+        .refresh-btn:hover {
+            background-color: #2980b9;
+        }
+        .error-message {
+            color: #e74c3c;
+            text-align: center;
+            padding: 1rem;
+            background-color: #fdf2f2;
+            border: 1px solid #e74c3c;
+            border-radius: 4px;
+            margin: 1rem 0;
+        }
+        .success-message {
+            color: #27ae60;
+            text-align: center;
+            padding: 1rem;
+            background-color: #f2fdf2;
+            border: 1px solid #27ae60;
+            border-radius: 4px;
+            margin: 1rem 0;
+        }
+    </style>
+</head>
+<body>
+    <h1>User Registrations</h1>
+    <button class="refresh-btn" id="refreshBtn">Refresh Data</button>
+    <div id="messageContainer"></div>
+    <table id="registrationsTable">
+        <thead>
+            <tr>
+                <th>Full Name</th>
+                <th>Email</th>
+                <th>Phone</th>
+                <th>Institution</th>
+                <th>Service</th>
+                <th>Message</th>
+                <th>Submitted At</th>
+                <th>Actions</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr><td colspan="8" class="no-data">Loading data...</td></tr>
+        </tbody>
+    </table>
+
+    <script>
+        async function fetchRegistrations() {
+            const tbody = document.querySelector('#registrationsTable tbody');
+            const messageContainer = document.getElementById('messageContainer');
+            
+            // Clear any existing messages
+            messageContainer.innerHTML = '';
+            
+            try {
+                // Show loading indicator
+                tbody.innerHTML = `
+                    <tr>
+                        <td colspan="8">
+                            <div class="loading-container">
+                                <div class="spinner"></div>
+                                <p>Loading registrations...</p>
+                            </div>
+                        </td>
+                    </tr>
+                `;
+
+                const response = await fetch('/api/registrations');
+                
+                if (!response.ok) {
+                    throw new Error(`Failed to fetch registrations: ${response.status} ${response.statusText}`);
+                }
+                
+                const result = await response.json();
+                const data = result.data || [];
+                
+                tbody.innerHTML = '';
+
+                if (data.length === 0) {
+                    tbody.innerHTML = '<tr><td colspan="8" class="no-data">No registrations found.</td></tr>';
+                    messageContainer.innerHTML = '<div class="success-message">Successfully loaded. No registrations found.</div>';
+                    return;
+                }
+
+                data.forEach(reg => {
+                    const tr = document.createElement('tr');
+                    tr.innerHTML = `
+                        <td>${reg.fullname}</td>
+                        <td>${reg.email}</td>
+                        <td>${reg.phone}</td>
+                        <td>${reg.institution}</td>
+                        <td>${reg.service}</td>
+                        <td>${reg.message || ''}</td>
+                        <td>${new Date(reg.createdAt).toLocaleString()}</td>
+                        <td><button class="delete-btn" data-id="${reg._id}">Delete</button></td>
+                    `;
+                    tbody.appendChild(tr);
+                });
+
+                // Add event listeners for delete buttons
+                document.querySelectorAll('.delete-btn').forEach(button => {
+                    button.addEventListener('click', async (event) => {
+                        const id = event.target.getAttribute('data-id');
+                        if (confirm('Are you sure you want to delete this user registration?')) {
+                            try {
+                                const deleteResponse = await fetch(`/api/register/${id}`, {
+                                    method: 'DELETE'
+                                });
+                                if (!deleteResponse.ok) {
+                                    throw new Error(`Failed to delete user: ${deleteResponse.status} ${deleteResponse.statusText}`);
+                                }
+                                messageContainer.innerHTML = '<div class="success-message">User registration deleted successfully.</div>';
+                                fetchRegistrations(); // Refresh the table
+                            } catch (error) {
+                                console.error('Error deleting user:', error);
+                                messageContainer.innerHTML = `<div class="error-message">Error: ${error.message || 'Failed to delete user. Please try again.'}</div>`;
+                            }
+                        }
+                    });
+                });
+                
+                // Show success message
+                messageContainer.innerHTML = `<div class="success-message">Successfully loaded ${data.length} registrations.</div>`;
+            } catch (error) {
+                console.error('Error fetching registrations:', error);
+                tbody.innerHTML = '<tr><td colspan="8" class="no-data">Error loading data.</td></tr>';
+                messageContainer.innerHTML = `<div class="error-message">Error: ${error.message || 'Failed to load registrations. Please try again.'}</div>`;
+            }
+        }
+
+        // Initial load
+        fetchRegistrations();
+
+        // Refresh button event listener
+        document.getElementById('refreshBtn').addEventListener('click', fetchRegistrations);
+    </script>
+</body>
+</html>
