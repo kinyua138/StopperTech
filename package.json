@@ -1,0 +1,38 @@
+{
+  "name": "stopper-tech",
+  "version": "1.0.0",
+  "description": "A full-stack web application for Stopper Tech cyber cafe and IT services",
+  "main": "backend/server.js",
+  "scripts": {
+    "start": "node backend/server.js",
+    "dev": "nodemon backend/server.js",
+    "prod": "NODE_ENV=production node backend/server.js",
+    "deploy": "NODE_ENV=production node backend/deploy.js",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "dependencies": {
+    "body-parser": "^1.20.2",
+    "cors": "^2.8.5",
+    "dotenv": "^17.2.1",
+    "express": "^4.18.2",
+    "express-rate-limit": "^6.11.2",
+    "helmet": "^7.2.0",
+    "mongoose": "^7.5.0",
+    "nodemailer": "^7.0.5"
+  },
+  "devDependencies": {
+    "nodemon": "^3.0.1"
+  },
+  "keywords": [
+    "cyber cafe",
+    "IT services",
+    "student registration",
+    "full-stack"
+  ],
+  "author": "Stopper Tech Team",
+  "license": "MIT",
+  "engines": {
+    "node": ">=14.0.0",
+    "npm": ">=6.0.0"
+  }
+}
