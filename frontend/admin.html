@@ -133,7 +133,7 @@
                     </tr>
                 `;
 
-                const response = await fetch('/api/registrations');
+fetch('https://stoppertech.onrender.com/api/registrations')
                 
                 if (!response.ok) {
                     throw new Error(`Failed to fetch registrations: ${response.status} ${response.statusText}`);
