@@ -4,6 +4,7 @@
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <title>Admin - User Registrations</title>
+    <link rel="icon" href="favicon.ico" type="image/x-icon" />
     <style>
         body {
             font-family: Arial, sans-serif;
@@ -91,7 +92,27 @@
     </style>
 </head>
 <body>
-    <h1>User Registrations</h1>
+    <style>
+        .header-avatar {
+            width: 50px;
+            height: 50px;
+            border-radius: 50%;
+            object-fit: cover;
+            margin-right: 10px;
+            box-shadow: 0 0 6px rgba(0,0,0,0.15);
+            vertical-align: middle;
+        }
+        .logo-container {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin-bottom: 1rem;
+        }
+    </style>
+    <div class="logo-container">
+        <img src="Stopper_tech.png" alt="Avatar" class="header-avatar" />
+        <h1>User Registrations</h1>
+    </div>
     <button class="refresh-btn" id="refreshBtn">Refresh Data</button>
     <div id="messageContainer"></div>
     <table id="registrationsTable">
@@ -133,7 +154,7 @@
                     </tr>
                 `;
 
-fetch('https://stoppertech.onrender.com/api/registrations')
+const response = await fetch('http://localhost:5000/api/registrations')
                 
                 if (!response.ok) {
                     throw new Error(`Failed to fetch registrations: ${response.status} ${response.statusText}`);
