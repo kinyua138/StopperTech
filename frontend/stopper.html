@@ -18,7 +18,8 @@
         body {
             line-height: 1.6;
             color: #333;
-            background-color: #f5f5f5;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            background-attachment: fixed;
             overflow-x: hidden;
         }
         
@@ -26,7 +27,7 @@
         .cursor {
             width: 20px;
             height: 20px;
-            border: 2px solid #3498db;
+            border: 2px solid #ff6b6b;
             border-radius: 50%;
             position: absolute;
             transform: translate(-50%, -50%);
@@ -39,15 +40,15 @@
         
         .cursor-grow {
             transform: scale(2);
-            background: rgba(52, 152, 219, 0.3);
+            background: rgba(255, 107, 107, 0.3);
         }
         
         /* Header Styles */
         header {
-            background-color: #2c3e50;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
             color: white;
             padding: 1rem 0;
-            box-shadow: 0 2px 10px rgba(0,0,0,0.2);
+            box-shadow: 0 4px 20px rgba(0,0,0,0.15);
             position: fixed;
             width: 100%;
             top: 0;
@@ -57,8 +58,8 @@
         
         header.scrolled {
             padding: 0.5rem 0;
-            background-color: rgba(44, 62, 80, 0.95);
-            backdrop-filter: blur(5px);
+            background: linear-gradient(135deg, rgba(102, 126, 234, 0.95) 0%, rgba(118, 75, 162, 0.95) 100%);
+            backdrop-filter: blur(10px);
         }
         
         .header-container {
@@ -75,14 +76,14 @@
             font-weight: bold;
             cursor: pointer;
             padding: 0.3rem 1rem;
-            border: 2px solid #3498db;
+            border: 2px solid #ff6b6b;
             border-radius: 50%;
             display: inline-block;
             color: white;
         }
         
         .logo span {
-            color: #3498db;
+            color: #ff6b6b;
         }
         
         nav ul {
@@ -108,7 +109,7 @@
             position: absolute;
             width: 0;
             height: 2px;
-            background: #3498db;
+            background: linear-gradient(90deg, #ff6b6b, #feca57);
             bottom: -5px;
             left: 0;
             transition: width 0.3s;
@@ -119,16 +120,16 @@
         }
         
         nav ul li a:hover {
-            color: #3498db;
+            color: #ff6b6b;
         }
         
         /* Hero Section */
         .hero {
-            background: linear-gradient(rgba(0,0,0,0.7), rgba(0,0,0,0.7)), url('https://images.unsplash.com/photo-1550751827-4bd374c3f58b?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1470&q=80');
+            background: url('https://images.unsplash.com/photo-1550751827-4bd374c3f58b?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1470&q=80');
             background-size: cover;
             background-position: center;
             background-attachment: fixed;
-            color: white;
+            color: #fff;
             text-align: center;
             padding: 10rem 1rem 5rem;
             min-height: 100vh;
@@ -136,26 +137,32 @@
             flex-direction: column;
             justify-content: center;
             align-items: center;
+            text-shadow: 1px 1px 4px rgba(0,0,0,0.7);
         }
-        
+
         .hero h1 {
             font-size: 3rem;
             margin-bottom: 1.5rem;
             text-transform: uppercase;
             letter-spacing: 2px;
             animation: fadeInDown 1s ease;
+            background: linear-gradient(90deg, #ff6b6b, #feca57, #48dbfb);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
         }
-        
+
         .hero p {
             font-size: 1.2rem;
             max-width: 700px;
             margin: 0 auto 3rem;
             animation: fadeInUp 1s ease 0.3s both;
+            color: #f8f9fa;
         }
-        
+
         .btn {
             display: inline-block;
-            background-color: #3498db;
+            background: linear-gradient(135deg, #ff6b6b, #feca57);
             color: white;
             padding: 1rem 2rem;
             border: none;
@@ -164,21 +171,21 @@
             font-weight: bold;
             transition: all 0.3s;
             animation: fadeIn 1s ease 0.6s both;
-            box-shadow: 0 5px 15px rgba(52, 152, 219, 0.4);
+            box-shadow: 0 5px 15px rgba(255, 107, 107, 0.4);
             position: relative;
             overflow: hidden;
         }
-        
+
         .btn:hover {
-            background-color: #2980b9;
+            background: linear-gradient(135deg, #ff5252, #ff9800);
             transform: translateY(-3px);
-            box-shadow: 0 8px 20px rgba(52, 152, 219, 0.6);
+            box-shadow: 0 8px 25px rgba(255, 107, 107, 0.6);
         }
-        
+
         .btn:active {
             transform: translateY(1px);
         }
-        
+
         .btn::after {
             content: '';
             position: absolute;
@@ -186,34 +193,34 @@
             left: 0;
             width: 100%;
             height: 100%;
-            background: rgba(255,255,255,0.1);
+            background: linear-gradient(90deg, transparent, rgba(255,255,255,0.2), transparent);
             transform: translateX(-100%);
             transition: transform 0.4s ease;
         }
-        
+
         .btn:hover::after {
-            transform: translateX(0);
+            transform: translateX(100%);
         }
-        
+
         /* Services Section */
         .services {
             padding: 6rem 1rem;
-            background-color: white;
+            background: linear-gradient(135deg, #f093fb 0%, #f5576c 100%);
         }
-        
+
         .section-title {
             text-align: center;
             margin-bottom: 4rem;
         }
-        
+
         .section-title h2 {
             font-size: 2.5rem;
-            color: #2c3e50;
+            color: white;
             position: relative;
             display: inline-block;
             padding-bottom: 0.5rem;
         }
-        
+
         .section-title h2::after {
             content: '';
             position: absolute;
@@ -222,10 +229,10 @@
             transform: translateX(-50%);
             width: 100px;
             height: 4px;
-            background-color: #3498db;
+            background: linear-gradient(90deg, #ff6b6b, #feca57);
             border-radius: 2px;
         }
-        
+
         .services-grid {
             display: grid;
             grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
@@ -233,21 +240,23 @@
             max-width: 1200px;
             margin: 0 auto;
         }
-        
+
         .service-card {
-            background-color: #f9f9f9;
-            border-radius: 10px;
+            background: linear-gradient(135deg, #ffffff, #f8f9fa);
+            border-radius: 20px;
             overflow: hidden;
-            box-shadow: 0 5px 15px rgba(0,0,0,0.1);
-            transition: all 0.3s ease;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.1);
+            transition: all 0.4s ease;
             position: relative;
+            border: 1px solid rgba(255, 107, 107, 0.1);
         }
-        
+
         .service-card:hover {
-            transform: translateY(-10px);
-            box-shadow: 0 15px 30px rgba(0,0,0,0.2);
+            transform: translateY(-15px) scale(1.02);
+            box-shadow: 0 20px 40px rgba(255, 107, 107, 0.3);
+            border-color: rgba(255, 107, 107, 0.3);
         }
-        
+
         .service-img {
             height: 200px;
             background-size: cover;
@@ -258,7 +267,7 @@
             color: white;
             position: relative;
         }
-        
+
         .service-img::before {
             content: '';
             position: absolute;
@@ -266,28 +275,35 @@
             left: 0;
             width: 100%;
             height: 100%;
-            background: linear-gradient(to top, rgba(0,0,0,0.7), transparent);
+            background: transparent;
         }
-        
+
         .service-content {
             padding: 2rem;
         }
-        
+
         .service-content h3 {
             margin-bottom: 1rem;
             color: #2c3e50;
             font-size: 1.4rem;
+            background: linear-gradient(135deg, #667eea, #764ba2);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
         }
-        
+
         .service-content p {
             margin-bottom: 1.5rem;
             color: #666;
         }
-        
+
         .service-icon {
             font-size: 3rem;
             margin-bottom: 1rem;
-            color: #3498db;
+            background: linear-gradient(135deg, #ff6b6b, #feca57);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
             position: relative;
             z-index: 1;
         }
