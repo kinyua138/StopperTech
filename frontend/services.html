@@ -7,8 +7,31 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <link rel="stylesheet" href="css/main.css">
     <link rel="stylesheet" href="css/services.css">
+    <style>
+        /* Custom Cursor Styles */
+        .cursor {
+            width: 20px;
+            height: 20px;
+            border-radius: 50%;
+            background-color: #3498db;
+            position: fixed;
+            pointer-events: none;
+            mix-blend-mode: difference;
+            z-index: 9999;
+            transform: translate(-50%, -50%);
+            transition: transform 0.2s ease;
+        }
+        
+        .cursor-grow {
+            transform: translate(-50%, -50%) scale(1.5);
+            background-color: #e74c3c;
+        }
+    </style>
 </head>
 <body>
+    <!-- Custom Cursor -->
+    <div class="cursor"></div>
+
     <!-- Header Section -->
     <header id="header">
         <div class="header-container">
@@ -196,5 +219,50 @@
             <p>&copy; 2019 Stopper Tech. All Rights Reserved. | Designed with <i class="fas fa-heart" style="color: #e74c3c;"></i> by Stopper Tech Team</p>
         </div>
     </footer>
+
+    <!-- Cursor Script -->
+    <script>
+        // Custom Cursor
+        const cursor = document.querySelector('.cursor');
+        
+        document.addEventListener('mousemove', (e) => {
+            cursor.style.left = e.pageX + 'px';
+            cursor.style.top = e.pageY + 'px';
+        });
+        
+        // Cursor grow effect when hovering over clickable elements
+        const clickables = document.querySelectorAll('a, button, input[type="submit"], .service-card');
+        
+        clickables.forEach(item => {
+            item.addEventListener('mouseover', () => {
+                cursor.classList.add('cursor-grow');
+            });
+            item.addEventListener('mouseleave', () => {
+                cursor.classList.remove('cursor-grow');
+            });
+        });
+        
+        // Header scroll effect with hide on scroll down, show on scroll up
+        let lastScrollTop = 0;
+        const header = document.getElementById('header');
+        window.addEventListener('scroll', () => {
+            let scrollTop = window.pageYOffset || document.documentElement.scrollTop;
+            if (scrollTop > lastScrollTop && scrollTop > 50) {
+                // Scrolling down
+                header.style.transform = 'translateY(-100%)';
+            } else {
+                // Scrolling up
+                header.style.transform = 'translateY(0)';
+            }
+            lastScrollTop = scrollTop <= 0 ? 0 : scrollTop; // For Mobile or negative scrolling
+
+            // Also toggle scrolled class for styling
+            if (scrollTop > 50) {
+                header.classList.add('scrolled');
+            } else {
+                header.classList.remove('scrolled');
+            }
+        });
+    </script>
 </body>
 </html>
