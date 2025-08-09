@@ -4,7 +4,9 @@
   "description": "A full-stack web application for Stopper Tech cyber cafe and IT services",
   "main": "backend/server.js",
   "scripts": {
-    "start": "node backend/server.js",
+    "start": "serve frontend",
+    "start:backend": "node backend/server.js",
+    "build": "node build.js",
     "dev": "nodemon backend/server.js",
     "prod": "NODE_ENV=production node backend/server.js",
     "deploy": "NODE_ENV=production node backend/deploy.js",
@@ -21,7 +23,8 @@
     "nodemailer": "^7.0.5"
   },
   "devDependencies": {
-    "nodemon": "^3.0.1"
+    "nodemon": "^3.0.1",
+    "serve": "^14.2.0"
   },
   "keywords": [
     "cyber cafe",
