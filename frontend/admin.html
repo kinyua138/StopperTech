@@ -154,7 +154,8 @@
                     </tr>
                 `;
 
-const response = await fetch('http://localhost:5000/api/registrations')
+const response = await fetch('/api/registrations')
+
                 
                 if (!response.ok) {
                     throw new Error(`Failed to fetch registrations: ${response.status} ${response.statusText}`);
