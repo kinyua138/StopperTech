@@ -15,15 +15,26 @@ Before you can deploy to Render, your project code must be stored in a GitHub re
 
 ### Step 3: Configure the Web Service
 
-You will be taken to a configuration screen. Fill out the form with the following settings:
+You will be taken to a configuration screen. Fill out the form with your desired settings. For the **Root Directory**, **Build Command**, and **Start Command**, you have two main options. Both are valid.
 
+**Option A (Recommended):**
+-   **Root Directory**: `./backend` (This tells Render to run subsequent commands from inside the `backend` folder).
+-   **Build Command**: `npm install`
+-   **Start Command**: `node server.js`
+
+**Option B (Alternative):**
+-   **Root Directory**: (Leave this blank. Commands will run from the main project folder).
+-   **Build Command**: `npm install`
+-   **Start Command**: `node backend/server.js`
+
+---
+
+**For both options, you will also need to set:**
 -   **Name**: A unique name for your service (e.g., `stopper-tech-backend`).
 -   **Region**: Choose a server region (e.g., Ohio, USA).
 -   **Branch**: Select the Git branch you want to deploy (e.g., `main` or `master`).
--   **Root Directory**: Set this to `./backend`. This is very important as it tells Render to look inside your `backend` folder.
 -   **Runtime**: Select `Node`.
--   **Build Command**: `npm install`
--   **Start Command**: `node server.js`
+
 
 ### Step 4: Add Environment Variables
 
