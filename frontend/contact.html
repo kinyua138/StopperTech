@@ -3,15 +3,12 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Stopper Tech - Cyber Cafe & IT Solutions</title>
+    <title>Contact Us - Stopper Tech</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <link rel="stylesheet" href="css/main.css">
-    <link rel="stylesheet" href="css/home.css">
+    <link rel="stylesheet" href="css/contact.css">
 </head>
 <body>
-    <!-- Custom Cursor -->
-    <div class="cursor"></div>
-
     <!-- Header Section -->
     <header id="header">
         <div class="header-container">
@@ -40,11 +37,57 @@
         </div>
     </header>
 
-    <!-- Hero Section -->
-    <section class="hero" id="home">
-        <h1>Your Complete IT & Cyber Cafe Solution</h1>
-        <p>Providing top-notch computer services, government document assistance, student registration, and more with expert care and affordable prices.</p>
-        <a href="services.html" class="btn">Explore Our Services</a>
+    <!-- Contact Section -->
+    <section class="contact" id="contact">
+        <div class="section-title">
+            <h2>Contact Us</h2>
+        </div>
+        
+        <div class="footer-container">
+            <div class="footer-col">
+                <h3>Stopper Tech</h3>
+                <p>Your trusted partner for all IT and cyber cafe services. We provide quality services with customer satisfaction as our top priority.</p>
+                <div class="social-links">
+                    <a href="#"><i class="fab fa-facebook-f"></i></a>
+                    <a href="#"><i class="fab fa-twitter"></i></a>
+                    <a href="#"><i class="fab fa-instagram"></i></a>
+                    <a href="#"><i class="fab fa-linkedin-in"></i></a>
+                </div>
+            </div>
+            
+            <div class="footer-col">
+                <h3>Quick Links</h3>
+                <ul>
+                    <li><a href="stopper.html">Home</a></li>
+                    <li><a href="services.html">Services</a></li>
+                    <li><a href="registration.html">Student Registration</a></li>
+                    <li><a href="testimonials.html">Testimonials</a></li>
+                    <li><a href="contact.html">Contact</a></li>
+                </ul>
+            </div>
+            
+            <div class="footer-col">
+                <h3>Services</h3>
+                <ul>
+                    <li><a href="#">Cyber Cafe Services</a></li>
+                    <li><a href="#">Windows Installation</a></li>
+                    <li><a href="#">Government Services</a></li>
+                    <li><a href="#">Student Services</a></li>
+                    <li><a href="#">Computer Repair</a></li>
+                    <li><a href="#">Mobile Services</a></li>
+                </ul>
+            </div>
+            
+            <div class="footer-col">
+                <h3>Contact Info</h3>
+                <ul>
+                    <li><i class="fas fa-map-marker-alt"></i> Kisima, Nkabune, Timau</li>
+                    <li><i class="fas fa-phone"></i> 0710590670, 0798692574</li>
+                    <li><i class="fas fa-envelope"></i> info@stoppertech.com</li>
+                    <li><i class="fas fa-clock"></i> Mon-Sun: 8:00 AM - 9:00 PM</li>
+                </ul>
+            </div>
+        </div>
     </section>
 
     <!-- Footer -->
@@ -91,76 +134,5 @@
             <p>&copy; 2019 Stopper Tech. All Rights Reserved. | Designed with <i class="fas fa-heart" style="color: #e74c3c;"></i> by Stopper Tech Team</p>
         </div>
     </footer>
-
-    <!-- Scripts -->
-    <script src="https://cdn.jsdelivr.net/npm/swiper@9/swiper-bundle.min.js"></script>
-    <script>
-        // Custom Cursor
-        const cursor = document.querySelector('.cursor');
-        
-        document.addEventListener('mousemove', (e) => {
-            cursor.style.left = e.pageX + 'px';
-            cursor.style.top = e.pageY + 'px';
-        });
-        
-        // Cursor grow effect when hovering over clickable elements
-        const clickables = document.querySelectorAll('a, button, input[type="submit"], .service-card, .swiper-slide');
-        
-        clickables.forEach(item => {
-            item.addEventListener('mouseover', () => {
-                cursor.classList.add('cursor-grow');
-            });
-            item.addEventListener('mouseleave', () => {
-                cursor.classList.remove('cursor-grow');
-            });
-        });
-        
-        // Header scroll effect with hide on scroll down, show on scroll up
-        let lastScrollTop = 0;
-        const header = document.getElementById('header');
-        window.addEventListener('scroll', () => {
-            let scrollTop = window.pageYOffset || document.documentElement.scrollTop;
-            if (scrollTop > lastScrollTop && scrollTop > 50) {
-                // Scrolling down
-                header.style.transform = 'translateY(-100%)';
-            } else {
-                // Scrolling up
-                header.style.transform = 'translateY(0)';
-            }
-            lastScrollTop = scrollTop <= 0 ? 0 : scrollTop; // For Mobile or negative scrolling
-
-            // Also toggle scrolled class for styling
-            if (scrollTop > 50) {
-                header.classList.add('scrolled');
-            } else {
-                header.classList.remove('scrolled');
-            }
-        });
-        
-        // Animation on scroll
-        const animateOnScroll = () => {
-            const elements = document.querySelectorAll('.hero h1, .hero p, .btn');
-            
-            elements.forEach(element => {
-                const elementPosition = element.getBoundingClientRect().top;
-                const screenPosition = window.innerHeight / 1.3;
-                
-                if (elementPosition < screenPosition) {
-                    element.style.opacity = '1';
-                    element.style.transform = 'translateY(0)';
-                }
-            });
-        };
-        
-        // Set initial state for animated elements
-        document.querySelectorAll('.hero h1, .hero p, .btn').forEach(el => {
-            el.style.opacity = '0';
-            el.style.transform = 'translateY(20px)';
-            el.style.transition = 'all 0.6s ease';
-        });
-        
-        window.addEventListener('load', animateOnScroll);
-        window.addEventListener('scroll', animateOnScroll);
-    </script>
 </body>
 </html>
