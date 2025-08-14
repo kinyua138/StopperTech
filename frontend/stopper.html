@@ -103,37 +103,73 @@
     <!-- Scripts -->
     <script src="https://cdn.jsdelivr.net/npm/swiper@9/swiper-bundle.min.js"></script>
     <script>
-        // Custom Cursor with improved performance
+        // Optimized Custom Cursor for Better Performance
         const cursor = document.querySelector('.cursor');
         let mouseX = 0;
         let mouseY = 0;
-        let cursorX = 0;
-        let cursorY = 0;
+        let isMoving = false;
+        let animationId = null;
         
-        // Track mouse position
-        document.addEventListener('mousemove', (e) => {
-            mouseX = e.clientX;
-            mouseY = e.clientY;
-        });
-        
-        // Smooth cursor animation
-        function animateCursor() {
-            // Smooth following with easing
-            cursorX += (mouseX - cursorX) * 0.1;
-            cursorY += (mouseY - cursorY) * 0.1;
-            
-            cursor.style.left = cursorX + 'px';
-            cursor.style.top = cursorY + 'px';
-            
-            requestAnimationFrame(animateCursor);
+        // Throttle function to limit event frequency
+        function throttle(func, limit) {
+            let inThrottle;
+            return function() {
+                const args = arguments;
+                const context = this;
+                if (!inThrottle) {
+                    func.apply(context, args);
+                    inThrottle = true;
+                    setTimeout(() => inThrottle = false, limit);
+                }
+            }
         }
         
-        // Start cursor animation
-        animateCursor();
+        // Track mouse position with throttling
+        const handleMouseMove = throttle((e) => {
+            mouseX = e.clientX;
+            mouseY = e.clientY;
+            
+            if (!isMoving) {
+                isMoving = true;
+                startCursorAnimation();
+            }
+        }, 16); // ~60fps
+        
+        document.addEventListener('mousemove', handleMouseMove);
+        
+        // Optimized cursor animation using transform3d
+        function animateCursor() {
+            // Use transform3d for hardware acceleration
+            cursor.style.transform = `translate3d(${mouseX}px, ${mouseY}px, 0)`;
+            
+            // Stop animation when mouse stops moving
+            let timeout = setTimeout(() => {
+                isMoving = false;
+                if (animationId) {
+                    cancelAnimationFrame(animationId);
+                    animationId = null;
+                }
+            }, 100);
+            
+            if (isMoving) {
+                animationId = requestAnimationFrame(animateCursor);
+            }
+        }
+        
+        function startCursorAnimation() {
+            if (!animationId) {
+                animationId = requestAnimationFrame(animateCursor);
+            }
+        }
         
         // Hide cursor when mouse leaves window
         document.addEventListener('mouseleave', () => {
             cursor.style.opacity = '0';
+            isMoving = false;
+            if (animationId) {
+                cancelAnimationFrame(animationId);
+                animationId = null;
+            }
         });
         
         // Show cursor when mouse enters window
