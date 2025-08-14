@@ -15,10 +15,10 @@
     <!-- Header Section -->
     <header id="header">
         <div class="header-container">
-            <div class="logo-circle-container">
-                <svg class="logo-circle-svg" viewBox="0 0 140 140">
+            <div class="logo-circle-container" onclick="window.location.href='stopper.html'">
+                <svg class="logo-circle-svg" viewBox="0 0 80 80">
                     <defs>
-                        <path id="circlePath" d="M70,70 m-60,0 a60,60 0 1,1 120,0 a60,60 0 1,1 -120,0"/>
+                        <path id="circlePath" d="M40,40 m-30,0 a30,30 0 1,1 60,0 a30,30 0 1,1 -60,0"/>
                     </defs>
                     <text class="logo-circle-text">
                         <textPath xlink:href="#circlePath" startOffset="0" text-anchor="middle" method="stretch" spacing="auto">
@@ -77,11 +77,11 @@
             <div class="footer-col">
                 <h3>Help & Support</h3>
                 <ul>
-                    <li><a href="#">FAQs</a></li>
-                    <li><a href="#">Privacy Policy</a></li>
-                    <li><a href="#">Terms & Conditions</a></li>
-                    <li><a href="#">Service Charges</a></li>
-                    <li><a href="#">Support Center</a></li>
+                    <li><a href="faqs.html">FAQs</a></li>
+                    <li><a href="privacy-policy.html">Privacy Policy</a></li>
+                    <li><a href="terms-conditions.html">Terms & Conditions</a></li>
+                    <li><a href="service-charges.html">Service Charges</a></li>
+                    <li><a href="support-center.html">Support Center</a></li>
                 </ul>
             </div>
             
@@ -262,6 +262,112 @@
                 mainNav.classList.remove('mobile-nav-open');
                 mobileMenuToggle.classList.remove('active');
                 document.body.classList.remove('menu-open');
+            }
+        });
+
+        // Newsletter Form Handling
+        const newsletterForm = document.querySelector('.newsletter-form');
+        const newsletterInput = newsletterForm.querySelector('input[type="email"]');
+        const newsletterButton = newsletterForm.querySelector('button[type="submit"]');
+
+        // Create and style notification element
+        function createNotification(message, type) {
+            // Remove existing notification if any
+            const existingNotification = document.querySelector('.newsletter-notification');
+            if (existingNotification) {
+                existingNotification.remove();
+            }
+
+            const notification = document.createElement('div');
+            notification.className = `newsletter-notification ${type}`;
+            notification.textContent = message;
+            
+            // Style the notification
+            notification.style.cssText = `
+                position: fixed;
+                top: 20px;
+                right: 20px;
+                padding: 15px 20px;
+                border-radius: 5px;
+                color: white;
+                font-weight: 500;
+                z-index: 10000;
+                max-width: 300px;
+                box-shadow: 0 4px 12px rgba(0,0,0,0.3);
+                transform: translateX(100%);
+                transition: transform 0.3s ease;
+                ${type === 'success' ? 'background-color: #28a745;' : 'background-color: #dc3545;'}
+            `;
+
+            document.body.appendChild(notification);
+
+            // Animate in
+            setTimeout(() => {
+                notification.style.transform = 'translateX(0)';
+            }, 100);
+
+            // Auto remove after 5 seconds
+            setTimeout(() => {
+                notification.style.transform = 'translateX(100%)';
+                setTimeout(() => {
+                    if (notification.parentNode) {
+                        notification.remove();
+                    }
+                }, 300);
+            }, 5000);
+        }
+
+        // Handle newsletter form submission
+        newsletterForm.addEventListener('submit', async (e) => {
+            e.preventDefault(); // Prevent default form submission
+
+            const email = newsletterInput.value.trim();
+            
+            // Basic email validation
+            if (!email) {
+                createNotification('Please enter your email address.', 'error');
+                return;
+            }
+
+            if (!/^\w+([.-]?\w+)*@\w+([.-]?\w+)*(\.\w{2,3})+$/.test(email)) {
+                createNotification('Please enter a valid email address.', 'error');
+                return;
+            }
+
+            // Show loading state
+            const originalButtonText = newsletterButton.innerHTML;
+            newsletterButton.innerHTML = '<i class="fas fa-spinner fa-spin"></i>';
+            newsletterButton.disabled = true;
+            newsletterInput.disabled = true;
+
+            try {
+                // Make API call to newsletter endpoint
+                const response = await fetch('/api/newsletter', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                    body: JSON.stringify({ email: email })
+                });
+
+                const data = await response.json();
+
+                if (response.ok) {
+                    // Success
+                    createNotification('Successfully subscribed! Check your email for confirmation.', 'success');
+                    newsletterInput.value = ''; // Clear the form
+                } else {
+                    // Error from server
+                    createNotification(data.error || 'Failed to subscribe. Please try again.', 'error');
+                }
+            } catch (error) {
+                console.error('Newsletter subscription error:', error);
+                createNotification('Network error. Please check your connection and try again.', 'error');
+            } finally {
+                // Reset button state
+                newsletterButton.innerHTML = originalButtonText;
+                newsletterButton.disabled = false;
+                newsletterInput.disabled = false;
             }
         });
     </script>

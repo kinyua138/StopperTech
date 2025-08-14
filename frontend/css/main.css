@@ -44,33 +44,44 @@ header.scrolled {
 
 .logo-circle-container {
     position: relative;
-    width: 140px;
-    height: 140px;
+    width: 80px;
+    height: 80px;
     margin: 0;
+    cursor: pointer;
+    transition: all 0.3s ease;
+}
+
+.logo-circle-container:hover {
+    transform: scale(1.05);
 }
 
 .logo-circle-svg {
-    width: 140px;
-    height: 140px;
+    width: 80px;
+    height: 80px;
 }
 
 .logo-circle-text {
-    font-size: 14px;
+    font-size: 8px;
     fill: #00a8ff;
     font-weight: bold;
-    letter-spacing: 2px;
+    letter-spacing: 1px;
 }
 
 .logo-center-image {
     position: absolute;
     top: 50%;
     left: 50%;
-    width: 65px !important;
-    height: 65px !important;
+    width: 35px !important;
+    height: 35px !important;
     transform: translate(-50%, -50%);
     border-radius: 50%;
     object-fit: cover;
     box-shadow: 0 0 8px rgba(0,0,0,0.15);
+    transition: all 0.3s ease;
+}
+
+.logo-circle-container:hover .logo-center-image {
+    box-shadow: 0 0 15px rgba(0, 168, 255, 0.5);
 }
 
 nav ul {

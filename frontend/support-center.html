@@ -1,0 +1,692 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Support Center - Stopper Tech</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="stylesheet" href="css/main.css">
+    <link rel="stylesheet" href="css/help-support.css">
+    <style>
+        /* Custom Cursor Styles */
+        .cursor {
+            width: 20px;
+            height: 20px;
+            border-radius: 50%;
+            background-color: #3498db;
+            position: fixed;
+            pointer-events: none;
+            mix-blend-mode: difference;
+            z-index: 9999;
+            transform: translate(-50%, -50%);
+            transition: all 0.1s ease-out;
+            opacity: 1;
+        }
+        
+        .cursor-grow {
+            transform: translate(-50%, -50%) scale(1.5);
+            background-color: #e74c3c;
+        }
+
+        /* Hide default cursor */
+        * {
+            cursor: none !important;
+        }
+
+        /* Show default cursor on form elements for better UX */
+        input, textarea, select, button {
+            cursor: pointer !important;
+        }
+
+        input[type="text"], input[type="email"], input[type="tel"], textarea {
+            cursor: text !important;
+        }
+
+        /* Support Form Styles */
+        .support-form {
+            background: rgba(255, 255, 255, 0.03);
+            border-radius: 15px;
+            padding: 2rem;
+            border: 1px solid rgba(0, 168, 255, 0.2);
+            margin-top: 2rem;
+        }
+
+        .form-group {
+            margin-bottom: 1.5rem;
+        }
+
+        .form-group label {
+            display: block;
+            color: #e0e0e0;
+            margin-bottom: 0.5rem;
+            font-weight: 500;
+        }
+
+        .form-group input,
+        .form-group select,
+        .form-group textarea {
+            width: 100%;
+            padding: 0.8rem;
+            border: 1px solid rgba(0, 168, 255, 0.3);
+            background: rgba(255, 255, 255, 0.05);
+            color: #e0e0e0;
+            border-radius: 8px;
+            font-size: 1rem;
+            transition: all 0.3s ease;
+        }
+
+        .form-group input:focus,
+        .form-group select:focus,
+        .form-group textarea:focus {
+            outline: none;
+            border-color: #00a8ff;
+            box-shadow: 0 0 10px rgba(0, 168, 255, 0.2);
+        }
+
+        .form-group textarea {
+            resize: vertical;
+            min-height: 120px;
+        }
+
+        .submit-btn {
+            background: linear-gradient(135deg, #00a8ff, #e53995);
+            color: white;
+            border: none;
+            padding: 1rem 2rem;
+            border-radius: 8px;
+            font-size: 1.1rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            width: 100%;
+        }
+
+        .submit-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(0, 168, 255, 0.3);
+        }
+
+        /* Status Indicators */
+        .status-indicator {
+            display: inline-block;
+            width: 12px;
+            height: 12px;
+            border-radius: 50%;
+            margin-right: 8px;
+        }
+
+        .status-online {
+            background-color: #27ae60;
+            box-shadow: 0 0 10px rgba(39, 174, 96, 0.5);
+        }
+
+        .status-busy {
+            background-color: #f39c12;
+            box-shadow: 0 0 10px rgba(243, 156, 18, 0.5);
+        }
+
+        .status-offline {
+            background-color: #e74c3c;
+            box-shadow: 0 0 10px rgba(231, 76, 60, 0.5);
+        }
+
+        /* Quick Links */
+        .quick-links {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 1.5rem;
+            margin: 2rem 0;
+        }
+
+        .quick-link {
+            background: rgba(255, 255, 255, 0.03);
+            border-radius: 10px;
+            padding: 1.5rem;
+            text-align: center;
+            border: 1px solid rgba(0, 168, 255, 0.2);
+            transition: all 0.3s ease;
+            text-decoration: none;
+            color: inherit;
+        }
+
+        .quick-link:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 30px rgba(0, 168, 255, 0.15);
+            border-color: rgba(0, 168, 255, 0.4);
+        }
+
+        .quick-link .icon {
+            font-size: 2.5rem;
+            color: #00a8ff;
+            margin-bottom: 1rem;
+        }
+
+        .quick-link h3 {
+            color: #e0e0e0;
+            margin-bottom: 0.5rem;
+            border: none;
+            padding: 0;
+        }
+
+        .quick-link p {
+            color: #b0b0c0;
+            font-size: 0.9rem;
+            margin: 0;
+        }
+    </style>
+</head>
+<body>
+    <!-- Custom Cursor -->
+    <div class="cursor"></div>
+
+    <!-- Header Section -->
+    <header id="header">
+        <div class="header-container">
+            <div class="logo-circle-container">
+                <svg class="logo-circle-svg" viewBox="0 0 140 140">
+                    <defs>
+                        <path id="circlePath" d="M70,70 m-60,0 a60,60 0 1,1 120,0 a60,60 0 1,1 -120,0"/>
+                    </defs>
+                    <text class="logo-circle-text">
+                        <textPath xlink:href="#circlePath" startOffset="0" text-anchor="middle" method="stretch" spacing="auto">
+                            Stopper Tech • Stopper Tech • Stopper Tech • Stopper Tech • Stopper Tech • Stopper Tech •
+                        </textPath>
+                    </text>
+                </svg>
+                <img src="Stopper_tech.png" alt="Logo" class="logo-center-image" />
+            </div>
+            
+            <!-- Mobile Menu Toggle -->
+            <button class="mobile-menu-toggle" id="mobileMenuToggle" aria-label="Toggle mobile menu">
+                <span class="hamburger-line"></span>
+                <span class="hamburger-line"></span>
+                <span class="hamburger-line"></span>
+            </button>
+            
+            <nav id="mainNav">
+                <ul>
+                    <li><a href="stopper.html">Home</a></li>
+                    <li><a href="services.html">Services</a></li>
+                    <li><a href="registration.html">Student Registration</a></li>
+                    <li><a href="testimonials.html">Testimonials</a></li>
+                    <li><a href="contact.html">Contact</a></li>
+                </ul>
+            </nav>
+        </div>
+    </header>
+
+    <!-- Main Content -->
+    <main class="help-support-container">
+        <div class="page-header">
+            <h1>Support Center</h1>
+            <p>Get help with our services, report issues, or contact our support team for assistance.</p>
+        </div>
+
+        <div class="content-section">
+            <h2>Contact Our Support Team</h2>
+            
+            <div class="contact-cards">
+                <div class="contact-card">
+                    <div class="icon">
+                        <i class="fas fa-phone"></i>
+                    </div>
+                    <h3>Phone Support</h3>
+                    <p><span class="status-indicator status-online"></span>Available Now</p>
+                    <p><strong><a href="tel:+254710590670">+254 710 590 670</a></strong></p>
+                    <p><strong><a href="tel:+254798692574">+254 798 692 574</a></strong></p>
+                    <p>Mon-Sat: 8:00 AM - 9:00 PM<br>Sun: 1:00 PM - 9:00 PM</p>
+                </div>
+                
+                <div class="contact-card">
+                    <div class="icon">
+                        <i class="fas fa-envelope"></i>
+                    </div>
+                    <h3>Email Support</h3>
+                    <p><span class="status-indicator status-online"></span>Response within 2 hours</p>
+                    <p><strong><a href="mailto:support@stoppertech.com">support@stoppertech.com</a></strong></p>
+                    <p>24/7 Email Support<br>Priority response for urgent issues</p>
+                </div>
+                
+                <div class="contact-card">
+                    <div class="icon">
+                        <i class="fas fa-comments"></i>
+                    </div>
+                    <h3>Live Chat</h3>
+                    <p><span class="status-indicator status-busy"></span>Average wait: 3 minutes</p>
+                    <p><strong>Chat with us now</strong></p>
+                    <p>Mon-Sat: 8:00 AM - 9:00 PM<br>Instant responses during business hours</p>
+                </div>
+                
+                <div class="contact-card">
+                    <div class="icon">
+                        <i class="fas fa-map-marker-alt"></i>
+                    </div>
+                    <h3>Visit Our Center</h3>
+                    <p><span class="status-indicator status-online"></span>Open Now</p>
+                    <p><strong>Stopper Tech</strong><br>
+                    Kisima, Nkabune, Timau<br>
+                    Meru, Kenya</p>
+                    <p>Walk-in support available</p>
+                </div>
+            </div>
+        </div>
+
+        <div class="content-section">
+            <h2>Quick Help Links</h2>
+            <p>Find quick solutions to common issues and access helpful resources.</p>
+            
+            <div class="quick-links">
+                <a href="faqs.html" class="quick-link">
+                    <div class="icon">
+                        <i class="fas fa-question-circle"></i>
+                    </div>
+                    <h3>FAQs</h3>
+                    <p>Find answers to frequently asked questions</p>
+                </a>
+                
+                <a href="service-charges.html" class="quick-link">
+                    <div class="icon">
+                        <i class="fas fa-rupee-sign"></i>
+                    </div>
+                    <h3>Service Charges</h3>
+                    <p>View our transparent pricing for all services</p>
+                </a>
+                
+                <a href="services.html" class="quick-link">
+                    <div class="icon">
+                        <i class="fas fa-cogs"></i>
+                    </div>
+                    <h3>Our Services</h3>
+                    <p>Explore all available services and features</p>
+                </a>
+                
+                <a href="#troubleshooting" class="quick-link">
+                    <div class="icon">
+                        <i class="fas fa-tools"></i>
+                    </div>
+                    <h3>Troubleshooting</h3>
+                    <p>Step-by-step guides for common issues</p>
+                </a>
+                
+                <a href="terms-conditions.html" class="quick-link">
+                    <div class="icon">
+                        <i class="fas fa-file-contract"></i>
+                    </div>
+                    <h3>Terms & Conditions</h3>
+                    <p>Review our service terms and policies</p>
+                </a>
+                
+                <a href="privacy-policy.html" class="quick-link">
+                    <div class="icon">
+                        <i class="fas fa-shield-alt"></i>
+                    </div>
+                    <h3>Privacy Policy</h3>
+                    <p>Learn how we protect your information</p>
+                </a>
+            </div>
+        </div>
+
+        <div class="content-section" id="troubleshooting">
+            <h2>Common Troubleshooting Guides</h2>
+            
+            <h3>Computer Issues</h3>
+            <ul>
+                <li><strong>Computer won't start:</strong> Check power connections, try different power outlet, listen for fan noise</li>
+                <li><strong>Slow performance:</strong> Close unnecessary programs, restart computer, check for virus infections</li>
+                <li><strong>Internet connectivity:</strong> Check cable connections, restart router, verify network settings</li>
+                <li><strong>Blue screen errors:</strong> Note error codes, restart in safe mode, check for hardware issues</li>
+            </ul>
+            
+            <h3>Printing Problems</h3>
+            <ul>
+                <li><strong>Printer not responding:</strong> Check USB/network connection, restart printer and computer</li>
+                <li><strong>Poor print quality:</strong> Check ink/toner levels, clean print heads, use correct paper type</li>
+                <li><strong>Paper jams:</strong> Turn off printer, carefully remove jammed paper, check for torn pieces</li>
+                <li><strong>Print jobs stuck in queue:</strong> Cancel all print jobs, restart print spooler service</li>
+            </ul>
+            
+            <h3>Software Issues</h3>
+            <ul>
+                <li><strong>Application crashes:</strong> Update software, check system requirements, run as administrator</li>
+                <li><strong>Installation problems:</strong> Verify system compatibility, disable antivirus temporarily, run installer as admin</li>
+                <li><strong>License activation:</strong> Check internet connection, verify license key, contact software vendor</li>
+                <li><strong>Missing files:</strong> Reinstall application, restore from backup, check recycle bin</li>
+            </ul>
+        </div>
+
+        <div class="content-section">
+            <h2>Submit a Support Request</h2>
+            <p>Can't find what you're looking for? Submit a detailed support request and our team will get back to you.</p>
+            
+            <form class="support-form" id="supportForm">
+                <div class="form-group">
+                    <label for="name">Full Name *</label>
+                    <input type="text" id="name" name="name" required>
+                </div>
+                
+                <div class="form-group">
+                    <label for="email">Email Address *</label>
+                    <input type="email" id="email" name="email" required>
+                </div>
+                
+                <div class="form-group">
+                    <label for="phone">Phone Number</label>
+                    <input type="tel" id="phone" name="phone">
+                </div>
+                
+                <div class="form-group">
+                    <label for="category">Issue Category *</label>
+                    <select id="category" name="category" required>
+                        <option value="">Select a category</option>
+                        <option value="technical">Technical Support</option>
+                        <option value="billing">Billing & Payments</option>
+                        <option value="services">Service Information</option>
+                        <option value="complaint">Complaint</option>
+                        <option value="suggestion">Suggestion</option>
+                        <option value="other">Other</option>
+                    </select>
+                </div>
+                
+                <div class="form-group">
+                    <label for="priority">Priority Level</label>
+                    <select id="priority" name="priority">
+                        <option value="low">Low - General inquiry</option>
+                        <option value="medium" selected>Medium - Standard support</option>
+                        <option value="high">High - Urgent issue</option>
+                        <option value="critical">Critical - Service down</option>
+                    </select>
+                </div>
+                
+                <div class="form-group">
+                    <label for="subject">Subject *</label>
+                    <input type="text" id="subject" name="subject" placeholder="Brief description of your issue" required>
+                </div>
+                
+                <div class="form-group">
+                    <label for="message">Detailed Description *</label>
+                    <textarea id="message" name="message" placeholder="Please provide as much detail as possible about your issue, including any error messages, steps you've already tried, and when the problem started." required></textarea>
+                </div>
+                
+                <button type="submit" class="submit-btn">
+                    <i class="fas fa-paper-plane"></i> Submit Support Request
+                </button>
+            </form>
+        </div>
+
+        <div class="content-section">
+            <h2>Service Level Agreement (SLA)</h2>
+            
+            <h3>Response Times</h3>
+            <ul>
+                <li><strong>Critical Issues:</strong> Within 1 hour during business hours</li>
+                <li><strong>High Priority:</strong> Within 4 hours during business hours</li>
+                <li><strong>Medium Priority:</strong> Within 24 hours</li>
+                <li><strong>Low Priority:</strong> Within 48 hours</li>
+            </ul>
+            
+            <h3>Resolution Times</h3>
+            <ul>
+                <li><strong>Simple Issues:</strong> Same day resolution</li>
+                <li><strong>Complex Issues:</strong> 2-3 business days</li>
+                <li><strong>Hardware Repairs:</strong> 3-7 business days (depending on parts availability)</li>
+                <li><strong>Custom Solutions:</strong> Timeline provided after assessment</li>
+            </ul>
+            
+            <h3>Support Channels Priority</h3>
+            <ol>
+                <li><strong>Phone Support:</strong> Immediate assistance for urgent issues</li>
+                <li><strong>Live Chat:</strong> Quick responses during business hours</li>
+                <li><strong>Email Support:</strong> Detailed responses with documentation</li>
+                <li><strong>Walk-in Support:</strong> Face-to-face assistance and demonstrations</li>
+            </ol>
+        </div>
+
+        <div class="content-section">
+            <h2>Feedback & Suggestions</h2>
+            <p>We value your feedback and continuously strive to improve our services. Your suggestions help us serve you better.</p>
+            
+            <h3>How to Provide Feedback</h3>
+            <ul>
+                <li><strong>Online Reviews:</strong> Leave reviews on Google, Facebook, or other platforms</li>
+                <li><strong>Email Feedback:</strong> Send detailed feedback to <a href="mailto:feedback@stoppertech.com">feedback@stoppertech.com</a></li>
+                <li><strong>Phone Feedback:</strong> Call our support line and ask to speak with a manager</li>
+                <li><strong>In-Person:</strong> Speak with our staff during your visit</li>
+                <li><strong>Suggestion Box:</strong> Drop written suggestions in our physical suggestion box</li>
+            </ul>
+            
+            <h3>What We Do With Your Feedback</h3>
+            <ul>
+                <li>Review all feedback within 48 hours</li>
+                <li>Implement feasible suggestions for service improvement</li>
+                <li>Address any concerns or complaints promptly</li>
+                <li>Follow up with customers who provide contact information</li>
+                <li>Use feedback to train our staff and improve processes</li>
+            </ul>
+        </div>
+    </main>
+
+    <!-- Back to Top Button -->
+    <button class="back-to-top" id="backToTop">
+        <i class="fas fa-arrow-up"></i>
+    </button>
+
+    <!-- Footer -->
+    <footer>
+        <div class="footer-container">
+            <div class="footer-col">
+                <h3>About Us</h3>
+                <p>Stopper Tech has been serving the community since 2019 with reliable IT solutions and cyber cafe services. We're committed to providing quality service with a personal touch.</p>
+            </div>
+            
+            <div class="footer-col">
+                <h3>Our Services</h3>
+                <ul>
+                    <li><a href="services.html">Cyber Cafe</a></li>
+                    <li><a href="services.html">Software Installation</a></li>
+                    <li><a href="services.html">Government Services</a></li>
+                    <li><a href="registration.html">Student Registration</a></li>
+                    <li><a href="services.html">Computer Repair</a></li>
+                </ul>
+            </div>
+            
+            <div class="footer-col">
+                <h3>Help & Support</h3>
+                <ul>
+                    <li><a href="faqs.html">FAQs</a></li>
+                    <li><a href="privacy-policy.html">Privacy Policy</a></li>
+                    <li><a href="terms-conditions.html">Terms & Conditions</a></li>
+                    <li><a href="service-charges.html">Service Charges</a></li>
+                    <li><a href="support-center.html">Support Center</a></li>
+                </ul>
+            </div>
+            
+            <div class="footer-col">
+                <h3>Newsletter</h3>
+                <p>Subscribe to our newsletter for updates on new services and special offers.</p>
+                <form class="newsletter-form">
+                    <input type="email" placeholder="Your Email" required>
+                    <button type="submit"><i class="fas fa-paper-plane"></i></button>
+                </form>
+            </div>
+        </div>
+        
+        <div class="copyright">
+            <p>&copy; 2019 Stopper Tech. All Rights Reserved. | Designed with <i class="fas fa-heart" style="color: #e74c3c;"></i> by Stopper Tech Team</p>
+        </div>
+    </footer>
+
+    <!-- Scripts -->
+    <script>
+        // Custom Cursor Script
+        const cursor = document.querySelector('.cursor');
+        let mouseX = 0;
+        let mouseY = 0;
+        let isMoving = false;
+        let animationId = null;
+        
+        function throttle(func, limit) {
+            let inThrottle;
+            return function() {
+                const args = arguments;
+                const context = this;
+                if (!inThrottle) {
+                    func.apply(context, args);
+                    inThrottle = true;
+                    setTimeout(() => inThrottle = false, limit);
+                }
+            }
+        }
+        
+        const handleMouseMove = throttle((e) => {
+            mouseX = e.clientX;
+            mouseY = e.clientY;
+            
+            if (!isMoving) {
+                isMoving = true;
+                startCursorAnimation();
+            }
+        }, 16);
+        
+        document.addEventListener('mousemove', handleMouseMove);
+        
+        function animateCursor() {
+            cursor.style.transform = `translate3d(${mouseX}px, ${mouseY}px, 0)`;
+            
+            let timeout = setTimeout(() => {
+                isMoving = false;
+                if (animationId) {
+                    cancelAnimationFrame(animationId);
+                    animationId = null;
+                }
+            }, 100);
+            
+            if (isMoving) {
+                animationId = requestAnimationFrame(animateCursor);
+            }
+        }
+        
+        function startCursorAnimation() {
+            if (!animationId) {
+                animationId = requestAnimationFrame(animateCursor);
+            }
+        }
+        
+        document.addEventListener('mouseleave', () => {
+            cursor.style.opacity = '0';
+            isMoving = false;
+            if (animationId) {
+                cancelAnimationFrame(animationId);
+                animationId = null;
+            }
+        });
+        
+        document.addEventListener('mouseenter', () => {
+            cursor.style.opacity = '1';
+        });
+        
+        const clickables = document.querySelectorAll('a, button, input, select, textarea');
+        
+        clickables.forEach(item => {
+            item.addEventListener('mouseenter', () => {
+                cursor.classList.add('cursor-grow');
+            });
+            item.addEventListener('mouseleave', () => {
+                cursor.classList.remove('cursor-grow');
+            });
+        });
+
+        // Header scroll effect
+        let lastScrollTop = 0;
+        const header = document.getElementById('header');
+        window.addEventListener('scroll', () => {
+            let scrollTop = window.pageYOffset || document.documentElement.scrollTop;
+            if (scrollTop > lastScrollTop && scrollTop > 50) {
+                header.style.transform = 'translateY(-100%)';
+            } else {
+                header.style.transform = 'translateY(0)';
+            }
+            lastScrollTop = scrollTop <= 0 ? 0 : scrollTop;
+
+            if (scrollTop > 50) {
+                header.classList.add('scrolled');
+            } else {
+                header.classList.remove('scrolled');
+            }
+        });
+
+        // Mobile Menu Toggle
+        const mobileMenuToggle = document.getElementById('mobileMenuToggle');
+        const mainNav = document.getElementById('mainNav');
+        
+        mobileMenuToggle.addEventListener('click', () => {
+            mainNav.classList.toggle('mobile-nav-open');
+            mobileMenuToggle.classList.toggle('active');
+            document.body.classList.toggle('menu-open');
+        });
+        
+        const navLinks = document.querySelectorAll('#mainNav a');
+        navLinks.forEach(link => {
+            link.addEventListener('click', () => {
+                mainNav.classList.remove('mobile-nav-open');
+                mobileMenuToggle.classList.remove('active');
+                document.body.classList.remove('menu-open');
+            });
+        });
+        
+        document.addEventListener('click', (e) => {
+            if (!mainNav.contains(e.target) && !mobileMenuToggle.contains(e.target)) {
+                mainNav.classList.remove('mobile-nav-open');
+                mobileMenuToggle.classList.remove('active');
+                document.body.classList.remove('menu-open');
+            }
+        });
+
+        // Back to Top Button
+        const backToTop = document.getElementById('backToTop');
+        
+        window.addEventListener('scroll', () => {
+            if (window.pageYOffset > 300) {
+                backToTop.classList.add('visible');
+            } else {
+                backToTop.classList.remove('visible');
+            }
+        });
+        
+        backToTop.addEventListener('click', () => {
+            window.scrollTo({
+                top: 0,
+                behavior: 'smooth'
+            });
+        });
+
+        // Support Form Handling
+        document.getElementById('supportForm').addEventListener('submit', function(e) {
+            e.preventDefault();
+            
+            // Get form data
+            const formData = new FormData(this);
+            const data = Object.fromEntries(formData);
+            
+            // Simple validation
+            if (!data.name || !data.email || !data.category || !data.subject || !data.message) {
+                alert('Please fill in all required fields.');
+                return;
+            }
+            
+            // Simulate form submission
+            const submitBtn = this.querySelector('.submit-btn');
+            const originalText = submitBtn.innerHTML;
+            
+            submitBtn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Submitting...';
+            submitBtn.disabled = true;
+            
+            setTimeout(() => {
+                alert('Thank you for your support request! We will get back to you within 24 hours.');
+                this.reset();
+                submitBtn.innerHTML = originalText;
+                submitBtn.disabled = false;
+            }, 2000);
+        });
+    </script>
+</body>
+</html>

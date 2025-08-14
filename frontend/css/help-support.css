@@ -1,0 +1,348 @@
+/* Help & Support Pages Styles */
+
+/* Main Content Container */
+.help-support-container {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 8rem 2rem 4rem;
+    min-height: 100vh;
+}
+
+/* Page Header */
+.page-header {
+    text-align: center;
+    margin-bottom: 4rem;
+    padding-bottom: 2rem;
+    border-bottom: 2px solid #3c3c5a;
+}
+
+.page-header h1 {
+    font-size: 3rem;
+    color: #00a8ff;
+    margin-bottom: 1rem;
+    background: linear-gradient(135deg, #00a8ff, #e53995);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+}
+
+.page-header p {
+    font-size: 1.2rem;
+    color: #b0b0c0;
+    max-width: 600px;
+    margin: 0 auto;
+    line-height: 1.6;
+}
+
+/* Content Sections */
+.content-section {
+    margin-bottom: 3rem;
+    background: rgba(255, 255, 255, 0.02);
+    border-radius: 15px;
+    padding: 2.5rem;
+    border: 1px solid rgba(0, 168, 255, 0.1);
+    transition: all 0.3s ease;
+}
+
+.content-section:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 10px 30px rgba(0, 168, 255, 0.1);
+    border-color: rgba(0, 168, 255, 0.3);
+}
+
+.content-section h2 {
+    color: #00a8ff;
+    font-size: 1.8rem;
+    margin-bottom: 1.5rem;
+    position: relative;
+    padding-bottom: 0.5rem;
+}
+
+.content-section h2::after {
+    content: '';
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    width: 50px;
+    height: 3px;
+    background: linear-gradient(90deg, #00a8ff, #e53995);
+    border-radius: 3px;
+}
+
+.content-section h3 {
+    color: #e0e0e0;
+    font-size: 1.4rem;
+    margin: 2rem 0 1rem;
+    padding-left: 1rem;
+    border-left: 3px solid #00a8ff;
+}
+
+.content-section p {
+    color: #b0b0c0;
+    line-height: 1.8;
+    margin-bottom: 1.5rem;
+    font-size: 1.1rem;
+}
+
+.content-section ul, .content-section ol {
+    color: #b0b0c0;
+    margin-left: 2rem;
+    margin-bottom: 1.5rem;
+}
+
+.content-section li {
+    margin-bottom: 0.8rem;
+    line-height: 1.6;
+}
+
+/* FAQ Specific Styles */
+.faq-item {
+    background: rgba(255, 255, 255, 0.03);
+    border-radius: 10px;
+    margin-bottom: 1.5rem;
+    border: 1px solid rgba(0, 168, 255, 0.1);
+    overflow: hidden;
+    transition: all 0.3s ease;
+}
+
+.faq-question {
+    background: rgba(0, 168, 255, 0.1);
+    padding: 1.5rem;
+    cursor: pointer;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    transition: all 0.3s ease;
+}
+
+.faq-question:hover {
+    background: rgba(0, 168, 255, 0.2);
+}
+
+.faq-question h3 {
+    color: #e0e0e0;
+    font-size: 1.2rem;
+    margin: 0;
+    padding: 0;
+    border: none;
+}
+
+.faq-toggle {
+    color: #00a8ff;
+    font-size: 1.5rem;
+    transition: transform 0.3s ease;
+}
+
+.faq-answer {
+    padding: 0 1.5rem;
+    max-height: 0;
+    overflow: hidden;
+    transition: all 0.3s ease;
+}
+
+.faq-item.active .faq-answer {
+    padding: 1.5rem;
+    max-height: 500px;
+}
+
+.faq-item.active .faq-toggle {
+    transform: rotate(45deg);
+}
+
+/* Service Charges Table */
+.charges-table {
+    width: 100%;
+    border-collapse: collapse;
+    margin: 2rem 0;
+    background: rgba(255, 255, 255, 0.02);
+    border-radius: 10px;
+    overflow: hidden;
+    border: 1px solid rgba(0, 168, 255, 0.2);
+}
+
+.charges-table th {
+    background: linear-gradient(135deg, #00a8ff, #e53995);
+    color: white;
+    padding: 1.2rem;
+    text-align: left;
+    font-weight: 600;
+}
+
+.charges-table td {
+    padding: 1rem 1.2rem;
+    border-bottom: 1px solid rgba(0, 168, 255, 0.1);
+    color: #b0b0c0;
+}
+
+.charges-table tr:hover {
+    background: rgba(0, 168, 255, 0.05);
+}
+
+.charges-table .service-name {
+    color: #e0e0e0;
+    font-weight: 500;
+}
+
+.charges-table .price {
+    color: #00a8ff;
+    font-weight: 600;
+}
+
+/* Contact Cards */
+.contact-cards {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+    gap: 2rem;
+    margin: 2rem 0;
+}
+
+.contact-card {
+    background: rgba(255, 255, 255, 0.03);
+    border-radius: 15px;
+    padding: 2rem;
+    text-align: center;
+    border: 1px solid rgba(0, 168, 255, 0.2);
+    transition: all 0.3s ease;
+}
+
+.contact-card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 10px 30px rgba(0, 168, 255, 0.15);
+    border-color: rgba(0, 168, 255, 0.4);
+}
+
+.contact-card .icon {
+    font-size: 3rem;
+    color: #00a8ff;
+    margin-bottom: 1rem;
+}
+
+.contact-card h3 {
+    color: #e0e0e0;
+    margin-bottom: 1rem;
+    border: none;
+    padding: 0;
+}
+
+.contact-card p {
+    color: #b0b0c0;
+    margin-bottom: 0.5rem;
+}
+
+.contact-card a {
+    color: #00a8ff;
+    text-decoration: none;
+    transition: color 0.3s ease;
+}
+
+.contact-card a:hover {
+    color: #e53995;
+}
+
+/* Back to Top Button */
+.back-to-top {
+    position: fixed;
+    bottom: 2rem;
+    right: 2rem;
+    background: linear-gradient(135deg, #00a8ff, #e53995);
+    color: white;
+    border: none;
+    border-radius: 50%;
+    width: 50px;
+    height: 50px;
+    font-size: 1.2rem;
+    cursor: pointer;
+    opacity: 0;
+    visibility: hidden;
+    transition: all 0.3s ease;
+    z-index: 1000;
+}
+
+.back-to-top.visible {
+    opacity: 1;
+    visibility: visible;
+}
+
+.back-to-top:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 5px 15px rgba(0, 168, 255, 0.3);
+}
+
+/* Mobile Responsive */
+@media screen and (max-width: 768px) {
+    .help-support-container {
+        padding: 6rem 1rem 2rem;
+    }
+    
+    .page-header h1 {
+        font-size: 2rem;
+    }
+    
+    .page-header p {
+        font-size: 1rem;
+    }
+    
+    .content-section {
+        padding: 1.5rem;
+        margin-bottom: 2rem;
+    }
+    
+    .content-section h2 {
+        font-size: 1.5rem;
+    }
+    
+    .content-section h3 {
+        font-size: 1.2rem;
+    }
+    
+    .charges-table {
+        font-size: 0.9rem;
+    }
+    
+    .charges-table th,
+    .charges-table td {
+        padding: 0.8rem;
+    }
+    
+    .contact-cards {
+        grid-template-columns: 1fr;
+        gap: 1.5rem;
+    }
+    
+    .contact-card {
+        padding: 1.5rem;
+    }
+    
+    .back-to-top {
+        bottom: 1rem;
+        right: 1rem;
+        width: 45px;
+        height: 45px;
+    }
+}
+
+@media screen and (max-width: 480px) {
+    .help-support-container {
+        padding: 5rem 0.5rem 1rem;
+    }
+    
+    .page-header h1 {
+        font-size: 1.8rem;
+    }
+    
+    .content-section {
+        padding: 1rem;
+    }
+    
+    .faq-question {
+        padding: 1rem;
+    }
+    
+    .faq-question h3 {
+        font-size: 1rem;
+    }
+    
+    .charges-table {
+        font-size: 0.8rem;
+    }
+}
