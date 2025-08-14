@@ -113,19 +113,19 @@ const registrationSchema = new mongoose.Schema({
         type: String, 
         required: [true, 'Phone number is required'],
         trim: true,
-        match: [/^[0-9]{10,15}$/, 'Please enter a valid phone number']
+        match: [/^[0-9+\-\s()]{10,20}$/, 'Please enter a valid phone number']
     },
-    institution: { 
+    location: { 
         type: String, 
-        required: [true, 'Institution is required'],
+        required: [true, 'Location is required'],
         trim: true,
-        minlength: [2, 'Institution name must be at least 2 characters']
+        minlength: [2, 'Location must be at least 2 characters']
     },
     service: { 
         type: String, 
         required: [true, 'Service selection is required'],
         enum: {
-            values: ['admission', 'exam', 'scholarship', 'project', 'other'],
+            values: ['helb', 'exam', 'kuccps', 'project', 'visa', 'other'],
             message: 'Please select a valid service'
         }
     },
@@ -144,10 +144,10 @@ const Registration = mongoose.model('Registration', registrationSchema);
 // POST /register endpoint
 app.post('/api/register', async (req, res) => {
     try {
-        const { fullname, email, phone, institution, service, message } = req.body;
+        const { fullname, email, phone, location, service, message } = req.body;
 
         // Enhanced validation with detailed error messages
-        if (!fullname || !email || !phone || !institution || !service) {
+        if (!fullname || !email || !phone || !location || !service) {
             return res.status(400).json({ 
                 error: 'Validation failed',
                 details: 'Please fill in all required fields.',
@@ -155,7 +155,7 @@ app.post('/api/register', async (req, res) => {
                     fullname: fullname ? undefined : 'Full name is required',
                     email: email ? undefined : 'Email is required',
                     phone: phone ? undefined : 'Phone number is required',
-                    institution: institution ? undefined : 'Institution is required',
+                    location: location ? undefined : 'Location is required',
                     service: service ? undefined : 'Service selection is required'
                 }
             });
@@ -174,7 +174,7 @@ app.post('/api/register', async (req, res) => {
             fullname,
             email,
             phone,
-            institution,
+            location,
             service,
             message
         });

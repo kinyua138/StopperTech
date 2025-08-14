@@ -19,12 +19,27 @@
             mix-blend-mode: difference;
             z-index: 9999;
             transform: translate(-50%, -50%);
-            transition: transform 0.2s ease;
+            transition: all 0.1s ease-out;
+            opacity: 1;
         }
         
         .cursor-grow {
             transform: translate(-50%, -50%) scale(1.5);
             background-color: #e74c3c;
+        }
+
+        /* Hide default cursor */
+        * {
+            cursor: none !important;
+        }
+
+        /* Show default cursor on form elements for better UX */
+        input, textarea, select, button {
+            cursor: pointer !important;
+        }
+
+        input[type="text"], input[type="email"], input[type="tel"], textarea {
+            cursor: text !important;
         }
     </style>
 </head>
@@ -98,18 +113,19 @@
                     </div>
                     
                     <div class="form-group">
-                        <label for="institution">Educational Institution</label>
-                        <input type="text" id="institution" required>
+                        <label for="location">Location</label>
+                        <input type="text" id="location" required>
                     </div>
                     
                     <div class="form-group">
                         <label for="service">Required Service</label>
                         <select id="service" required>
                             <option value="">Select a service</option>
-                            <option value="admission">Admission Form</option>
-                            <option value="exam">Exam Registration</option>
-                            <option value="scholarship">Scholarship Application</option>
-                            <option value="project">Project Submission</option>
+                            <option value="helb">Helb Application</option>
+                            <option value="exam">Computer Packages Registration</option>
+                            <option value="kuccps">KUCCPS Application</option>
+                            <option value="project">School Project </option>
+                            <option value="visa">Visa Application</option>
                             <option value="other">Other</option>
                         </select>
                     </div>
@@ -135,7 +151,7 @@
         <div class="footer-container">
             <div class="footer-col">
                 <h3>About Us</h3>
-                <p>Stopper Tech has been serving the community since 2023 with reliable IT solutions and cyber cafe services. We're committed to providing quality service with a personal touch.</p>
+                <p>Stopper Tech has been serving the community since 2019 with reliable IT solutions and cyber cafe services. We're committed to providing quality service with a personal touch.</p>
             </div>
             
             <div class="footer-col">
@@ -177,19 +193,49 @@
 
     <!-- Cursor Script -->
     <script>
-        // Custom Cursor
+        // Custom Cursor with improved performance
         const cursor = document.querySelector('.cursor');
+        let mouseX = 0;
+        let mouseY = 0;
+        let cursorX = 0;
+        let cursorY = 0;
         
+        // Track mouse position
         document.addEventListener('mousemove', (e) => {
-            cursor.style.left = e.pageX + 'px';
-            cursor.style.top = e.pageY + 'px';
+            mouseX = e.clientX;
+            mouseY = e.clientY;
+        });
+        
+        // Smooth cursor animation
+        function animateCursor() {
+            // Smooth following with easing
+            cursorX += (mouseX - cursorX) * 0.1;
+            cursorY += (mouseY - cursorY) * 0.1;
+            
+            cursor.style.left = cursorX + 'px';
+            cursor.style.top = cursorY + 'px';
+            
+            requestAnimationFrame(animateCursor);
+        }
+        
+        // Start cursor animation
+        animateCursor();
+        
+        // Hide cursor when mouse leaves window
+        document.addEventListener('mouseleave', () => {
+            cursor.style.opacity = '0';
+        });
+        
+        // Show cursor when mouse enters window
+        document.addEventListener('mouseenter', () => {
+            cursor.style.opacity = '1';
         });
         
         // Cursor grow effect when hovering over clickable elements
         const clickables = document.querySelectorAll('a, button, input[type="submit"], .service-card, input, textarea, select');
         
         clickables.forEach(item => {
-            item.addEventListener('mouseover', () => {
+            item.addEventListener('mouseenter', () => {
                 cursor.classList.add('cursor-grow');
             });
             item.addEventListener('mouseleave', () => {
@@ -216,6 +262,83 @@
                 header.classList.add('scrolled');
             } else {
                 header.classList.remove('scrolled');
+            }
+        });
+
+        // Registration form submission handler
+        document.getElementById('registrationForm').addEventListener('submit', async (e) => {
+            e.preventDefault();
+            
+            const submitBtn = document.getElementById('submitBtn');
+            const formMessage = document.getElementById('formMessage');
+            const loadingIndicator = document.getElementById('loadingIndicator');
+            
+            // Get form data
+            const formData = {
+                fullname: document.getElementById('fullname').value.trim(),
+                email: document.getElementById('email').value.trim(),
+                phone: document.getElementById('phone').value.trim(),
+                location: document.getElementById('location').value.trim(),
+                service: document.getElementById('service').value,
+                message: document.getElementById('message').value.trim()
+            };
+            
+            // Basic client-side validation
+            if (!formData.fullname || !formData.email || !formData.phone || !formData.location || !formData.service) {
+                formMessage.textContent = 'Please fill in all required fields.';
+                formMessage.style.color = '#e74c3c';
+                return;
+            }
+            
+            // Email validation
+            const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+            if (!emailRegex.test(formData.email)) {
+                formMessage.textContent = 'Please enter a valid email address.';
+                formMessage.style.color = '#e74c3c';
+                return;
+            }
+            
+            // Show loading state
+            submitBtn.disabled = true;
+            submitBtn.textContent = 'Submitting...';
+            loadingIndicator.style.display = 'block';
+            formMessage.textContent = '';
+            
+            try {
+                const response = await fetch('/api/register', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                    body: JSON.stringify(formData)
+                });
+                
+                const result = await response.json();
+                
+                if (response.ok) {
+                    // Success
+                    formMessage.textContent = result.message || 'Registration successful!';
+                    formMessage.style.color = '#27ae60';
+                    
+                    // Reset form
+                    document.getElementById('registrationForm').reset();
+                    
+                    // Scroll to success message
+                    formMessage.scrollIntoView({ behavior: 'smooth', block: 'center' });
+                } else {
+                    // Error from server
+                    formMessage.textContent = result.details || result.error || 'Registration failed. Please try again.';
+                    formMessage.style.color = '#e74c3c';
+                }
+            } catch (error) {
+                console.error('Registration error:', error);
+                formMessage.textContent = 'Network error. Please check your connection and try again.';
+                formMessage.style.color = '#e74c3c';
+            } finally {
+                // Reset button state
+                submitBtn.disabled = false;
+                submitBtn.textContent = 'Submit Registration';
+                loadingIndicator.style.display = 'none';
             }
         });
     </script>

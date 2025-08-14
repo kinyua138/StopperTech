@@ -121,7 +121,7 @@
                 <th>Full Name</th>
                 <th>Email</th>
                 <th>Phone</th>
-                <th>Institution</th>
+                <th>Location</th>
                 <th>Service</th>
                 <th>Message</th>
                 <th>Submitted At</th>
@@ -178,7 +178,7 @@ const response = await fetch('/api/registrations')
                         <td>${reg.fullname}</td>
                         <td>${reg.email}</td>
                         <td>${reg.phone}</td>
-                        <td>${reg.institution}</td>
+                        <td>${reg.location}</td>
                         <td>${reg.service}</td>
                         <td>${reg.message || ''}</td>
                         <td>${new Date(reg.createdAt).toLocaleString()}</td>

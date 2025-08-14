@@ -19,12 +19,27 @@
             mix-blend-mode: difference;
             z-index: 9999;
             transform: translate(-50%, -50%);
-            transition: transform 0.2s ease;
+            transition: all 0.1s ease-out;
+            opacity: 1;
         }
         
         .cursor-grow {
             transform: translate(-50%, -50%) scale(1.5);
             background-color: #e74c3c;
+        }
+
+        /* Hide default cursor */
+        * {
+            cursor: none !important;
+        }
+
+        /* Show default cursor on form elements for better UX */
+        input, textarea, select, button {
+            cursor: pointer !important;
+        }
+
+        input[type="text"], input[type="email"], input[type="tel"], textarea {
+            cursor: text !important;
         }
     </style>
 </head>
@@ -222,19 +237,49 @@
 
     <!-- Cursor Script -->
     <script>
-        // Custom Cursor
+        // Custom Cursor with improved performance
         const cursor = document.querySelector('.cursor');
+        let mouseX = 0;
+        let mouseY = 0;
+        let cursorX = 0;
+        let cursorY = 0;
         
+        // Track mouse position
         document.addEventListener('mousemove', (e) => {
-            cursor.style.left = e.pageX + 'px';
-            cursor.style.top = e.pageY + 'px';
+            mouseX = e.clientX;
+            mouseY = e.clientY;
+        });
+        
+        // Smooth cursor animation
+        function animateCursor() {
+            // Smooth following with easing
+            cursorX += (mouseX - cursorX) * 0.1;
+            cursorY += (mouseY - cursorY) * 0.1;
+            
+            cursor.style.left = cursorX + 'px';
+            cursor.style.top = cursorY + 'px';
+            
+            requestAnimationFrame(animateCursor);
+        }
+        
+        // Start cursor animation
+        animateCursor();
+        
+        // Hide cursor when mouse leaves window
+        document.addEventListener('mouseleave', () => {
+            cursor.style.opacity = '0';
+        });
+        
+        // Show cursor when mouse enters window
+        document.addEventListener('mouseenter', () => {
+            cursor.style.opacity = '1';
         });
         
         // Cursor grow effect when hovering over clickable elements
         const clickables = document.querySelectorAll('a, button, input[type="submit"], .service-card');
         
         clickables.forEach(item => {
-            item.addEventListener('mouseover', () => {
+            item.addEventListener('mouseenter', () => {
                 cursor.classList.add('cursor-grow');
             });
             item.addEventListener('mouseleave', () => {
