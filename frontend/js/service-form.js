@@ -136,10 +136,10 @@ class ServiceFormHandler {
         }
     }
 
-    // Check payment status
+    // Check payment status using the dedicated endpoint
     async checkPaymentStatus(serviceRequestId) {
         try {
-            const response = await fetch(`${this.apiBaseUrl}/service-request/${serviceRequestId}`);
+            const response = await fetch(`${this.apiBaseUrl}/payment-status/${serviceRequestId}`);
             const data = await response.json();
             
             if (!response.ok) {
