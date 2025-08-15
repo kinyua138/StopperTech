@@ -6,8 +6,6 @@ const path = require('path');
 const helmet = require('helmet');
 const rateLimit = require('express-rate-limit');
 const axios = require('axios');
-const session = require('express-session');
-const bcrypt = require('bcrypt');
 require('dotenv').config();
 
 // Use environment variables for configuration
@@ -78,149 +76,8 @@ app.use(cors({
 app.use(bodyParser.json({ limit: '10mb' }));
 app.use(bodyParser.urlencoded({ extended: true, limit: '10mb' }));
 
-// Admin credentials configuration
-const ADMIN_CONFIG = {
-    username: 'admin',
-    // Hash of "Stopper@350" - correct hash
-    passwordHash: '$2b$10$ucomOwZANedWzqS88kt6/u3fxA/PRShrmf0EVewt1oLPEK8/B0Fly'
-};
-
-// Session configuration
-app.use(session({
-    secret: process.env.SESSION_SECRET || 'stopper-tech-admin-secret-key-2024',
-    resave: false,
-    saveUninitialized: false,
-    cookie: {
-        secure: nodeEnv === 'production', // Use secure cookies in production
-        httpOnly: true,
-        maxAge: 24 * 60 * 60 * 1000 // 24 hours
-    }
-}));
-
-// Generate password hash on startup (for development)
-async function generatePasswordHash() {
-    try {
-        const hash = await bcrypt.hash('Stopper@350', 10);
-        console.log('🔐 Admin password hash generated:', hash);
-        return hash;
-    } catch (error) {
-        console.error('Error generating password hash:', error);
-        return null;
-    }
-}
-
-// Authentication middleware
-function requireAuth(req, res, next) {
-    if (req.session && req.session.isAuthenticated) {
-        return next();
-    } else {
-        return res.status(401).json({
-            error: 'Unauthorized',
-            details: 'Please login to access this resource.'
-        });
-    }
-}
-
-// Rate limiting for login attempts
-const loginLimiter = rateLimit({
-    windowMs: 15 * 60 * 1000, // 15 minutes
-    max: 5, // limit each IP to 5 login requests per windowMs
-    message: {
-        error: 'Too many login attempts',
-        details: 'Please try again after 15 minutes.'
-    },
-    standardHeaders: true,
-    legacyHeaders: false,
-});
-
 // Serve static files from the frontend directory
 app.use(express.static(path.join(__dirname, '..', 'frontend')));
-
-// Authentication endpoints
-
-// POST /api/admin/login - Admin login
-app.post('/api/admin/login', loginLimiter, async (req, res) => {
-    try {
-        const { username, password } = req.body;
-
-        if (!username || !password) {
-            return res.status(400).json({
-                error: 'Validation failed',
-                details: 'Username and password are required.'
-            });
-        }
-
-        // Check username
-        if (username !== ADMIN_CONFIG.username) {
-            return res.status(401).json({
-                error: 'Invalid credentials',
-                details: 'Invalid username or password.'
-            });
-        }
-
-        // Verify password
-        const isValidPassword = await bcrypt.compare(password, ADMIN_CONFIG.passwordHash);
-        if (!isValidPassword) {
-            return res.status(401).json({
-                error: 'Invalid credentials',
-                details: 'Invalid username or password.'
-            });
-        }
-
-        // Set session
-        req.session.isAuthenticated = true;
-        req.session.username = username;
-
-        res.json({
-            success: true,
-            message: 'Login successful',
-            data: {
-                username: username,
-                loginTime: new Date().toISOString()
-            }
-        });
-    } catch (error) {
-        console.error('Error during login:', error);
-        res.status(500).json({
-            error: 'Server Error',
-            details: 'An error occurred during login. Please try again.'
-        });
-    }
-});
-
-// POST /api/admin/logout - Admin logout
-app.post('/api/admin/logout', (req, res) => {
-    req.session.destroy((err) => {
-        if (err) {
-            console.error('Error destroying session:', err);
-            return res.status(500).json({
-                error: 'Server Error',
-                details: 'Failed to logout. Please try again.'
-            });
-        }
-        
-        res.json({
-            success: true,
-            message: 'Logout successful'
-        });
-    });
-});
-
-// GET /api/admin/status - Check authentication status
-app.get('/api/admin/status', (req, res) => {
-    if (req.session && req.session.isAuthenticated) {
-        res.json({
-            success: true,
-            authenticated: true,
-            username: req.session.username
-        });
-    } else {
-        res.json({
-            success: true,
-            authenticated: false
-        });
-    }
-});
 
 // Newsletter subscription endpoint
 app.post('/api/newsletter', async (req, res) => {
@@ -349,69 +206,16 @@ const serviceRequestSchema = new mongoose.Schema({
 
 const ServiceRequest = mongoose.model('ServiceRequest', serviceRequestSchema);
 
-// Function to validate callback URL
-function validateCallbackUrl(url) {
-    try {
-        const parsedUrl = new URL(url);
-        
-        // Safaricom requires HTTPS for callback URLs
-        if (parsedUrl.protocol !== 'https:') {
-            return {
-                valid: false,
-                error: 'Callback URL must use HTTPS protocol'
-            };
-        }
-        
-        // Check if it's a valid webhook.site URL or other valid callback URL
-        const validDomains = ['webhook.site', 'ngrok.io', 'herokuapp.com', 'vercel.app', 'netlify.app'];
-        const isValidDomain = validDomains.some(domain => parsedUrl.hostname.includes(domain)) || 
-                             parsedUrl.hostname.match(/^(\d{1,3}\.){3}\d{1,3}$/) || // IP address
-                             parsedUrl.hostname.includes('.'); // Any domain with TLD
-        
-        if (!isValidDomain) {
-            return {
-                valid: false,
-                error: 'Callback URL must be a publicly accessible HTTPS URL'
-            };
-        }
-        
-        return { valid: true };
-    } catch (error) {
-        return {
-            valid: false,
-            error: 'Invalid URL format'
-        };
-    }
-}
-
 // Safaricom Daraja API Configuration
 const DARAJA_CONFIG = {
     consumerKey: process.env.DARAJA_CONSUMER_KEY,
     consumerSecret: process.env.DARAJA_CONSUMER_SECRET,
     businessShortCode: process.env.DARAJA_BUSINESS_SHORTCODE || '174379',
     passkey: process.env.DARAJA_PASSKEY,
-    // Force use of the specific webhook.site URL - override any environment variable
+    // Force use of working webhook.site URL - ignore environment variable
     callbackUrl: 'https://webhook.site/2579b19f-c7db-41af-a753-f66e6a90aea3',
     environment: process.env.DARAJA_ENVIRONMENT || 'sandbox' // 'sandbox' or 'production'
 };
-
-// Add detailed callback URL debugging
-console.log('\n🔗 CALLBACK URL CONFIGURATION DEBUG:');
-console.log(`Environment Variable DARAJA_CALLBACK_URL: ${process.env.DARAJA_CALLBACK_URL || 'NOT SET'}`);
-console.log(`Final Callback URL: ${DARAJA_CONFIG.callbackUrl}`);
-console.log(`Callback URL Protocol: ${new URL(DARAJA_CONFIG.callbackUrl).protocol}`);
-console.log(`Callback URL Host: ${new URL(DARAJA_CONFIG.callbackUrl).hostname}`);
-
-// Validate callback URL on startup
-const callbackValidation = validateCallbackUrl(DARAJA_CONFIG.callbackUrl);
-if (!callbackValidation.valid) {
-    console.error(`❌ CALLBACK URL ERROR: ${callbackValidation.error}`);
-    console.error(`Current callback URL: ${DARAJA_CONFIG.callbackUrl}`);
-    console.error('Please ensure your callback URL is a publicly accessible HTTPS URL');
-    console.error('🚨 STK Push will fail with this callback URL!');
-} else {
-    console.log('✅ Callback URL validation passed');
-}
 
 // Business Configuration - IMPORTANT FOR RECEIVING PAYMENTS
 const BUSINESS_CONFIG = {
@@ -438,22 +242,6 @@ console.log(`Will Receive Real Money: ${BUSINESS_CONFIG.isReceivingPayments ? '�
 if (!BUSINESS_CONFIG.isReceivingPayments) {
     console.log('⚠️  WARNING: Using sandbox shortcode 174379 - payments go to Safaricom, not you!');
     console.log('📋 Get your own business shortcode to receive payments');
-}
-
-// Log Daraja API configuration status
-console.log('\n🔐 DARAJA API CONFIGURATION:');
-console.log(`Consumer Key: ${DARAJA_CONFIG.consumerKey ? '✅ SET' : '❌ MISSING'}`);
-console.log(`Consumer Secret: ${DARAJA_CONFIG.consumerSecret ? '✅ SET' : '❌ MISSING'}`);
-console.log(`Passkey: ${DARAJA_CONFIG.passkey ? '✅ SET' : '❌ MISSING'}`);
-console.log(`Callback URL: ${DARAJA_CONFIG.callbackUrl}`);
-
-if (!DARAJA_CONFIG.consumerKey || !DARAJA_CONFIG.consumerSecret) {
-    console.log('\n❌ CRITICAL: Missing Daraja API credentials!');
-    console.log('Please set the following environment variables:');
-    console.log('- DARAJA_CONSUMER_KEY');
-    console.log('- DARAJA_CONSUMER_SECRET');
-    console.log('- DARAJA_PASSKEY');
-    console.log('\nPayment functionality will not work without these credentials.');
 }
 console.log('');
 
@@ -544,174 +332,51 @@ const SERVICE_PRICING = {
 // Function to get Daraja access token
 async function getDarajaAccessToken() {
     try {
-        // Check if credentials are available
-        if (!DARAJA_CONFIG.consumerKey || !DARAJA_CONFIG.consumerSecret) {
-            const errorMsg = 'Missing Daraja API credentials. Please check DARAJA_CONSUMER_KEY and DARAJA_CONSUMER_SECRET environment variables.';
-            console.error('❌ DARAJA ERROR:', errorMsg);
-            throw new Error(errorMsg);
-        }
-
         const auth = Buffer.from(`${DARAJA_CONFIG.consumerKey}:${DARAJA_CONFIG.consumerSecret}`).toString('base64');
-        console.log(`🔐 Attempting to get Daraja access token from: ${DARAJA_URLS[DARAJA_CONFIG.environment].oauth}`);
-        
         const response = await axios.get(DARAJA_URLS[DARAJA_CONFIG.environment].oauth, {
             headers: {
-                'Authorization': `Basic ${auth}`,
-                'Content-Type': 'application/json'
-            },
-            timeout: 30000 // 30 second timeout
+                'Authorization': `Basic ${auth}`
+            }
         });
-        
-        if (response.data && response.data.access_token) {
-            console.log('✅ Successfully obtained Daraja access token');
-            console.log(`🔑 Token expires in: ${response.data.expires_in || 'unknown'} seconds`);
-            return response.data.access_token;
-        } else {
-            throw new Error('Invalid response format from Daraja API');
-        }
+        return response.data.access_token;
     } catch (error) {
-        console.error('❌ Error getting Daraja access token:');
-        
-        if (error.response) {
-            // The request was made and the server responded with a status code
-            console.error(`📊 Status: ${error.response.status} ${error.response.statusText}`);
-            console.error(`📄 Response data:`, JSON.stringify(error.response.data, null, 2));
-            
-            if (error.response.status === 400) {
-                console.error('🔍 This is likely due to invalid API credentials.');
-                console.error('Please verify your DARAJA_CONSUMER_KEY and DARAJA_CONSUMER_SECRET are correct.');
-            } else if (error.response.status === 401) {
-                console.error('🔐 Authentication failed. Check your credentials.');
-            } else if (error.response.status >= 500) {
-                console.error('🚨 Safaricom server error. Please try again later.');
-            }
-        } else if (error.request) {
-            // The request was made but no response was received
-            console.error('🌐 No response received from Daraja API');
-            console.error('This could be due to network issues or Safaricom API being down');
-            if (error.code === 'ECONNABORTED') {
-                console.error('⏰ Request timed out. Safaricom API might be slow.');
-            }
-        } else {
-            // Something happened in setting up the request
-            console.error('⚙️ Error setting up request:', error.message);
-        }
-        
-        throw new Error(`Failed to get access token: ${error.message}`);
+        console.error('Error getting Daraja access token:', error);
+        throw new Error('Failed to get access token');
     }
 }
 
-// Function to initiate STK Push - Updated to match working JavaScript format
+// Function to initiate STK Push
 async function initiateStkPush(phoneNumber, amount, accountReference, transactionDesc) {
     try {
-        console.log(`💳 Initiating STK Push for ${phoneNumber}, Amount: KSh ${amount}`);
-        
-        // Validate callback URL before proceeding
-        console.log('🔍 Validating callback URL before STK Push...');
-        const callbackValidation = validateCallbackUrl(DARAJA_CONFIG.callbackUrl);
-        if (!callbackValidation.valid) {
-            console.error(`❌ CALLBACK URL VALIDATION FAILED: ${callbackValidation.error}`);
-            console.error(`Current callback URL: ${DARAJA_CONFIG.callbackUrl}`);
-            throw new Error(`Invalid callback URL: ${callbackValidation.error}`);
-        }
-        console.log(`✅ Callback URL validation passed: ${DARAJA_CONFIG.callbackUrl}`);
-        
-        // Always get a fresh access token for each STK Push request
-        console.log('🔄 Getting fresh access token for STK Push...');
         const accessToken = await getDarajaAccessToken();
-        console.log(`🎫 Using fresh access token: ${accessToken.substring(0, 20)}...`);
-        
-        // Generate timestamp in the exact format: YYYYMMDDHHMMSS
-        const now = new Date();
-        const timestamp = now.getFullYear().toString() +
-                         (now.getMonth() + 1).toString().padStart(2, '0') +
-                         now.getDate().toString().padStart(2, '0') +
-                         now.getHours().toString().padStart(2, '0') +
-                         now.getMinutes().toString().padStart(2, '0') +
-                         now.getSeconds().toString().padStart(2, '0');
-        
-        // Validate passkey
-        if (!DARAJA_CONFIG.passkey) {
-            throw new Error('Missing Daraja passkey. Please check DARAJA_PASSKEY environment variable.');
-        }
-        
-        // Generate password exactly like the working JavaScript example
+        const timestamp = new Date().toISOString().replace(/[^0-9]/g, '').slice(0, -3);
         const password = Buffer.from(`${DARAJA_CONFIG.businessShortCode}${DARAJA_CONFIG.passkey}${timestamp}`).toString('base64');
 
-        // STK Push data matching the working JavaScript format
         const stkPushData = {
-            "BusinessShortCode": parseInt(DARAJA_CONFIG.businessShortCode),
-            "Password": password,
-            "Timestamp": timestamp,
-            "TransactionType": "CustomerPayBillOnline",
-            "Amount": parseInt(amount),
-            "PartyA": parseInt(phoneNumber),
-            "PartyB": parseInt(DARAJA_CONFIG.businessShortCode),
-            "PhoneNumber": parseInt(phoneNumber),
-            "CallBackURL": DARAJA_CONFIG.callbackUrl,
-            "AccountReference": accountReference,
-            "TransactionDesc": transactionDesc
+            BusinessShortCode: DARAJA_CONFIG.businessShortCode,
+            Password: password,
+            Timestamp: timestamp,
+            TransactionType: 'CustomerPayBillOnline',
+            Amount: amount,
+            PartyA: phoneNumber,
+            PartyB: DARAJA_CONFIG.businessShortCode,
+            PhoneNumber: phoneNumber,
+            CallBackURL: DARAJA_CONFIG.callbackUrl,
+            AccountReference: accountReference,
+            TransactionDesc: transactionDesc
         };
 
-        console.log(`📤 STK Push Request Data:`, {
-            BusinessShortCode: stkPushData.BusinessShortCode,
-            Amount: stkPushData.Amount,
-            PhoneNumber: stkPushData.PhoneNumber,
-            AccountReference: stkPushData.AccountReference,
-            TransactionDesc: stkPushData.TransactionDesc,
-            CallBackURL: stkPushData.CallBackURL,
-            Timestamp: stkPushData.Timestamp
-        });
-
-        // Use axios to match the working fetch request
         const response = await axios.post(DARAJA_URLS[DARAJA_CONFIG.environment].stkPush, stkPushData, {
             headers: {
-                'Content-Type': 'application/json',
-                'Authorization': `Bearer ${accessToken}`
-            },
-            timeout: 30000
+                'Authorization': `Bearer ${accessToken}`,
+                'Content-Type': 'application/json'
+            }
         });
 
-        console.log(`📥 STK Push Response:`, JSON.stringify(response.data, null, 2));
-
-        // Check if the response indicates success
-        if (response.data && (response.data.ResponseCode === '0' || response.data.ResponseCode === 0)) {
-            console.log(`✅ STK Push initiated successfully for ${phoneNumber}`);
-            console.log(`🔍 CheckoutRequestID: ${response.data.CheckoutRequestID}`);
-            console.log(`🔍 MerchantRequestID: ${response.data.MerchantRequestID}`);
-            return response.data;
-        } else {
-            console.error(`❌ STK Push failed:`, response.data);
-            throw new Error(response.data.errorMessage || response.data.ResponseDescription || response.data.errorCode || 'STK Push request failed');
-        }
+        return response.data;
     } catch (error) {
-        console.error('❌ Error initiating STK Push:');
-        
-        if (error.response) {
-            console.error(`📊 Status: ${error.response.status} ${error.response.statusText}`);
-            console.error(`📄 Response data:`, JSON.stringify(error.response.data, null, 2));
-            
-            if (error.response.status === 400) {
-                console.error('🔍 Bad request - check your STK Push parameters');
-                console.error('💡 Common issues: Invalid phone number format, invalid amount, or malformed request');
-            } else if (error.response.status === 401) {
-                console.error('🔐 Unauthorized - access token might be expired or invalid');
-                console.error('💡 Try regenerating your Daraja API credentials');
-            } else if (error.response.status === 500) {
-                console.error('🚨 Safaricom server error - this is on their end');
-            }
-            
-            throw new Error(`STK Push failed: ${error.response.data?.errorMessage || error.response.data?.ResponseDescription || error.response.data?.errorCode || 'Server error'}`);
-        } else if (error.request) {
-            console.error('🌐 No response received from Daraja API');
-            if (error.code === 'ECONNABORTED') {
-                console.error('⏰ Request timed out - Safaricom API might be slow');
-            }
-            throw new Error('Network error: Unable to reach Safaricom servers');
-        } else {
-            console.error('⚙️ Error setting up STK Push request:', error.message);
-            throw new Error(`STK Push setup error: ${error.message}`);
-        }
+        console.error('Error initiating STK Push:', error);
+        throw new Error('Failed to initiate payment');
     }
 }
 
@@ -791,8 +456,8 @@ app.post('/api/register', async (req, res) => {
     }
 });
 
-// GET /registrations endpoint to fetch all registrations (protected)
-app.get('/api/registrations', requireAuth, async (req, res) => {
+// GET /registrations endpoint to fetch all registrations
+app.get('/api/registrations', async (req, res) => {
     try {
         const registrations = await Registration.find().sort({ createdAt: -1 });
         res.json({ 
@@ -809,8 +474,8 @@ app.get('/api/registrations', requireAuth, async (req, res) => {
     }
 });
 
-// DELETE /register/:id endpoint to delete a user registration by ID (protected)
-app.delete('/api/register/:id', requireAuth, async (req, res) => {
+// DELETE /register/:id endpoint to delete a user registration by ID
+app.delete('/api/register/:id', async (req, res) => {
     try {
         const { id } = req.params;
         console.log(`Attempting to delete registration with ID: ${id}`);
@@ -941,11 +606,16 @@ app.post('/api/initiate-payment', async (req, res) => {
             });
         }
 
-        // Validate phone number format (should be 254XXXXXXXXX)
-        if (!/^254[0-9]{9}$/.test(phoneNumber)) {
+        // Auto-format phone number: if user enters 9 digits, prepend 254
+        let formattedPhoneNumber = phoneNumber;
+        if (/^[0-9]{9}$/.test(phoneNumber)) {
+            // User entered 9 digits, prepend 254
+            formattedPhoneNumber = `254${phoneNumber}`;
+        } else if (!/^254[0-9]{9}$/.test(phoneNumber)) {
+            // Not 9 digits and not valid 254XXXXXXXXX format
             return res.status(400).json({
                 error: 'Invalid phone number',
-                details: 'Please enter a valid Kenyan phone number in format 254XXXXXXXXX'
+                details: 'Please enter a valid Kenyan phone number (9 digits like 713159136 or full format 254713159136)'
             });
         }
 
@@ -954,7 +624,7 @@ app.post('/api/initiate-payment', async (req, res) => {
         const transactionDesc = `${serviceRequest.serviceType} - ${serviceRequest.subService}`;
 
         const stkPushResponse = await initiateStkPush(
-            phoneNumber,
+            formattedPhoneNumber,
             serviceRequest.amount,
             accountReference,
             transactionDesc
@@ -1023,8 +693,8 @@ app.post('/api/mpesa/callback', async (req, res) => {
     }
 });
 
-// GET /api/service-requests - Get all service requests (admin) (protected)
-app.get('/api/service-requests', requireAuth, async (req, res) => {
+// GET /api/service-requests - Get all service requests (admin)
+app.get('/api/service-requests', async (req, res) => {
     try {
         const serviceRequests = await ServiceRequest.find().sort({ createdAt: -1 });
         res.json({
@@ -1067,60 +737,6 @@ app.get('/api/service-request/:id', async (req, res) => {
     }
 });
 
-// GET /api/payment-status/:id - Get payment status for a service request
-app.get('/api/payment-status/:id', async (req, res) => {
-    try {
-        const { id } = req.params;
-        console.log(`📊 Checking payment status for service request: ${id}`);
-        
-        const serviceRequest = await ServiceRequest.findById(id);
-        
-        if (!serviceRequest) {
-            return res.status(404).json({
-                error: 'Not Found',
-                details: 'Service request not found.'
-            });
-        }
-
-        // Return payment status information
-        const response = {
-            success: true,
-            data: {
-                id: serviceRequest._id,
-                paymentStatus: serviceRequest.paymentStatus,
-                status: serviceRequest.status,
-                amount: serviceRequest.amount,
-                paymentReference: serviceRequest.paymentReference,
-                serviceType: serviceRequest.serviceType,
-                subService: serviceRequest.subService,
-                createdAt: serviceRequest.createdAt,
-                updatedAt: serviceRequest.updatedAt
-            }
-        };
-
-        // Add additional context based on payment status
-        if (serviceRequest.paymentStatus === 'pending') {
-            response.message = 'Payment is still pending. Please complete the M-Pesa transaction on your phone.';
-            response.data.nextAction = 'complete_payment';
-        } else if (serviceRequest.paymentStatus === 'completed') {
-            response.message = 'Payment completed successfully. Your service request is being processed.';
-            response.data.nextAction = 'wait_for_processing';
-        } else if (serviceRequest.paymentStatus === 'failed') {
-            response.message = 'Payment failed. Please try again or contact support.';
-            response.data.nextAction = 'retry_payment';
-        }
-
-        console.log(`✅ Payment status retrieved for ${id}: ${serviceRequest.paymentStatus}`);
-        res.json(response);
-    } catch (error) {
-        console.error('Error fetching payment status:', error);
-        res.status(500).json({
-            error: 'Server Error',
-            details: 'Failed to retrieve payment status. Please try again later.'
-        });
-    }
-});
-
 // GET /api/service-pricing - Get service pricing
 app.get('/api/service-pricing', (req, res) => {
     res.json({
@@ -1129,8 +745,8 @@ app.get('/api/service-pricing', (req, res) => {
     });
 });
 
-// PUT /api/service-request/:id/status - Update service request status (admin) (protected)
-app.put('/api/service-request/:id/status', requireAuth, async (req, res) => {
+// PUT /api/service-request/:id/status - Update service request status (admin)
+app.put('/api/service-request/:id/status', async (req, res) => {
     try {
         const { id } = req.params;
         const { status } = req.body;
@@ -1169,8 +785,8 @@ app.put('/api/service-request/:id/status', requireAuth, async (req, res) => {
     }
 });
 
-// DELETE /api/service-request/:id - Delete service request (admin) (protected)
-app.delete('/api/service-request/:id', requireAuth, async (req, res) => {
+// DELETE /api/service-request/:id - Delete service request (admin)
+app.delete('/api/service-request/:id', async (req, res) => {
     try {
         const { id } = req.params;
         console.log(`Attempting to delete service request with ID: ${id}`);
