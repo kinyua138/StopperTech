@@ -1,0 +1,731 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Cyber Cafe Services - Stopper Tech</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="stylesheet" href="css/main.css">
+    <link rel="stylesheet" href="css/services.css">
+    <link rel="stylesheet" href="css/service-form.css">
+    <style>
+        /* Custom Cursor Styles */
+        .cursor {
+            width: 20px;
+            height: 20px;
+            border-radius: 50%;
+            background-color: #3498db;
+            position: fixed;
+            pointer-events: none;
+            mix-blend-mode: difference;
+            z-index: 9999;
+            transform: translate(-50%, -50%);
+            transition: all 0.1s ease-out;
+            opacity: 1;
+        }
+        
+        .cursor-grow {
+            transform: translate(-50%, -50%) scale(1.5);
+            background-color: #e74c3c;
+        }
+
+        /* Hide default cursor */
+        * {
+            cursor: none !important;
+        }
+
+        /* Show default cursor on form elements for better UX */
+        input, textarea, select, button {
+            cursor: pointer !important;
+        }
+
+        input[type="text"], input[type="email"], input[type="tel"], textarea {
+            cursor: text !important;
+        }
+
+        /* Cyber Cafe Specific Styles */
+        .cyber-hero {
+            background: linear-gradient(135deg, #1a1a2e 0%, #1f1f3a 100%);
+            padding: 8rem 1rem 4rem;
+            text-align: center;
+            margin-top: 80px;
+        }
+
+        .service-detail-card {
+            background: rgba(31, 31, 58, 0.5);
+            border-radius: 20px;
+            padding: 2.5rem;
+            margin-bottom: 2rem;
+            border: 1px solid #00a8ff;
+            backdrop-filter: blur(5px);
+            transition: all 0.3s ease;
+        }
+
+        .service-detail-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 15px 30px rgba(0, 168, 255, 0.2);
+        }
+
+        .service-detail-card h3 {
+            color: #00a8ff;
+            font-size: 1.5rem;
+            margin-bottom: 1rem;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .service-detail-card p {
+            color: #b0b0c0;
+            line-height: 1.6;
+            margin-bottom: 1.5rem;
+        }
+
+        .service-steps {
+            background: rgba(26, 26, 46, 0.3);
+            border-radius: 10px;
+            padding: 1.5rem;
+            margin-bottom: 1.5rem;
+        }
+
+        .service-steps h4 {
+            color: #e53995;
+            margin-bottom: 1rem;
+            font-size: 1.1rem;
+        }
+
+        .service-steps ul {
+            color: #b0b0c0;
+            padding-left: 1.5rem;
+        }
+
+        .service-steps ul li {
+            margin-bottom: 0.5rem;
+            line-height: 1.5;
+        }
+
+        .whatsapp-action {
+            text-align: center;
+            margin-top: 2rem;
+        }
+
+        .whatsapp-btn {
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+            background: #25D366;
+            color: white;
+            padding: 1rem 2rem;
+            border-radius: 50px;
+            text-decoration: none;
+            font-weight: 600;
+            font-size: 1rem;
+            transition: all 0.3s ease;
+            box-shadow: 0 10px 30px rgba(37, 211, 102, 0.3);
+        }
+
+        .whatsapp-btn:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 15px 40px rgba(37, 211, 102, 0.4);
+            background: #128C7E;
+        }
+
+        .pricing-table {
+            background: rgba(26, 26, 46, 0.3);
+            border-radius: 10px;
+            padding: 1.5rem;
+            margin-bottom: 1.5rem;
+        }
+
+        .pricing-table table {
+            width: 100%;
+            border-collapse: collapse;
+            color: #b0b0c0;
+        }
+
+        .pricing-table th,
+        .pricing-table td {
+            padding: 0.75rem;
+            text-align: left;
+            border-bottom: 1px solid rgba(176, 176, 192, 0.2);
+        }
+
+        .pricing-table th {
+            color: #e53995;
+            font-weight: 600;
+        }
+
+        .pricing-table .price {
+            color: #00a8ff;
+            font-weight: 600;
+        }
+    </style>
+</head>
+<body>
+    <!-- Custom Cursor -->
+    <div class="cursor"></div>
+
+    <!-- Header Section -->
+    <header id="header">
+        <div class="header-container">
+            <div class="logo-circle-container" onclick="window.location.href='stopper.html'">
+                <svg class="logo-circle-svg" viewBox="0 0 80 80">
+                    <defs>
+                        <path id="circlePath" d="M40,40 m-30,0 a30,30 0 1,1 60,0 a30,30 0 1,1 -60,0"/>
+                    </defs>
+                    <text class="logo-circle-text">
+                        <textPath xlink:href="#circlePath" startOffset="0" text-anchor="middle" method="stretch" spacing="auto">
+                            Stopper Tech • Stopper Tech • Stopper Tech • Stopper Tech • Stopper Tech • Stopper Tech •
+                        </textPath>
+                    </text>
+                </svg>
+                <img src="Stopper_tech.png" alt="Logo" class="logo-center-image" />
+            </div>
+            <nav>
+                <ul>
+                    <li><a href="stopper.html">Home</a></li>
+                    <li><a href="services.html">Services</a></li>
+                    <li><a href="registration.html">Student Registration</a></li>
+                    <li><a href="testimonials.html">Testimonials</a></li>
+                    <li><a href="contact.html">Contact</a></li>
+                </ul>
+            </nav>
+        </div>
+    </header>
+
+    <!-- Cyber Cafe Hero Section -->
+    <section class="cyber-hero">
+        <div class="hero-content">
+            <h1><i class="fas fa-desktop"></i> Cyber Cafe Services</h1>
+            <p>Professional cyber cafe services including printing, photocopying, laminating, binding, and document services. Quality work at affordable prices.</p>
+            <div class="hero-contact">
+                <div class="contact-item">
+                    <i class="fab fa-whatsapp"></i>
+                    <div>
+                        <span>Chat with us on WhatsApp:</span>
+                        <strong>+254 713 159 136</strong>
+                    </div>
+                </div>
+                <div class="contact-item">
+                    <i class="fas fa-envelope"></i>
+                    <div>
+                        <span>Contact us via Email:</span>
+                        <strong>services@stoppertech.co.ke</strong>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Cyber Cafe Services Details -->
+    <section class="services" id="cyber-services">
+        <div class="section-title">
+            <h2>Cyber Cafe Services We Offer</h2>
+            <p>Professional cyber cafe services with modern equipment and experienced staff. We provide high-quality document services at competitive prices.</p>
+        </div>
+
+        <div class="services-grid">
+            <!-- Printing Services -->
+            <div class="service-detail-card">
+                <h3><i class="fas fa-print"></i> Printing Services</h3>
+                <p>High-quality printing services for documents, photos, and presentations. We offer both black & white and color printing with various paper sizes and quality options.</p>
+                
+                <div class="service-steps">
+                    <h4>What We Print:</h4>
+                    <ul>
+                        <li>Documents (A4, A3, Legal size)</li>
+                        <li>Photos (4x6, 5x7, 8x10)</li>
+                        <li>Certificates and awards</li>
+                        <li>Business cards and flyers</li>
+                        <li>Posters and banners</li>
+                        <li>Academic papers and reports</li>
+                    </ul>
+                </div>
+
+                <div class="pricing-table">
+                    <h4>Pricing:</h4>
+                    <table>
+                        <tr>
+                            <th>Service</th>
+                            <th>Price</th>
+                        </tr>
+                        <tr>
+                            <td>A4 Black & White</td>
+                            <td class="price">KSh 5</td>
+                        </tr>
+                        <tr>
+                            <td>A4 Color</td>
+                            <td class="price">KSh 20</td>
+                        </tr>
+                        <tr>
+                            <td>A3 Black & White</td>
+                            <td class="price">KSh 10</td>
+                        </tr>
+                        <tr>
+                            <td>A3 Color</td>
+                            <td class="price">KSh 40</td>
+                        </tr>
+                        <tr>
+                            <td>Photo 4x6</td>
+                            <td class="price">KSh 15</td>
+                        </tr>
+                    </table>
+                </div>
+
+                <div class="whatsapp-action">
+                    <a href="https://api.whatsapp.com/send/?phone=%2B254713159136&text=I%20need%20printing%20services%0A%0AWhat%20I%20need%20to%20print%3A%0A-%20Document%20type%20and%20size%0A-%20Number%20of%20copies%0A-%20Color%20or%20black%20%26%20white%0A-%20Paper%20quality%20preference%0A%0APlease%20provide%20pricing%20and%20availability.&type=phone_number&app_absent=0" class="whatsapp-btn" target="_blank">
+                        <i class="fab fa-whatsapp"></i> Order Printing Service
+                    </a>
+                </div>
+            </div>
+
+            <!-- Photocopying Services -->
+            <div class="service-detail-card">
+                <h3><i class="fas fa-copy"></i> Photocopying Services</h3>
+                <p>Fast and reliable photocopying services for all your document duplication needs. We handle single copies to bulk copying with consistent quality.</p>
+                
+                <div class="service-steps">
+                    <h4>Services Available:</h4>
+                    <ul>
+                        <li>Single and multiple copies</li>
+                        <li>ID card copying</li>
+                        <li>Document enlargement/reduction</li>
+                        <li>Double-sided copying</li>
+                        <li>Bulk copying services</li>
+                        <li>Academic document copying</li>
+                    </ul>
+                </div>
+
+                <div class="pricing-table">
+                    <h4>Pricing:</h4>
+                    <table>
+                        <tr>
+                            <th>Service</th>
+                            <th>Price</th>
+                        </tr>
+                        <tr>
+                            <td>A4 Single Copy</td>
+                            <td class="price">KSh 3</td>
+                        </tr>
+                        <tr>
+                            <td>A4 Bulk (50+ copies)</td>
+                            <td class="price">KSh 2</td>
+                        </tr>
+                        <tr>
+                            <td>A3 Single Copy</td>
+                            <td class="price">KSh 6</td>
+                        </tr>
+                        <tr>
+                            <td>ID Card Copy</td>
+                            <td class="price">KSh 5</td>
+                        </tr>
+                        <tr>
+                            <td>Double-sided Copy</td>
+                            <td class="price">KSh 4</td>
+                        </tr>
+                    </table>
+                </div>
+
+                <div class="whatsapp-action">
+                    <a href="https://api.whatsapp.com/send/?phone=%2B254713159136&text=I%20need%20photocopying%20services%0A%0AWhat%20I%20need%20copied%3A%0A-%20Document%20type%20and%20size%0A-%20Number%20of%20copies%20needed%0A-%20Single%20or%20double-sided%0A-%20Any%20special%20requirements%0A%0APlease%20provide%20pricing%20and%20turnaround%20time.&type=phone_number&app_absent=0" class="whatsapp-btn" target="_blank">
+                        <i class="fab fa-whatsapp"></i> Order Photocopying Service
+                    </a>
+                </div>
+            </div>
+
+            <!-- Laminating Services -->
+            <div class="service-detail-card">
+                <h3><i class="fas fa-shield-alt"></i> Laminating Services</h3>
+                <p>Professional laminating services to protect and preserve your important documents. We offer various laminating options for different document sizes and purposes.</p>
+                
+                <div class="service-steps">
+                    <h4>Laminating Options:</h4>
+                    <ul>
+                        <li>Hot laminating (glossy/matte finish)</li>
+                        <li>Cold laminating for heat-sensitive items</li>
+                        <li>ID card laminating</li>
+                        <li>Certificate laminating</li>
+                        <li>Menu and poster laminating</li>
+                        <li>Custom size laminating</li>
+                    </ul>
+                </div>
+
+                <div class="pricing-table">
+                    <h4>Pricing:</h4>
+                    <table>
+                        <tr>
+                            <th>Service</th>
+                            <th>Price</th>
+                        </tr>
+                        <tr>
+                            <td>A4 Document</td>
+                            <td class="price">KSh 30</td>
+                        </tr>
+                        <tr>
+                            <td>A3 Document</td>
+                            <td class="price">KSh 50</td>
+                        </tr>
+                        <tr>
+                            <td>ID Card Size</td>
+                            <td class="price">KSh 20</td>
+                        </tr>
+                        <tr>
+                            <td>Certificate Size</td>
+                            <td class="price">KSh 40</td>
+                        </tr>
+                        <tr>
+                            <td>Custom Size</td>
+                            <td class="price">Quote on request</td>
+                        </tr>
+                    </table>
+                </div>
+
+                <div class="whatsapp-action">
+                    <a href="https://api.whatsapp.com/send/?phone=%2B254713159136&text=I%20need%20laminating%20services%0A%0AWhat%20I%20need%20laminated%3A%0A-%20Document%20type%20and%20size%0A-%20Number%20of%20items%0A-%20Finish%20preference%20(glossy/matte)%0A-%20Thickness%20preference%0A%0APlease%20provide%20pricing%20and%20availability.&type=phone_number&app_absent=0" class="whatsapp-btn" target="_blank">
+                        <i class="fab fa-whatsapp"></i> Order Laminating Service
+                    </a>
+                </div>
+            </div>
+
+            <!-- Binding Services -->
+            <div class="service-detail-card">
+                <h3><i class="fas fa-book"></i> Binding Services</h3>
+                <p>Professional document binding services for reports, presentations, and academic papers. We offer various binding options to suit your needs and budget.</p>
+                
+                <div class="service-steps">
+                    <h4>Binding Options:</h4>
+                    <ul>
+                        <li>Spiral/Coil binding</li>
+                        <li>Comb binding</li>
+                        <li>Thermal binding</li>
+                        <li>Perfect binding</li>
+                        <li>Saddle stitching</li>
+                        <li>Hard cover binding</li>
+                    </ul>
+                </div>
+
+                <div class="pricing-table">
+                    <h4>Pricing:</h4>
+                    <table>
+                        <tr>
+                            <th>Service</th>
+                            <th>Price</th>
+                        </tr>
+                        <tr>
+                            <td>Spiral Binding (up to 100 pages)</td>
+                            <td class="price">KSh 100</td>
+                        </tr>
+                        <tr>
+                            <td>Comb Binding (up to 100 pages)</td>
+                            <td class="price">KSh 80</td>
+                        </tr>
+                        <tr>
+                            <td>Thermal Binding</td>
+                            <td class="price">KSh 150</td>
+                        </tr>
+                        <tr>
+                            <td>Perfect Binding</td>
+                            <td class="price">KSh 200</td>
+                        </tr>
+                        <tr>
+                            <td>Hard Cover Binding</td>
+                            <td class="price">KSh 500</td>
+                        </tr>
+                    </table>
+                </div>
+
+                <div class="whatsapp-action">
+                    <a href="https://api.whatsapp.com/send/?phone=%2B254713159136&text=I%20need%20binding%20services%0A%0AWhat%20I%20need%20bound%3A%0A-%20Document%20type%20and%20page%20count%0A-%20Binding%20style%20preference%0A-%20Cover%20requirements%0A-%20Quantity%20needed%0A%0APlease%20provide%20pricing%20and%20turnaround%20time.&type=phone_number&app_absent=0" class="whatsapp-btn" target="_blank">
+                        <i class="fab fa-whatsapp"></i> Order Binding Service
+                    </a>
+                </div>
+            </div>
+
+            <!-- Passport Photo Services -->
+            <div class="service-detail-card">
+                <h3><i class="fas fa-camera"></i> Passport Photo Services</h3>
+                <p>Professional passport and ID photo services with instant printing. We ensure your photos meet all official requirements for various documents and applications.</p>
+                
+                <div class="service-steps">
+                    <h4>Photo Services:</h4>
+                    <ul>
+                        <li>Passport photos (Kenya standards)</li>
+                        <li>Visa application photos</li>
+                        <li>ID card photos</li>
+                        <li>Driving license photos</li>
+                        <li>Academic application photos</li>
+                        <li>Professional headshots</li>
+                    </ul>
+                </div>
+
+                <div class="pricing-table">
+                    <h4>Pricing:</h4>
+                    <table>
+                        <tr>
+                            <th>Service</th>
+                            <th>Price</th>
+                        </tr>
+                        <tr>
+                            <td>Passport Photos (4 copies)</td>
+                            <td class="price">KSh 200</td>
+                        </tr>
+                        <tr>
+                            <td>ID Photos (4 copies)</td>
+                            <td class="price">KSh 150</td>
+                        </tr>
+                        <tr>
+                            <td>Visa Photos (2 copies)</td>
+                            <td class="price">KSh 250</td>
+                        </tr>
+                        <tr>
+                            <td>Professional Headshots</td>
+                            <td class="price">KSh 500</td>
+                        </tr>
+                        <tr>
+                            <td>Additional Copies (each)</td>
+                            <td class="price">KSh 30</td>
+                        </tr>
+                    </table>
+                </div>
+
+                <div class="whatsapp-action">
+                    <a href="https://api.whatsapp.com/send/?phone=%2B254713159136&text=I%20need%20passport%20photo%20services%0A%0AWhat%20I%20need%3A%0A-%20Photo%20type%20(passport%2C%20ID%2C%20visa)%0A-%20Number%20of%20copies%0A-%20Specific%20requirements%0A-%20Urgency%20level%0A%0APlease%20confirm%20availability%20and%20pricing.&type=phone_number&app_absent=0" class="whatsapp-btn" target="_blank">
+                        <i class="fab fa-whatsapp"></i> Book Photo Session
+                    </a>
+                </div>
+            </div>
+
+            <!-- Typesetting Services -->
+            <div class="service-detail-card">
+                <h3><i class="fas fa-keyboard"></i> Typesetting Services</h3>
+                <p>Professional document typing and formatting services. We help you create well-formatted documents, reports, and presentations with professional layouts.</p>
+                
+                <div class="service-steps">
+                    <h4>Typesetting Services:</h4>
+                    <ul>
+                        <li>Document typing from handwritten notes</li>
+                        <li>Academic paper formatting</li>
+                        <li>Resume and CV creation</li>
+                        <li>Business proposal formatting</li>
+                        <li>Report and thesis formatting</li>
+                        <li>Presentation design</li>
+                    </ul>
+                </div>
+
+                <div class="pricing-table">
+                    <h4>Pricing:</h4>
+                    <table>
+                        <tr>
+                            <th>Service</th>
+                            <th>Price</th>
+                        </tr>
+                        <tr>
+                            <td>Basic Typing (per page)</td>
+                            <td class="price">KSh 50</td>
+                        </tr>
+                        <tr>
+                            <td>Academic Formatting (per page)</td>
+                            <td class="price">KSh 80</td>
+                        </tr>
+                        <tr>
+                            <td>Resume/CV Creation</td>
+                            <td class="price">KSh 500</td>
+                        </tr>
+                        <tr>
+                            <td>Business Proposal</td>
+                            <td class="price">KSh 1000</td>
+                        </tr>
+                        <tr>
+                            <td>Presentation Design</td>
+                            <td class="price">KSh 1500</td>
+                        </tr>
+                    </table>
+                </div>
+
+                <div class="whatsapp-action">
+                    <a href="https://api.whatsapp.com/send/?phone=%2B254713159136&text=I%20need%20typesetting%20services%0A%0AWhat%20I%20need%3A%0A-%20Document%20type%20and%20length%0A-%20Formatting%20requirements%0A-%20Source%20material%20(handwritten%2C%20audio%2C%20etc.)%0A-%20Deadline%20requirements%0A%0APlease%20provide%20pricing%20and%20turnaround%20time.&type=phone_number&app_absent=0" class="whatsapp-btn" target="_blank">
+                        <i class="fab fa-whatsapp"></i> Request Typesetting Service
+                    </a>
+                </div>
+            </div>
+        </div>
+
+        <!-- Service Information -->
+        <div class="service-info">
+            <div class="info-container">
+                <h3>Cyber Cafe Services by STOPPER TECH</h3>
+                <h4>Professional Document Services at Affordable Prices</h4>
+                <div class="disclaimer">
+                    <p><strong>Quality Guarantee:</strong> We use modern equipment and high-quality materials to ensure professional results for all our cyber cafe services.</p>
+                </div>
+                <div class="service-description">
+                    <p>STOPPER TECH Cyber Cafe offers comprehensive document services including printing, photocopying, laminating, binding, passport photos, and typesetting. Our modern equipment and experienced staff ensure high-quality results at competitive prices.</p>
+                    <p>Whether you need a single document printed or bulk copying services, we handle projects of all sizes with the same attention to detail and quality. Our fast turnaround times and professional service make us the preferred choice for students, businesses, and individuals.</p>
+                    <p>We understand the importance of quality and deadlines. That's why we maintain our equipment regularly and keep adequate supplies to handle urgent requests. Our team is trained to provide excellent customer service and technical expertise.</p>
+                    <p>Visit our cyber cafe or contact us via WhatsApp at <strong>+254 713 159 136</strong> for immediate assistance. You can also email us at <strong>services@stoppertech.co.ke</strong> for quotes and service inquiries. We're here to help with all your document service needs.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer>
+        <div class="footer-container">
+            <div class="footer-col">
+                <h3>About Us</h3>
+                <p>Stopper Tech has been serving the community since 2023 with reliable cyber cafe and document services. We're committed to providing quality service with modern equipment.</p>
+            </div>
+            
+            <div class="footer-col">
+                <h3>Our Services</h3>
+                <ul>
+                    <li><a href="cyber-cafe-services.html">Cyber Cafe Services</a></li>
+                    <li><a href="os-software-services.html">OS & Software Installation</a></li>
+                    <li><a href="computer-repair-services.html">Computer Repair</a></li>
+                    <li><a href="services.html">Government Services</a></li>
+                    <li><a href="registration.html">Student Registration</a></li>
+                </ul>
+            </div>
+            
+            <div class="footer-col">
+                <h3>Help & Support</h3>
+                <ul>
+                    <li><a href="faqs.html">FAQs</a></li>
+                    <li><a href="privacy-policy.html">Privacy Policy</a></li>
+                    <li><a href="terms-conditions.html">Terms & Conditions</a></li>
+                    <li><a href="service-charges.html">Service Charges</a></li>
+                    <li><a href="support-center.html">Support Center</a></li>
+                </ul>
+            </div>
+            
+            <div class="footer-col">
+                <h3>Contact Us</h3>
+                <p>Get in touch for immediate assistance with your cyber cafe service needs.</p>
+                <div class="social-links">
+                    <a href="https://api.whatsapp.com/send/?phone=%2B254713159136&text&type=phone_number&app_absent=0" target="_blank">
+                        <i class="fab fa-whatsapp"></i>
+                    </a>
+                    <a href="mailto:services@stoppertech.co.ke">
+                        <i class="fas fa-envelope"></i>
+                    </a>
+                </div>
+            </div>
+        </div>
+        
+        <div class="copyright">
+            <p>&copy; 2019 Stopper Tech. All Rights Reserved. | Designed with <i class="fas fa-heart" style="color: #e74c3c;"></i> by Stopper Tech Team</p>
+        </div>
+    </footer>
+
+    <!-- Optimized Cursor Script -->
+    <script>
+        // Optimized Custom Cursor for Better Performance
+        const cursor = document.querySelector('.cursor');
+        let mouseX = 0;
+        let mouseY = 0;
+        let isMoving = false;
+        let animationId = null;
+        
+        // Throttle function to limit event frequency
+        function throttle(func, limit) {
+            let inThrottle;
+            return function() {
+                const args = arguments;
+                const context = this;
+                if (!inThrottle) {
+                    func.apply(context, args);
+                    inThrottle = true;
+                    setTimeout(() => inThrottle = false, limit);
+                }
+            }
+        }
+        
+        // Track mouse position with throttling
+        const handleMouseMove = throttle((e) => {
+            mouseX = e.clientX;
+            mouseY = e.clientY;
+            
+            if (!isMoving) {
+                isMoving = true;
+                startCursorAnimation();
+            }
+        }, 16); // ~60fps
+        
+        document.addEventListener('mousemove', handleMouseMove);
+        
+        // Optimized cursor animation using transform3d
+        function animateCursor() {
+            // Use transform3d for hardware acceleration
+            cursor.style.transform = `translate3d(${mouseX}px, ${mouseY}px, 0)`;
+            
+            // Stop animation when mouse stops moving
+            let timeout = setTimeout(() => {
+                isMoving = false;
+                if (animationId) {
+                    cancelAnimationFrame(animationId);
+                    animationId = null;
+                }
+            }, 100);
+            
+            if (isMoving) {
+                animationId = requestAnimationFrame(animateCursor);
+            }
+        }
+        
+        function startCursorAnimation() {
+            if (!animationId) {
+                animationId = requestAnimationFrame(animateCursor);
+            }
+        }
+        
+        // Hide cursor when mouse leaves window
+        document.addEventListener('mouseleave', () => {
+            cursor.style.opacity = '0';
+            isMoving = false;
+            if (animationId) {
+                cancelAnimationFrame(animationId);
+                animationId = null;
+            }
+        });
+        
+        // Show cursor when mouse enters window
+        document.addEventListener('mouseenter', () => {
+            cursor.style.opacity = '1';
+        });
+        
+        // Cursor grow effect when hovering over clickable elements
+        const clickables = document.querySelectorAll('a, button, input[type="submit"], .service-card');
+        
+        clickables.forEach(item => {
+            item.addEventListener('mouseenter', () => {
+                cursor.classList.add('cursor-grow');
+            });
+            item.addEventListener('mouseleave', () => {
+                cursor.classList.remove('cursor-grow');
+            });
+        });
+        
+        // Header scroll effect with hide on scroll down, show on scroll up
+        let lastScrollTop = 0;
+        const header = document.getElementById('header');
+        window.addEventListener('scroll', () => {
+            let scrollTop = window.pageYOffset || document.documentElement.scrollTop;
+            if (scrollTop > lastScrollTop && scrollTop > 50) {
+                // Scrolling down
+                header.style.transform = 'translateY(-100%)';
+            } else {
+                // Scrolling up
+                header.style.transform = 'translateY(0)';
+            }
+            lastScrollTop = scrollTop <= 0 ? 0 : scrollTop; // For Mobile or negative scrolling
+
+            // Also toggle scrolled class for styling
+            if (scrollTop > 50) {
+                header.classList.add('scrolled');
+            } else {
+                header.classList.remove('scrolled');
+            }
+        });
+    </script>
+</body>
+</html>

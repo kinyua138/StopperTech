@@ -1,0 +1,587 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>OS & Software Installation - Stopper Tech</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="stylesheet" href="css/main.css">
+    <link rel="stylesheet" href="css/service-form.css">
+    <style>
+        .service-hero {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            padding: 4rem 0;
+            text-align: center;
+        }
+        
+        .service-hero h1 {
+            font-size: 3rem;
+            margin-bottom: 1rem;
+            text-shadow: 2px 2px 4px rgba(0,0,0,0.3);
+        }
+        
+        .service-hero p {
+            font-size: 1.2rem;
+            max-width: 600px;
+            margin: 0 auto;
+            opacity: 0.9;
+        }
+        
+        .services-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
+            gap: 2rem;
+            padding: 4rem 2rem;
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+        
+        .service-card {
+            background: white;
+            border-radius: 15px;
+            padding: 2rem;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.1);
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+            border: 1px solid #e0e0e0;
+        }
+        
+        .service-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 20px 40px rgba(0,0,0,0.15);
+        }
+        
+        .service-icon {
+            width: 80px;
+            height: 80px;
+            background: linear-gradient(135deg, #667eea, #764ba2);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin: 0 auto 1.5rem;
+            font-size: 2rem;
+            color: white;
+        }
+        
+        .service-card h3 {
+            font-size: 1.5rem;
+            margin-bottom: 1rem;
+            color: #333;
+            text-align: center;
+        }
+        
+        .service-card p {
+            color: #666;
+            line-height: 1.6;
+            margin-bottom: 1.5rem;
+            text-align: center;
+        }
+        
+        .service-features {
+            list-style: none;
+            padding: 0;
+            margin-bottom: 2rem;
+        }
+        
+        .service-features li {
+            padding: 0.5rem 0;
+            color: #555;
+            display: flex;
+            align-items: center;
+        }
+        
+        .service-features li::before {
+            content: '✓';
+            color: #4CAF50;
+            font-weight: bold;
+            margin-right: 0.5rem;
+        }
+        
+        .pricing-table {
+            background: #f8f9fa;
+            border-radius: 10px;
+            padding: 1.5rem;
+            margin-bottom: 2rem;
+        }
+        
+        .pricing-table h4 {
+            color: #333;
+            margin-bottom: 1rem;
+            text-align: center;
+        }
+        
+        .price-item {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 0.5rem 0;
+            border-bottom: 1px solid #e0e0e0;
+        }
+        
+        .price-item:last-child {
+            border-bottom: none;
+        }
+        
+        .price {
+            font-weight: bold;
+            color: #667eea;
+        }
+        
+        .whatsapp-btn {
+            background: #25D366;
+            color: white;
+            padding: 1rem 2rem;
+            border: none;
+            border-radius: 50px;
+            font-size: 1rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            text-decoration: none;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            width: 100%;
+            margin-top: 1rem;
+        }
+        
+        .whatsapp-btn:hover {
+            background: #128C7E;
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(37, 211, 102, 0.3);
+        }
+        
+        .whatsapp-btn i {
+            margin-right: 0.5rem;
+        }
+        
+        @media (max-width: 768px) {
+            .service-hero h1 {
+                font-size: 2rem;
+            }
+            
+            .services-grid {
+                grid-template-columns: 1fr;
+                padding: 2rem 1rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Header Section -->
+    <header id="header">
+        <div class="header-container">
+            <div class="logo-circle-container">
+                <svg class="logo-circle-svg" viewBox="0 0 140 140">
+                    <defs>
+                        <path id="circlePath" d="M70,70 m-60,0 a60,60 0 1,1 120,0 a60,60 0 1,1 -120,0"/>
+                    </defs>
+                    <text class="logo-circle-text">
+                        <textPath xlink:href="#circlePath" startOffset="0" text-anchor="middle" method="stretch" spacing="auto">
+                            Stopper Tech • Stopper Tech • Stopper Tech • Stopper Tech • Stopper Tech • Stopper Tech •
+                        </textPath>
+                    </text>
+                </svg>
+                <img src="Stopper_tech.png" alt="Logo" class="logo-center-image" />
+            </div>
+            
+            <!-- Mobile Menu Toggle -->
+            <button class="mobile-menu-toggle" id="mobileMenuToggle" aria-label="Toggle mobile menu">
+                <span class="hamburger-line"></span>
+                <span class="hamburger-line"></span>
+                <span class="hamburger-line"></span>
+            </button>
+            
+            <nav id="mainNav">
+                <ul>
+                    <li><a href="stopper.html">Home</a></li>
+                    <li><a href="services.html">Services</a></li>
+                    <li><a href="registration.html">Student Registration</a></li>
+                    <li><a href="testimonials.html">Testimonials</a></li>
+                    <li><a href="contact.html">Contact</a></li>
+                </ul>
+            </nav>
+        </div>
+    </header>
+
+    <!-- Service Hero Section -->
+    <section class="service-hero">
+        <div class="container">
+            <h1><i class="fas fa-desktop"></i> OS & Software Installation</h1>
+            <p>Professional installation of operating systems and all necessary software with proper licensing and optimization.</p>
+        </div>
+    </section>
+
+    <!-- Services Grid -->
+    <section class="services-grid">
+        <!-- Windows Installation -->
+        <div class="service-card">
+            <div class="service-icon">
+                <i class="fab fa-windows"></i>
+            </div>
+            <h3>Windows 10/11 Installation</h3>
+            <p>Complete Windows operating system installation with drivers, updates, and essential software setup.</p>
+            
+            <ul class="service-features">
+                <li>Fresh Windows 10/11 installation</li>
+                <li>Driver installation & updates</li>
+                <li>Windows activation & licensing</li>
+                <li>System optimization</li>
+                <li>User account setup</li>
+                <li>Basic software installation</li>
+            </ul>
+            
+            <div class="pricing-table">
+                <h4>Pricing</h4>
+                <div class="price-item">
+                    <span>Windows 10 Installation</span>
+                    <span class="price">KSh 1,500</span>
+                </div>
+                <div class="price-item">
+                    <span>Windows 11 Installation</span>
+                    <span class="price">KSh 1,800</span>
+                </div>
+                <div class="price-item">
+                    <span>With MS Office</span>
+                    <span class="price">+KSh 500</span>
+                </div>
+                <div class="price-item">
+                    <span>Data backup (if needed)</span>
+                    <span class="price">+KSh 300</span>
+                </div>
+            </div>
+            
+            <!-- Service Request Form -->
+            <div class="service-request-form">
+                <h4><i class="fas fa-file-alt"></i> Request Windows Installation</h4>
+                <form class="os-service-form" data-service="Windows 11 Installation">
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label for="fullName1">Full Name *</label>
+                            <input type="text" id="fullName1" name="fullName" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="email1">Email Address *</label>
+                            <input type="email" id="email1" name="email" required>
+                        </div>
+                    </div>
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label for="phone1">Phone Number *</label>
+                            <input type="tel" id="phone1" name="phone" required placeholder="254712345678">
+                        </div>
+                        <div class="form-group">
+                            <label for="nationalId1">National ID *</label>
+                            <input type="text" id="nationalId1" name="nationalId" required maxlength="8">
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label for="windowsVersion1">Windows Version *</label>
+                        <select id="windowsVersion1" name="windowsVersion" required>
+                            <option value="">Select version...</option>
+                            <option value="Windows 10">Windows 10 - KSh 1,500</option>
+                            <option value="Windows 11">Windows 11 - KSh 1,800</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label for="additionalSoftware1">Additional Software</label>
+                        <textarea id="additionalSoftware1" name="additionalSoftware" rows="2" placeholder="MS Office, Antivirus, etc."></textarea>
+                    </div>
+                    <div class="price-display">
+                        <span>Service Fee: <strong>KSh 1,800</strong></span>
+                    </div>
+                    <button type="submit" class="submit-btn">
+                        <i class="fas fa-paper-plane"></i> Submit Request & Pay
+                    </button>
+                </form>
+            </div>
+
+            <a href="https://wa.me/254713159136?text=Hi%20Stopper%20Tech!%20I%20need%20Windows%20installation%20service.%20Please%20provide%20more%20details%20about%20pricing%20and%20availability." class="whatsapp-btn">
+                <i class="fab fa-whatsapp"></i> Or Contact via WhatsApp
+            </a>
+        </div>
+
+        <!-- Linux Installation -->
+        <div class="service-card">
+            <div class="service-icon">
+                <i class="fab fa-linux"></i>
+            </div>
+            <h3>Linux Distribution Setup</h3>
+            <p>Professional Linux installation and configuration for various distributions with customization.</p>
+            
+            <ul class="service-features">
+                <li>Ubuntu, Mint, Fedora, CentOS</li>
+                <li>Dual boot configuration</li>
+                <li>Driver installation</li>
+                <li>Software repository setup</li>
+                <li>Desktop environment customization</li>
+                <li>Basic command line training</li>
+            </ul>
+            
+            <div class="pricing-table">
+                <h4>Pricing</h4>
+                <div class="price-item">
+                    <span>Ubuntu/Mint Installation</span>
+                    <span class="price">KSh 1,200</span>
+                </div>
+                <div class="price-item">
+                    <span>Fedora/CentOS Installation</span>
+                    <span class="price">KSh 1,500</span>
+                </div>
+                <div class="price-item">
+                    <span>Dual Boot Setup</span>
+                    <span class="price">+KSh 500</span>
+                </div>
+                <div class="price-item">
+                    <span>Custom Configuration</span>
+                    <span class="price">+KSh 300</span>
+                </div>
+            </div>
+            
+            <a href="https://wa.me/254713159136?text=Hi%20Stopper%20Tech!%20I%20need%20Linux%20installation%20service.%20Please%20provide%20more%20details%20about%20available%20distributions%20and%20pricing." class="whatsapp-btn">
+                <i class="fab fa-whatsapp"></i> Get Linux Installation
+            </a>
+        </div>
+
+        <!-- Antivirus & Security -->
+        <div class="service-card">
+            <div class="service-icon">
+                <i class="fas fa-shield-alt"></i>
+            </div>
+            <h3>Antivirus & Security Software</h3>
+            <p>Complete security solution installation and configuration to protect your system from threats.</p>
+            
+            <ul class="service-features">
+                <li>Premium antivirus installation</li>
+                <li>Firewall configuration</li>
+                <li>Anti-malware protection</li>
+                <li>Real-time scanning setup</li>
+                <li>Security updates configuration</li>
+                <li>Safe browsing setup</li>
+            </ul>
+            
+            <div class="pricing-table">
+                <h4>Pricing</h4>
+                <div class="price-item">
+                    <span>Free Antivirus Setup</span>
+                    <span class="price">KSh 300</span>
+                </div>
+                <div class="price-item">
+                    <span>Premium Antivirus (1 year)</span>
+                    <span class="price">KSh 2,500</span>
+                </div>
+                <div class="price-item">
+                    <span>Complete Security Suite</span>
+                    <span class="price">KSh 3,500</span>
+                </div>
+                <div class="price-item">
+                    <span>System Security Audit</span>
+                    <span class="price">KSh 800</span>
+                </div>
+            </div>
+            
+            <a href="https://wa.me/254713159136?text=Hi%20Stopper%20Tech!%20I%20need%20antivirus%20and%20security%20software%20installation.%20Please%20provide%20more%20details%20about%20available%20options." class="whatsapp-btn">
+                <i class="fab fa-whatsapp"></i> Get Security Software
+            </a>
+        </div>
+
+        <!-- MS Office & Productivity -->
+        <div class="service-card">
+            <div class="service-icon">
+                <i class="fas fa-file-word"></i>
+            </div>
+            <h3>MS Office & Productivity Tools</h3>
+            <p>Professional installation and setup of Microsoft Office suite and other productivity applications.</p>
+            
+            <ul class="service-features">
+                <li>MS Office 2019/2021/365</li>
+                <li>LibreOffice installation</li>
+                <li>PDF readers & editors</li>
+                <li>Email client setup</li>
+                <li>Cloud storage integration</li>
+                <li>Template & add-on installation</li>
+            </ul>
+            
+            <div class="pricing-table">
+                <h4>Pricing</h4>
+                <div class="price-item">
+                    <span>MS Office 2019</span>
+                    <span class="price">KSh 1,500</span>
+                </div>
+                <div class="price-item">
+                    <span>MS Office 2021</span>
+                    <span class="price">KSh 2,000</span>
+                </div>
+                <div class="price-item">
+                    <span>Office 365 Setup</span>
+                    <span class="price">KSh 800</span>
+                </div>
+                <div class="price-item">
+                    <span>LibreOffice + Tools</span>
+                    <span class="price">KSh 500</span>
+                </div>
+            </div>
+            
+            <a href="https://wa.me/254713159136?text=Hi%20Stopper%20Tech!%20I%20need%20MS%20Office%20and%20productivity%20software%20installation.%20Please%20provide%20more%20details%20about%20available%20versions." class="whatsapp-btn">
+                <i class="fab fa-whatsapp"></i> Get Office Software
+            </a>
+        </div>
+
+        <!-- System Optimization -->
+        <div class="service-card">
+            <div class="service-icon">
+                <i class="fas fa-tachometer-alt"></i>
+            </div>
+            <h3>Driver Updates & System Optimization</h3>
+            <p>Complete system optimization with latest drivers, performance tuning, and maintenance setup.</p>
+            
+            <ul class="service-features">
+                <li>Latest driver installation</li>
+                <li>System performance optimization</li>
+                <li>Startup program management</li>
+                <li>Disk cleanup & defragmentation</li>
+                <li>Registry optimization</li>
+                <li>Automatic update configuration</li>
+            </ul>
+            
+            <div class="pricing-table">
+                <h4>Pricing</h4>
+                <div class="price-item">
+                    <span>Driver Update Package</span>
+                    <span class="price">KSh 800</span>
+                </div>
+                <div class="price-item">
+                    <span>System Optimization</span>
+                    <span class="price">KSh 1,000</span>
+                </div>
+                <div class="price-item">
+                    <span>Complete Tune-up</span>
+                    <span class="price">KSh 1,500</span>
+                </div>
+                <div class="price-item">
+                    <span>Performance Monitoring Setup</span>
+                    <span class="price">KSh 500</span>
+                </div>
+            </div>
+            
+            <a href="https://wa.me/254713159136?text=Hi%20Stopper%20Tech!%20I%20need%20system%20optimization%20and%20driver%20updates.%20Please%20provide%20more%20details%20about%20the%20service." class="whatsapp-btn">
+                <i class="fab fa-whatsapp"></i> Get System Optimization
+            </a>
+        </div>
+
+        <!-- Custom Software Installation -->
+        <div class="service-card">
+            <div class="service-icon">
+                <i class="fas fa-download"></i>
+            </div>
+            <h3>Custom Software Installation</h3>
+            <p>Installation and configuration of specialized software for your specific needs and requirements.</p>
+            
+            <ul class="service-features">
+                <li>Professional software installation</li>
+                <li>Creative suite setup (Adobe, etc.)</li>
+                <li>Development tools installation</li>
+                <li>Gaming platform setup</li>
+                <li>Business software configuration</li>
+                <li>License management</li>
+            </ul>
+            
+            <div class="pricing-table">
+                <h4>Pricing</h4>
+                <div class="price-item">
+                    <span>Basic Software (per app)</span>
+                    <span class="price">KSh 200</span>
+                </div>
+                <div class="price-item">
+                    <span>Professional Suite</span>
+                    <span class="price">KSh 1,500</span>
+                </div>
+                <div class="price-item">
+                    <span>Gaming Platform Setup</span>
+                    <span class="price">KSh 800</span>
+                </div>
+                <div class="price-item">
+                    <span>Custom Configuration</span>
+                    <span class="price">KSh 500</span>
+                </div>
+            </div>
+            
+            <a href="https://wa.me/254713159136?text=Hi%20Stopper%20Tech!%20I%20need%20custom%20software%20installation.%20Please%20provide%20more%20details%20about%20available%20software%20and%20pricing." class="whatsapp-btn">
+                <i class="fab fa-whatsapp"></i> Get Custom Installation
+            </a>
+        </div>
+    </section>
+
+    <!-- Back to Top Button -->
+    <button class="back-to-top" id="backToTop">
+        <i class="fas fa-arrow-up"></i>
+    </button>
+
+    <!-- Footer -->
+    <footer>
+        <div class="footer-container">
+            <div class="footer-col">
+                <h3>About Us</h3>
+                <p>Stopper Tech provides professional OS and software installation services with proper licensing and optimization for optimal performance.</p>
+            </div>
+            
+            <div class="footer-col">
+                <h3>Our Services</h3>
+                <ul>
+                    <li><a href="cyber-cafe-services.html">Cyber Cafe Services</a></li>
+                    <li><a href="os-software-services.html">OS & Software Installation</a></li>
+                    <li><a href="computer-repair-services.html">Computer Repair</a></li>
+                    <li><a href="services.html">Government Services</a></li>
+                    <li><a href="registration.html">Student Registration</a></li>
+                </ul>
+            </div>
+            
+            <div class="footer-col">
+                <h3>Contact Info</h3>
+                <ul>
+                    <li><i class="fab fa-whatsapp"></i> +254 713 159 136</li>
+                    <li><i class="fas fa-envelope"></i> services@stoppertech.co.ke</li>
+                    <li><i class="fas fa-clock"></i> Mon-Sat: 8AM-8PM</li>
+                    <li><i class="fas fa-clock"></i> Sun: 10AM-6PM</li>
+                </ul>
+            </div>
+            
+            <div class="footer-col">
+                <h3>Quick Links</h3>
+                <ul>
+                    <li><a href="faqs.html">FAQs</a></li>
+                    <li><a href="privacy-policy.html">Privacy Policy</a></li>
+                    <li><a href="terms-conditions.html">Terms & Conditions</a></li>
+                    <li><a href="support-center.html">Support Center</a></li>
+                </ul>
+            </div>
+        </div>
+        
+        <div class="copyright">
+            <p>&copy; 2024 Stopper Tech. All Rights Reserved. | Professional IT Services</p>
+        </div>
+    </footer>
+
+    <script src="js/service-form.js"></script>
+    <script>
+        // Initialize OS & Software service form when page loads
+        document.addEventListener('DOMContentLoaded', function() {
+            const osSubServices = [
+                'Windows 10 Installation',
+                'Windows 11 Installation', 
+                'Linux Installation',
+                'Antivirus Setup',
+                'Premium Antivirus',
+                'MS Office 2019',
+                'MS Office 2021',
+                'System Optimization',
+                'Driver Updates',
+                'Custom Software Installation'
+            ];
+            
+            serviceFormHandler.initializeForm('OS_SOFTWARE', osSubServices, 'osServiceForm');
+        });
+    </script>
+</body>
+</html>

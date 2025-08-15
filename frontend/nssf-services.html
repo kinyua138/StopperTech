@@ -1,0 +1,581 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>NSSF Services - Stopper Tech</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="stylesheet" href="css/main.css">
+    <link rel="stylesheet" href="css/services.css">
+    <link rel="stylesheet" href="css/service-form.css">
+    <style>
+        /* Custom Cursor Styles */
+        .cursor {
+            width: 20px;
+            height: 20px;
+            border-radius: 50%;
+            background-color: #3498db;
+            position: fixed;
+            pointer-events: none;
+            mix-blend-mode: difference;
+            z-index: 9999;
+            transform: translate(-50%, -50%);
+            transition: all 0.1s ease-out;
+            opacity: 1;
+        }
+        
+        .cursor-grow {
+            transform: translate(-50%, -50%) scale(1.5);
+            background-color: #e74c3c;
+        }
+
+        /* Hide default cursor */
+        * {
+            cursor: none !important;
+        }
+
+        /* Show default cursor on form elements for better UX */
+        input, textarea, select, button {
+            cursor: pointer !important;
+        }
+
+        input[type="text"], input[type="email"], input[type="tel"], textarea {
+            cursor: text !important;
+        }
+
+        /* NSSF Specific Styles */
+        .nssf-hero {
+            background: linear-gradient(135deg, #1a1a2e 0%, #1f1f3a 100%);
+            padding: 8rem 1rem 4rem;
+            text-align: center;
+            margin-top: 80px;
+        }
+
+        .service-detail-card {
+            background: rgba(31, 31, 58, 0.5);
+            border-radius: 20px;
+            padding: 2.5rem;
+            margin-bottom: 2rem;
+            border: 1px solid #00a8ff;
+            backdrop-filter: blur(5px);
+            transition: all 0.3s ease;
+        }
+
+        .service-detail-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 15px 30px rgba(0, 168, 255, 0.2);
+        }
+
+        .service-detail-card h3 {
+            color: #00a8ff;
+            font-size: 1.5rem;
+            margin-bottom: 1rem;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .service-detail-card p {
+            color: #b0b0c0;
+            line-height: 1.6;
+            margin-bottom: 1.5rem;
+        }
+
+        .service-steps {
+            background: rgba(26, 26, 46, 0.3);
+            border-radius: 10px;
+            padding: 1.5rem;
+            margin-bottom: 1.5rem;
+        }
+
+        .service-steps h4 {
+            color: #e53995;
+            margin-bottom: 1rem;
+            font-size: 1.1rem;
+        }
+
+        .service-steps ol {
+            color: #b0b0c0;
+            padding-left: 1.5rem;
+        }
+
+        .service-steps ol li {
+            margin-bottom: 0.5rem;
+            line-height: 1.5;
+        }
+
+        .whatsapp-action {
+            text-align: center;
+            margin-top: 2rem;
+        }
+
+        .whatsapp-btn {
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+            background: #25D366;
+            color: white;
+            padding: 1rem 2rem;
+            border-radius: 50px;
+            text-decoration: none;
+            font-weight: 600;
+            font-size: 1rem;
+            transition: all 0.3s ease;
+            box-shadow: 0 10px 30px rgba(37, 211, 102, 0.3);
+        }
+
+        .whatsapp-btn:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 15px 40px rgba(37, 211, 102, 0.4);
+            background: #128C7E;
+        }
+    </style>
+</head>
+<body>
+    <!-- Custom Cursor -->
+    <div class="cursor"></div>
+
+    <!-- Header Section -->
+    <header id="header">
+        <div class="header-container">
+            <div class="logo-circle-container" onclick="window.location.href='stopper.html'">
+                <svg class="logo-circle-svg" viewBox="0 0 80 80">
+                    <defs>
+                        <path id="circlePath" d="M40,40 m-30,0 a30,30 0 1,1 60,0 a30,30 0 1,1 -60,0"/>
+                    </defs>
+                    <text class="logo-circle-text">
+                        <textPath xlink:href="#circlePath" startOffset="0" text-anchor="middle" method="stretch" spacing="auto">
+                            Stopper Tech • Stopper Tech • Stopper Tech • Stopper Tech • Stopper Tech • Stopper Tech •
+                        </textPath>
+                    </text>
+                </svg>
+                <img src="Stopper_tech.png" alt="Logo" class="logo-center-image" />
+            </div>
+            <nav>
+                <ul>
+                    <li><a href="stopper.html">Home</a></li>
+                    <li><a href="services.html">Services</a></li>
+                    <li><a href="registration.html">Student Registration</a></li>
+                    <li><a href="testimonials.html">Testimonials</a></li>
+                    <li><a href="contact.html">Contact</a></li>
+                </ul>
+            </nav>
+        </div>
+    </header>
+
+    <!-- NSSF Hero Section -->
+    <section class="nssf-hero">
+        <div class="hero-content">
+            <h1><i class="fas fa-piggy-bank"></i> NSSF Services</h1>
+            <p>Complete assistance with National Social Security Fund services. Get your NSSF registration, certificates, and manage your retirement benefits efficiently.</p>
+            <div class="hero-contact">
+                <div class="contact-item">
+                    <i class="fab fa-whatsapp"></i>
+                    <div>
+                        <span>Chat with us on WhatsApp:</span>
+                        <strong>+254 713 159 136</strong>
+                    </div>
+                </div>
+                <div class="contact-item">
+                    <i class="fas fa-envelope"></i>
+                    <div>
+                        <span>Contact us via Email:</span>
+                        <strong>services@stoppertech.co.ke</strong>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- NSSF Services Details -->
+    <section class="services" id="nssf-services">
+        <div class="section-title">
+            <h2>NSSF Services We Offer</h2>
+            <p>Professional assistance with all National Social Security Fund services. Our experienced team ensures your NSSF service requests are handled promptly and efficiently for your retirement planning needs.</p>
+        </div>
+
+        <div class="services-grid">
+            <!-- NSSF Registration -->
+            <div class="service-detail-card">
+                <h3><i class="fas fa-user-plus"></i> NSSF Registration</h3>
+                <p>Register for National Social Security Fund services online quickly and easily. Our straightforward process ensures you get registered for retirement benefits and receive your NSSF certificate promptly via Email and WhatsApp.</p>
+                
+                <div class="service-steps">
+                    <h4>What You Need:</h4>
+                    <ol>
+                        <li>National ID or Passport copy</li>
+                        <li>Valid email address</li>
+                        <li>Phone number</li>
+                        <li>Employment details and employer information</li>
+                        <li>Bank account details</li>
+                        <li>Next of kin information</li>
+                    </ol>
+                </div>
+
+                <div class="service-steps">
+                    <h4>Process:</h4>
+                    <ol>
+                        <li>Contact us via WhatsApp with your details</li>
+                        <li>We verify your information and employment status</li>
+                        <li>Submit your application to NSSF</li>
+                        <li>Receive your NSSF registration confirmation and certificate</li>
+                    </ol>
+                </div>
+
+                <!-- Service Request Form -->
+                <div class="service-request-form">
+                    <h4><i class="fas fa-file-alt"></i> Request NSSF Registration</h4>
+                    <form class="nssf-service-form" data-service="NSSF Registration">
+                        <div class="form-row">
+                            <div class="form-group">
+                                <label for="fullName1">Full Name *</label>
+                                <input type="text" id="fullName1" name="fullName" required>
+                            </div>
+                            <div class="form-group">
+                                <label for="email1">Email Address *</label>
+                                <input type="email" id="email1" name="email" required>
+                            </div>
+                        </div>
+                        <div class="form-row">
+                            <div class="form-group">
+                                <label for="phone1">Phone Number *</label>
+                                <input type="tel" id="phone1" name="phone" required placeholder="254712345678">
+                            </div>
+                            <div class="form-group">
+                                <label for="nationalId1">National ID *</label>
+                                <input type="text" id="nationalId1" name="nationalId" required maxlength="8">
+                            </div>
+                        </div>
+                        <div class="form-row">
+                            <div class="form-group">
+                                <label for="employerName1">Employer Name *</label>
+                                <input type="text" id="employerName1" name="employerName" required>
+                            </div>
+                            <div class="form-group">
+                                <label for="employmentType1">Employment Type *</label>
+                                <select id="employmentType1" name="employmentType" required>
+                                    <option value="">Select type...</option>
+                                    <option value="permanent">Permanent Employee</option>
+                                    <option value="contract">Contract Employee</option>
+                                    <option value="casual">Casual Worker</option>
+                                    <option value="self-employed">Self-Employed</option>
+                                </select>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label for="nextOfKin1">Next of Kin Details *</label>
+                            <textarea id="nextOfKin1" name="nextOfKin" required rows="2" placeholder="Name, relationship, and contact details"></textarea>
+                        </div>
+                        <div class="price-display">
+                            <span>Service Fee: <strong>KSh 450</strong></span>
+                        </div>
+                        <button type="submit" class="submit-btn">
+                            <i class="fas fa-paper-plane"></i> Submit Request & Pay
+                        </button>
+                    </form>
+                </div>
+
+                <div class="whatsapp-action">
+                    <a href="https://api.whatsapp.com/send/?phone=%2B254713159136&text=I%20need%20help%20with%20NSSF%20Registration%0A%0AWhat%20I%20have%20ready%3A%0A-%20National%20ID%20or%20Passport%20copy%0A-%20Valid%20email%20address%0A-%20Phone%20number%0A-%20Employment%20details%20and%20employer%20information%0A-%20Bank%20account%20details%0A-%20Next%20of%20kin%20information%0A%0APlease%20assist%20me%20with%20the%20registration%20process.&type=phone_number&app_absent=0" class="whatsapp-btn" target="_blank">
+                        <i class="fab fa-whatsapp"></i> Or Contact via WhatsApp
+                    </a>
+                </div>
+            </div>
+
+            <!-- NSSF Certificate Retrieval -->
+            <div class="service-detail-card">
+                <h3><i class="fas fa-certificate"></i> NSSF Certificate Retrieval</h3>
+                <p>Retrieve your NSSF Certificate online quickly and easily. Our fast and reliable process ensures you receive your National Social Security Fund Certificate directly via Email and WhatsApp in minutes.</p>
+                
+                <div class="service-steps">
+                    <h4>What You Need:</h4>
+                    <ol>
+                        <li>Your NSSF number (if available)</li>
+                        <li>National ID number</li>
+                        <li>Valid email address</li>
+                        <li>Phone number</li>
+                        <li>Date of birth</li>
+                        <li>Employment information</li>
+                    </ol>
+                </div>
+
+                <div class="service-steps">
+                    <h4>Process:</h4>
+                    <ol>
+                        <li>Contact us with your NSSF details and ID information</li>
+                        <li>We verify your information with NSSF</li>
+                        <li>Retrieve your certificate from NSSF portal</li>
+                        <li>Send certificate to your email and WhatsApp immediately</li>
+                    </ol>
+                </div>
+
+                <div class="whatsapp-action">
+                    <a href="https://api.whatsapp.com/send/?phone=%2B254713159136&text=I%20need%20to%20retrieve%20my%20NSSF%20Certificate&type=phone_number&app_absent=0" class="whatsapp-btn" target="_blank">
+                        <i class="fab fa-whatsapp"></i> Get NSSF Certificate Now
+                    </a>
+                </div>
+            </div>
+
+            <!-- NSSF Statement Request -->
+            <div class="service-detail-card">
+                <h3><i class="fas fa-file-alt"></i> NSSF Statement Request</h3>
+                <p>Request your NSSF contribution statement to track your retirement savings. Our efficient service ensures you receive your detailed NSSF statement showing all contributions and benefits via Email and WhatsApp.</p>
+                
+                <div class="service-steps">
+                    <h4>What You Need:</h4>
+                    <ol>
+                        <li>Your NSSF number</li>
+                        <li>National ID copy</li>
+                        <li>Valid email address</li>
+                        <li>Phone number</li>
+                        <li>Period for statement (from-to dates)</li>
+                    </ol>
+                </div>
+
+                <div class="service-steps">
+                    <h4>Process:</h4>
+                    <ol>
+                        <li>Contact us with your NSSF details and statement period</li>
+                        <li>We verify your identity and account information</li>
+                        <li>Request statement from NSSF portal</li>
+                        <li>Send detailed statement to your email and WhatsApp</li>
+                    </ol>
+                </div>
+
+                <div class="whatsapp-action">
+                    <a href="https://api.whatsapp.com/send/?phone=%2B254713159136&text=I%20need%20to%20request%20my%20NSSF%20statement&type=phone_number&app_absent=0" class="whatsapp-btn" target="_blank">
+                        <i class="fab fa-whatsapp"></i> Request Statement Now
+                    </a>
+                </div>
+            </div>
+
+            <!-- NSSF Benefits Claims -->
+            <div class="service-detail-card">
+                <h3><i class="fas fa-hand-holding-usd"></i> NSSF Benefits Claims</h3>
+                <p>Claim your NSSF benefits including retirement, disability, survivor, or emigration benefits. Our comprehensive service guides you through the entire claims process and ensures proper documentation.</p>
+                
+                <div class="service-steps">
+                    <h4>What You Need:</h4>
+                    <ol>
+                        <li>Your NSSF number and certificate</li>
+                        <li>National ID copy</li>
+                        <li>Bank account details</li>
+                        <li>Medical reports (for disability claims)</li>
+                        <li>Death certificate (for survivor benefits)</li>
+                        <li>Employment termination letter (if applicable)</li>
+                    </ol>
+                </div>
+
+                <div class="service-steps">
+                    <h4>Process:</h4>
+                    <ol>
+                        <li>Contact us with your claim type and required documents</li>
+                        <li>We review and verify all documentation</li>
+                        <li>Submit benefits claim application to NSSF</li>
+                        <li>Track claim status and provide updates until completion</li>
+                    </ol>
+                </div>
+
+                <div class="whatsapp-action">
+                    <a href="https://api.whatsapp.com/send/?phone=%2B254713159136&text=I%20need%20help%20with%20NSSF%20benefits%20claims&type=phone_number&app_absent=0" class="whatsapp-btn" target="_blank">
+                        <i class="fab fa-whatsapp"></i> Claim Benefits Now
+                    </a>
+                </div>
+            </div>
+        </div>
+
+        <!-- Service Information -->
+        <div class="service-info">
+            <div class="info-container">
+                <h3>NSSF Services by STOPPER TECH</h3>
+                <h4>Fast, Reliable, and Professional NSSF Assistance</h4>
+                <div class="disclaimer">
+                    <p><strong>Disclaimer:</strong> STOPPER TECH is an independent service provider and is not affiliated with the National Social Security Fund (NSSF). A service fee is charged for the assistance provided to customers in Kenya.</p>
+                </div>
+                <div class="service-description">
+                    <p>If you are looking for fast and reliable NSSF Services in Kenya, then you are in the right place. STOPPER TECH allows Kenyans to: Register for NSSF services, Retrieve NSSF Certificate, Request NSSF statements and claim NSSF benefits.</p>
+                    <p>Our online digital platform provides a seamless online experience, allowing you to focus on what matters the most while we take care of your NSSF Service requests.</p>
+                    <p>Our experienced customer support team is dedicated to providing fast and efficient online assistance. We understand the intricacies of NSSF Services and ensure that your submitted service requests are handled properly. With our streamlined online processes and vast expert knowledge in the NSSF niche, STOPPER TECH guarantees a smooth and efficient service experience every time you submit your service request online.</p>
+                    <p>Ready to get started? Simply contact us via WhatsApp using <strong>+254 713 159 136</strong>. Alternatively, you can also send an Email to <strong>services@stoppertech.co.ke</strong> for quick and immediate assistance with your service request. We are here and ready to assist you with all NSSF Service needs in Kenya conveniently and efficiently.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer>
+        <div class="footer-container">
+            <div class="footer-col">
+                <h3>About Us</h3>
+                <p>Stopper Tech has been serving the community since 2023 with reliable government service assistance. We're committed to providing quality service with a personal touch.</p>
+            </div>
+            
+            <div class="footer-col">
+                <h3>NSSF Services</h3>
+                <ul>
+                    <li><a href="#nssf-services">NSSF Registration</a></li>
+                    <li><a href="#nssf-services">NSSF Certificate Retrieval</a></li>
+                    <li><a href="#nssf-services">NSSF Statement Request</a></li>
+                    <li><a href="#nssf-services">NSSF Benefits Claims</a></li>
+                    <li><a href="services.html">All Services</a></li>
+                </ul>
+            </div>
+            
+            <div class="footer-col">
+                <h3>Help & Support</h3>
+                <ul>
+                    <li><a href="faqs.html">FAQs</a></li>
+                    <li><a href="privacy-policy.html">Privacy Policy</a></li>
+                    <li><a href="terms-conditions.html">Terms & Conditions</a></li>
+                    <li><a href="service-charges.html">Service Charges</a></li>
+                    <li><a href="support-center.html">Support Center</a></li>
+                </ul>
+            </div>
+            
+            <div class="footer-col">
+                <h3>Contact Us</h3>
+                <p>Get in touch for immediate assistance with your NSSF service needs.</p>
+                <div class="social-links">
+                    <a href="https://api.whatsapp.com/send/?phone=%2B254713159136&text&type=phone_number&app_absent=0" target="_blank">
+                        <i class="fab fa-whatsapp"></i>
+                    </a>
+                    <a href="mailto:services@stoppertech.co.ke">
+                        <i class="fas fa-envelope"></i>
+                    </a>
+                </div>
+            </div>
+        </div>
+        
+        <div class="copyright">
+            <p>&copy; 2019 Stopper Tech. All Rights Reserved. | Designed with <i class="fas fa-heart" style="color: #e74c3c;"></i> by Stopper Tech Team</p>
+        </div>
+    </footer>
+
+    <!-- Optimized Cursor Script -->
+    <script>
+        // Optimized Custom Cursor for Better Performance
+        const cursor = document.querySelector('.cursor');
+        let mouseX = 0;
+        let mouseY = 0;
+        let isMoving = false;
+        let animationId = null;
+        
+        // Throttle function to limit event frequency
+        function throttle(func, limit) {
+            let inThrottle;
+            return function() {
+                const args = arguments;
+                const context = this;
+                if (!inThrottle) {
+                    func.apply(context, args);
+                    inThrottle = true;
+                    setTimeout(() => inThrottle = false, limit);
+                }
+            }
+        }
+        
+        // Track mouse position with throttling
+        const handleMouseMove = throttle((e) => {
+            mouseX = e.clientX;
+            mouseY = e.clientY;
+            
+            if (!isMoving) {
+                isMoving = true;
+                startCursorAnimation();
+            }
+        }, 16); // ~60fps
+        
+        document.addEventListener('mousemove', handleMouseMove);
+        
+        // Optimized cursor animation using transform3d
+        function animateCursor() {
+            // Use transform3d for hardware acceleration
+            cursor.style.transform = `translate3d(${mouseX}px, ${mouseY}px, 0)`;
+            
+            // Stop animation when mouse stops moving
+            let timeout = setTimeout(() => {
+                isMoving = false;
+                if (animationId) {
+                    cancelAnimationFrame(animationId);
+                    animationId = null;
+                }
+            }, 100);
+            
+            if (isMoving) {
+                animationId = requestAnimationFrame(animateCursor);
+            }
+        }
+        
+        function startCursorAnimation() {
+            if (!animationId) {
+                animationId = requestAnimationFrame(animateCursor);
+            }
+        }
+        
+        // Hide cursor when mouse leaves window
+        document.addEventListener('mouseleave', () => {
+            cursor.style.opacity = '0';
+            isMoving = false;
+            if (animationId) {
+                cancelAnimationFrame(animationId);
+                animationId = null;
+            }
+        });
+        
+        // Show cursor when mouse enters window
+        document.addEventListener('mouseenter', () => {
+            cursor.style.opacity = '1';
+        });
+        
+        // Cursor grow effect when hovering over clickable elements
+        const clickables = document.querySelectorAll('a, button, input[type="submit"], .service-card');
+        
+        clickables.forEach(item => {
+            item.addEventListener('mouseenter', () => {
+                cursor.classList.add('cursor-grow');
+            });
+            item.addEventListener('mouseleave', () => {
+                cursor.classList.remove('cursor-grow');
+            });
+        });
+        
+        // Header scroll effect with hide on scroll down, show on scroll up
+        let lastScrollTop = 0;
+        const header = document.getElementById('header');
+        window.addEventListener('scroll', () => {
+            let scrollTop = window.pageYOffset || document.documentElement.scrollTop;
+            if (scrollTop > lastScrollTop && scrollTop > 50) {
+                // Scrolling down
+                header.style.transform = 'translateY(-100%)';
+            } else {
+                // Scrolling up
+                header.style.transform = 'translateY(0)';
+            }
+            lastScrollTop = scrollTop <= 0 ? 0 : scrollTop; // For Mobile or negative scrolling
+
+            // Also toggle scrolled class for styling
+            if (scrollTop > 50) {
+                header.classList.add('scrolled');
+            } else {
+                header.classList.remove('scrolled');
+            }
+        });
+    </script>
+
+    <!-- Service Form JavaScript -->
+    <script src="js/service-form.js"></script>
+    <script>
+        // Initialize NSSF service form when page loads
+        document.addEventListener('DOMContentLoaded', function() {
+            const nssfSubServices = [
+                'NSSF Registration',
+                'NSSF Certificate Retrieval', 
+                'NSSF Statement Request',
+                'NSSF Benefits Claims'
+            ];
+            
+            serviceFormHandler.initializeForm('NSSF', nssfSubServices, 'nssfServiceForm');
+        });
+    </script>
+</body>
+</html>

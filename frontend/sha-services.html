@@ -1,0 +1,708 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>SHA Services - Stopper Tech</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="stylesheet" href="css/main.css">
+    <link rel="stylesheet" href="css/services.css">
+    <link rel="stylesheet" href="css/service-form.css">
+    <style>
+        /* Custom Cursor Styles */
+        .cursor {
+            width: 20px;
+            height: 20px;
+            border-radius: 50%;
+            background-color: #3498db;
+            position: fixed;
+            pointer-events: none;
+            mix-blend-mode: difference;
+            z-index: 9999;
+            transform: translate(-50%, -50%);
+            transition: all 0.1s ease-out;
+            opacity: 1;
+        }
+        
+        .cursor-grow {
+            transform: translate(-50%, -50%) scale(1.5);
+            background-color: #e74c3c;
+        }
+
+        /* Hide default cursor */
+        * {
+            cursor: none !important;
+        }
+
+        /* Show default cursor on form elements for better UX */
+        input, textarea, select, button {
+            cursor: pointer !important;
+        }
+
+        input[type="text"], input[type="email"], input[type="tel"], textarea {
+            cursor: text !important;
+        }
+
+        /* SHA Specific Styles */
+        .sha-hero {
+            background: linear-gradient(135deg, #1a1a2e 0%, #1f1f3a 100%);
+            padding: 8rem 1rem 4rem;
+            text-align: center;
+            margin-top: 80px;
+        }
+
+        .service-detail-card {
+            background: rgba(31, 31, 58, 0.5);
+            border-radius: 20px;
+            padding: 2.5rem;
+            margin-bottom: 2rem;
+            border: 1px solid #00a8ff;
+            backdrop-filter: blur(5px);
+            transition: all 0.3s ease;
+        }
+
+        .service-detail-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 15px 30px rgba(0, 168, 255, 0.2);
+        }
+
+        .service-detail-card h3 {
+            color: #00a8ff;
+            font-size: 1.5rem;
+            margin-bottom: 1rem;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .service-detail-card p {
+            color: #b0b0c0;
+            line-height: 1.6;
+            margin-bottom: 1.5rem;
+        }
+
+        .service-steps {
+            background: rgba(26, 26, 46, 0.3);
+            border-radius: 10px;
+            padding: 1.5rem;
+            margin-bottom: 1.5rem;
+        }
+
+        .service-steps h4 {
+            color: #e53995;
+            margin-bottom: 1rem;
+            font-size: 1.1rem;
+        }
+
+        .service-steps ol {
+            color: #b0b0c0;
+            padding-left: 1.5rem;
+        }
+
+        .service-steps ol li {
+            margin-bottom: 0.5rem;
+            line-height: 1.5;
+        }
+
+        .whatsapp-action {
+            text-align: center;
+            margin-top: 2rem;
+        }
+
+        .whatsapp-btn {
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+            background: #25D366;
+            color: white;
+            padding: 1rem 2rem;
+            border-radius: 50px;
+            text-decoration: none;
+            font-weight: 600;
+            font-size: 1rem;
+            transition: all 0.3s ease;
+            box-shadow: 0 10px 30px rgba(37, 211, 102, 0.3);
+        }
+
+        .whatsapp-btn:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 15px 40px rgba(37, 211, 102, 0.4);
+            background: #128C7E;
+        }
+    </style>
+</head>
+<body>
+    <!-- Custom Cursor -->
+    <div class="cursor"></div>
+
+    <!-- Header Section -->
+    <header id="header">
+        <div class="header-container">
+            <div class="logo-circle-container" onclick="window.location.href='stopper.html'">
+                <svg class="logo-circle-svg" viewBox="0 0 80 80">
+                    <defs>
+                        <path id="circlePath" d="M40,40 m-30,0 a30,30 0 1,1 60,0 a30,30 0 1,1 -60,0"/>
+                    </defs>
+                    <text class="logo-circle-text">
+                        <textPath xlink:href="#circlePath" startOffset="0" text-anchor="middle" method="stretch" spacing="auto">
+                            Stopper Tech • Stopper Tech • Stopper Tech • Stopper Tech • Stopper Tech • Stopper Tech •
+                        </textPath>
+                    </text>
+                </svg>
+                <img src="Stopper_tech.png" alt="Logo" class="logo-center-image" />
+            </div>
+            <nav>
+                <ul>
+                    <li><a href="stopper.html">Home</a></li>
+                    <li><a href="services.html">Services</a></li>
+                    <li><a href="registration.html">Student Registration</a></li>
+                    <li><a href="testimonials.html">Testimonials</a></li>
+                    <li><a href="contact.html">Contact</a></li>
+                </ul>
+            </nav>
+        </div>
+    </header>
+
+    <!-- SHA Hero Section -->
+    <section class="sha-hero">
+        <div class="hero-content">
+            <h1><i class="fas fa-hospital"></i> SHA Services</h1>
+            <p>Complete assistance with Social Health Authority services. Get your SHA registration, certificates, and updates for healthcare coverage in Kenya.</p>
+            <div class="hero-contact">
+                <div class="contact-item">
+                    <i class="fab fa-whatsapp"></i>
+                    <div>
+                        <span>Chat with us on WhatsApp:</span>
+                        <strong>+254 713 159 136</strong>
+                    </div>
+                </div>
+                <div class="contact-item">
+                    <i class="fas fa-envelope"></i>
+                    <div>
+                        <span>Contact us via Email:</span>
+                        <strong>services@stoppertech.co.ke</strong>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- SHA Services Details -->
+    <section class="services" id="sha-services">
+        <div class="section-title">
+            <h2>SHA Services We Offer</h2>
+            <p>Professional assistance with all Social Health Authority services. Our experienced team ensures your SHA service requests are handled promptly and efficiently for your healthcare coverage needs.</p>
+        </div>
+
+        <div class="services-grid">
+            <!-- SHA Registration -->
+            <div class="service-detail-card">
+                <h3><i class="fas fa-user-plus"></i> SHA Registration</h3>
+                <p>Register for Social Health Authority services online quickly and easily. Our straightforward process ensures you get registered for healthcare coverage and receive your SHA certificate promptly via Email and WhatsApp.</p>
+                
+                <div class="service-steps">
+                    <h4>What You Need:</h4>
+                    <ol>
+                        <li>National ID or Passport copy</li>
+                        <li>Valid email address</li>
+                        <li>Phone number</li>
+                        <li>Employment details (if employed)</li>
+                        <li>Next of kin information</li>
+                    </ol>
+                </div>
+
+                <div class="service-steps">
+                    <h4>Process:</h4>
+                    <ol>
+                        <li>Contact us via WhatsApp with your details</li>
+                        <li>We verify your information</li>
+                        <li>Submit your application to SHA</li>
+                        <li>Receive your SHA registration confirmation and certificate</li>
+                    </ol>
+                </div>
+
+                <!-- Service Request Form -->
+                <div class="service-request-form">
+                    <h4><i class="fas fa-file-alt"></i> Request SHA Registration</h4>
+                    <form class="sha-service-form" data-service="SHA Registration">
+                        <div class="form-row">
+                            <div class="form-group">
+                                <label for="fullName1">Full Name *</label>
+                                <input type="text" id="fullName1" name="fullName" required>
+                            </div>
+                            <div class="form-group">
+                                <label for="email1">Email Address *</label>
+                                <input type="email" id="email1" name="email" required>
+                            </div>
+                        </div>
+                        <div class="form-row">
+                            <div class="form-group">
+                                <label for="phone1">Phone Number *</label>
+                                <input type="tel" id="phone1" name="phone" required placeholder="254712345678">
+                            </div>
+                            <div class="form-group">
+                                <label for="nationalId1">National ID *</label>
+                                <input type="text" id="nationalId1" name="nationalId" required maxlength="8">
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label for="employmentStatus1">Employment Status *</label>
+                            <select id="employmentStatus1" name="employmentStatus" required>
+                                <option value="">Select status...</option>
+                                <option value="employed">Employed</option>
+                                <option value="self-employed">Self-Employed</option>
+                                <option value="unemployed">Unemployed</option>
+                                <option value="student">Student</option>
+                            </select>
+                        </div>
+                        <div class="form-group">
+                            <label for="nextOfKin1">Next of Kin Details *</label>
+                            <textarea id="nextOfKin1" name="nextOfKin" required rows="2" placeholder="Name, relationship, and contact details"></textarea>
+                        </div>
+                        <div class="price-display">
+                            <span>Service Fee: <strong>KSh 400</strong></span>
+                        </div>
+                        <button type="submit" class="submit-btn">
+                            <i class="fas fa-paper-plane"></i> Submit Request & Pay
+                        </button>
+                    </form>
+                </div>
+
+                <div class="whatsapp-action">
+                    <a href="https://api.whatsapp.com/send/?phone=%2B254713159136&text=I%20need%20help%20with%20SHA%20Registration%0A%0AWhat%20I%20have%20ready%3A%0A-%20National%20ID%20or%20Passport%20copy%0A-%20Valid%20email%20address%0A-%20Phone%20number%0A-%20Employment%20details%20(if%20employed)%0A-%20Next%20of%20kin%20information%0A%0APlease%20assist%20me%20with%20the%20registration%20process.&type=phone_number&app_absent=0" class="whatsapp-btn" target="_blank">
+                        <i class="fab fa-whatsapp"></i> Or Contact via WhatsApp
+                    </a>
+                </div>
+            </div>
+
+            <!-- SHA Certificate Retrieval -->
+            <div class="service-detail-card">
+                <h3><i class="fas fa-certificate"></i> SHA Certificate Retrieval</h3>
+                <p>Retrieve your SHA Certificate online quickly and easily. Our fast and reliable process ensures you receive your Social Health Authority Certificate directly via Email and WhatsApp in minutes.</p>
+                
+                <div class="service-steps">
+                    <h4>What You Need:</h4>
+                    <ol>
+                        <li>Your SHA number (if available)</li>
+                        <li>National ID number</li>
+                        <li>Valid email address</li>
+                        <li>Phone number</li>
+                        <li>Date of birth</li>
+                    </ol>
+                </div>
+
+                <div class="service-steps">
+                    <h4>Process:</h4>
+                    <ol>
+                        <li>Contact us with your SHA details and ID information</li>
+                        <li>We verify your information with SHA</li>
+                        <li>Retrieve your certificate from SHA portal</li>
+                        <li>Send certificate to your email and WhatsApp immediately</li>
+                    </ol>
+                </div>
+
+                <!-- Service Request Form -->
+                <div class="service-request-form">
+                    <h4><i class="fas fa-file-alt"></i> Request SHA Certificate Retrieval</h4>
+                    <form class="sha-service-form" data-service="SHA Certificate Retrieval">
+                        <div class="form-row">
+                            <div class="form-group">
+                                <label for="fullName2">Full Name *</label>
+                                <input type="text" id="fullName2" name="fullName" required>
+                            </div>
+                            <div class="form-group">
+                                <label for="email2">Email Address *</label>
+                                <input type="email" id="email2" name="email" required>
+                            </div>
+                        </div>
+                        <div class="form-row">
+                            <div class="form-group">
+                                <label for="phone2">Phone Number *</label>
+                                <input type="tel" id="phone2" name="phone" required placeholder="254712345678">
+                            </div>
+                            <div class="form-group">
+                                <label for="nationalId2">National ID *</label>
+                                <input type="text" id="nationalId2" name="nationalId" required maxlength="8">
+                            </div>
+                        </div>
+                        <div class="form-row">
+                            <div class="form-group">
+                                <label for="shaNumber2">SHA Number (if known)</label>
+                                <input type="text" id="shaNumber2" name="shaNumber" placeholder="SHA123456789">
+                            </div>
+                            <div class="form-group">
+                                <label for="dateOfBirth2">Date of Birth *</label>
+                                <input type="date" id="dateOfBirth2" name="dateOfBirth" required>
+                            </div>
+                        </div>
+                        <div class="price-display">
+                            <span>Service Fee: <strong>KSh 250</strong></span>
+                        </div>
+                        <button type="submit" class="submit-btn">
+                            <i class="fas fa-paper-plane"></i> Submit Request & Pay
+                        </button>
+                    </form>
+                </div>
+
+                <div class="whatsapp-action">
+                    <a href="https://api.whatsapp.com/send/?phone=%2B254713159136&text=I%20need%20to%20retrieve%20my%20SHA%20Certificate%0A%0AWhat%20I%20have%20ready%3A%0A-%20My%20SHA%20number%20(if%20available)%0A-%20National%20ID%20number%0A-%20Valid%20email%20address%0A-%20Phone%20number%0A-%20Date%20of%20birth%0A%0APlease%20help%20me%20retrieve%20my%20certificate.&type=phone_number&app_absent=0" class="whatsapp-btn" target="_blank">
+                        <i class="fab fa-whatsapp"></i> Or Contact via WhatsApp
+                    </a>
+                </div>
+            </div>
+
+            <!-- SHA Mobile Number Update -->
+            <div class="service-detail-card">
+                <h3><i class="fas fa-mobile-alt"></i> SHA Mobile Number Update</h3>
+                <p>Update your mobile number linked to your SHA account easily. Our smooth and efficient service guarantees your updated contact details are processed and your updated SHA Certificate is delivered to your Email and WhatsApp.</p>
+                
+                <div class="service-steps">
+                    <h4>What You Need:</h4>
+                    <ol>
+                        <li>Your SHA number</li>
+                        <li>National ID copy</li>
+                        <li>Current mobile number</li>
+                        <li>New mobile number</li>
+                        <li>Valid email address</li>
+                    </ol>
+                </div>
+
+                <div class="service-steps">
+                    <h4>Process:</h4>
+                    <ol>
+                        <li>Contact us with your SHA details and new mobile number</li>
+                        <li>We verify your identity and current information</li>
+                        <li>Update mobile number on SHA portal</li>
+                        <li>Send confirmation and updated certificate</li>
+                    </ol>
+                </div>
+
+                <!-- Service Request Form -->
+                <div class="service-request-form">
+                    <h4><i class="fas fa-file-alt"></i> Request SHA Mobile Number Update</h4>
+                    <form class="sha-service-form" data-service="SHA Mobile Number Update">
+                        <div class="form-row">
+                            <div class="form-group">
+                                <label for="fullName3">Full Name *</label>
+                                <input type="text" id="fullName3" name="fullName" required>
+                            </div>
+                            <div class="form-group">
+                                <label for="email3">Email Address *</label>
+                                <input type="email" id="email3" name="email" required>
+                            </div>
+                        </div>
+                        <div class="form-row">
+                            <div class="form-group">
+                                <label for="nationalId3">National ID *</label>
+                                <input type="text" id="nationalId3" name="nationalId" required maxlength="8">
+                            </div>
+                            <div class="form-group">
+                                <label for="shaNumber3">SHA Number *</label>
+                                <input type="text" id="shaNumber3" name="shaNumber" required placeholder="SHA123456789">
+                            </div>
+                        </div>
+                        <div class="form-row">
+                            <div class="form-group">
+                                <label for="currentMobile3">Current Mobile Number *</label>
+                                <input type="tel" id="currentMobile3" name="currentMobile" required placeholder="254712345678">
+                            </div>
+                            <div class="form-group">
+                                <label for="newMobile3">New Mobile Number *</label>
+                                <input type="tel" id="newMobile3" name="newMobile" required placeholder="254787654321">
+                            </div>
+                        </div>
+                        <div class="price-display">
+                            <span>Service Fee: <strong>KSh 300</strong></span>
+                        </div>
+                        <button type="submit" class="submit-btn">
+                            <i class="fas fa-paper-plane"></i> Submit Request & Pay
+                        </button>
+                    </form>
+                </div>
+
+                <div class="whatsapp-action">
+                    <a href="https://api.whatsapp.com/send/?phone=%2B254713159136&text=I%20need%20to%20update%20my%20SHA%20mobile%20number%0A%0AWhat%20I%20have%20ready%3A%0A-%20My%20SHA%20number%0A-%20National%20ID%20copy%0A-%20Current%20mobile%20number%0A-%20New%20mobile%20number%0A-%20Valid%20email%20address%0A%0APlease%20assist%20me%20with%20updating%20my%20mobile%20number.&type=phone_number&app_absent=0" class="whatsapp-btn" target="_blank">
+                        <i class="fab fa-whatsapp"></i> Or Contact via WhatsApp
+                    </a>
+                </div>
+            </div>
+
+            <!-- SHA Beneficiary Management -->
+            <div class="service-detail-card">
+                <h3><i class="fas fa-users"></i> SHA Beneficiary Management</h3>
+                <p>Manage your SHA beneficiaries including adding dependents, updating beneficiary information, and ensuring your family members are covered under your Social Health Authority account.</p>
+                
+                <div class="service-steps">
+                    <h4>What You Need:</h4>
+                    <ol>
+                        <li>Your SHA number</li>
+                        <li>National ID copy</li>
+                        <li>Beneficiary details (ID copies, birth certificates)</li>
+                        <li>Relationship proof documents</li>
+                        <li>Valid email address and phone number</li>
+                    </ol>
+                </div>
+
+                <div class="service-steps">
+                    <h4>Process:</h4>
+                    <ol>
+                        <li>Contact us with your SHA details and beneficiary information</li>
+                        <li>We verify all documents and relationships</li>
+                        <li>Add or update beneficiaries on SHA portal</li>
+                        <li>Send updated certificate with beneficiary details</li>
+                    </ol>
+                </div>
+
+                <!-- Service Request Form -->
+                <div class="service-request-form">
+                    <h4><i class="fas fa-file-alt"></i> Request SHA Beneficiary Management</h4>
+                    <form class="sha-service-form" data-service="SHA Beneficiary Management">
+                        <div class="form-row">
+                            <div class="form-group">
+                                <label for="fullName4">Full Name *</label>
+                                <input type="text" id="fullName4" name="fullName" required>
+                            </div>
+                            <div class="form-group">
+                                <label for="email4">Email Address *</label>
+                                <input type="email" id="email4" name="email" required>
+                            </div>
+                        </div>
+                        <div class="form-row">
+                            <div class="form-group">
+                                <label for="phone4">Phone Number *</label>
+                                <input type="tel" id="phone4" name="phone" required placeholder="254712345678">
+                            </div>
+                            <div class="form-group">
+                                <label for="nationalId4">National ID *</label>
+                                <input type="text" id="nationalId4" name="nationalId" required maxlength="8">
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label for="shaNumber4">SHA Number *</label>
+                            <input type="text" id="shaNumber4" name="shaNumber" required placeholder="SHA123456789">
+                        </div>
+                        <div class="form-group">
+                            <label for="beneficiaryAction4">Beneficiary Action *</label>
+                            <select id="beneficiaryAction4" name="beneficiaryAction" required>
+                                <option value="">Select action...</option>
+                                <option value="add-beneficiary">Add New Beneficiary</option>
+                                <option value="update-beneficiary">Update Existing Beneficiary</option>
+                                <option value="remove-beneficiary">Remove Beneficiary</option>
+                            </select>
+                        </div>
+                        <div class="form-group">
+                            <label for="beneficiaryDetails4">Beneficiary Details *</label>
+                            <textarea id="beneficiaryDetails4" name="beneficiaryDetails" required rows="3" placeholder="Provide beneficiary name, ID number, relationship, and any other relevant details..."></textarea>
+                        </div>
+                        <div class="price-display">
+                            <span>Service Fee: <strong>KSh 350</strong></span>
+                        </div>
+                        <button type="submit" class="submit-btn">
+                            <i class="fas fa-paper-plane"></i> Submit Request & Pay
+                        </button>
+                    </form>
+                </div>
+
+                <div class="whatsapp-action">
+                    <a href="https://api.whatsapp.com/send/?phone=%2B254713159136&text=I%20need%20help%20with%20SHA%20beneficiary%20management%0A%0AWhat%20I%20have%20ready%3A%0A-%20My%20SHA%20number%0A-%20National%20ID%20copy%0A-%20Beneficiary%20details%20(ID%20copies%2C%20birth%20certificates)%0A-%20Relationship%20proof%20documents%0A-%20Valid%20email%20address%20and%20phone%20number%0A%0APlease%20assist%20me%20with%20managing%20my%20beneficiaries.&type=phone_number&app_absent=0" class="whatsapp-btn" target="_blank">
+                        <i class="fab fa-whatsapp"></i> Or Contact via WhatsApp
+                    </a>
+                </div>
+            </div>
+        </div>
+
+        <!-- Service Information -->
+        <div class="service-info">
+            <div class="info-container">
+                <h3>SHA Services by STOPPER TECH</h3>
+                <h4>Fast, Reliable, and Professional SHA Assistance</h4>
+                <div class="disclaimer">
+                    <p><strong>Disclaimer:</strong> STOPPER TECH is an independent service provider and is not affiliated with the Social Health Authority (SHA). A service fee is charged for the assistance provided to customers in Kenya.</p>
+                </div>
+                <div class="service-description">
+                    <p>If you are looking for fast and reliable SHA Services in Kenya, then you are in the right place. STOPPER TECH allows Kenyans to: Register for SHA services, Retrieve SHA Certificate, Update SHA mobile number and manage SHA beneficiaries.</p>
+                    <p>Our online digital platform provides a seamless online experience, allowing you to focus on what matters the most while we take care of your SHA Service requests.</p>
+                    <p>Our experienced customer support team is dedicated to providing fast and efficient online assistance. We understand the intricacies of SHA Services and ensure that your submitted service requests are handled properly. With our streamlined online processes and vast expert knowledge in the SHA niche, STOPPER TECH guarantees a smooth and efficient service experience every time you submit your service request online.</p>
+                    <p>Ready to get started? Simply contact us via WhatsApp using <strong>+254 713 159 136</strong>. Alternatively, you can also send an Email to <strong>services@stoppertech.co.ke</strong> for quick and immediate assistance with your service request. We are here and ready to assist you with all SHA Service needs in Kenya conveniently and efficiently.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer>
+        <div class="footer-container">
+            <div class="footer-col">
+                <h3>About Us</h3>
+                <p>Stopper Tech has been serving the community since 2023 with reliable government service assistance. We're committed to providing quality service with a personal touch.</p>
+            </div>
+            
+            <div class="footer-col">
+                <h3>SHA Services</h3>
+                <ul>
+                    <li><a href="#sha-services">SHA Registration</a></li>
+                    <li><a href="#sha-services">SHA Certificate Retrieval</a></li>
+                    <li><a href="#sha-services">Mobile Number Update</a></li>
+                    <li><a href="#sha-services">Beneficiary Management</a></li>
+                    <li><a href="services.html">All Services</a></li>
+                </ul>
+            </div>
+            
+            <div class="footer-col">
+                <h3>Help & Support</h3>
+                <ul>
+                    <li><a href="faqs.html">FAQs</a></li>
+                    <li><a href="privacy-policy.html">Privacy Policy</a></li>
+                    <li><a href="terms-conditions.html">Terms & Conditions</a></li>
+                    <li><a href="service-charges.html">Service Charges</a></li>
+                    <li><a href="support-center.html">Support Center</a></li>
+                </ul>
+            </div>
+            
+            <div class="footer-col">
+                <h3>Contact Us</h3>
+                <p>Get in touch for immediate assistance with your SHA service needs.</p>
+                <div class="social-links">
+                    <a href="https://api.whatsapp.com/send/?phone=%2B254713159136&text&type=phone_number&app_absent=0" target="_blank">
+                        <i class="fab fa-whatsapp"></i>
+                    </a>
+                    <a href="mailto:services@stoppertech.co.ke">
+                        <i class="fas fa-envelope"></i>
+                    </a>
+                </div>
+            </div>
+        </div>
+        
+        <div class="copyright">
+            <p>&copy; 2019 Stopper Tech. All Rights Reserved. | Designed with <i class="fas fa-heart" style="color: #e74c3c;"></i> by Stopper Tech Team</p>
+        </div>
+    </footer>
+
+    <!-- Optimized Cursor Script -->
+    <script>
+        // Optimized Custom Cursor for Better Performance
+        const cursor = document.querySelector('.cursor');
+        let mouseX = 0;
+        let mouseY = 0;
+        let isMoving = false;
+        let animationId = null;
+        
+        // Throttle function to limit event frequency
+        function throttle(func, limit) {
+            let inThrottle;
+            return function() {
+                const args = arguments;
+                const context = this;
+                if (!inThrottle) {
+                    func.apply(context, args);
+                    inThrottle = true;
+                    setTimeout(() => inThrottle = false, limit);
+                }
+            }
+        }
+        
+        // Track mouse position with throttling
+        const handleMouseMove = throttle((e) => {
+            mouseX = e.clientX;
+            mouseY = e.clientY;
+            
+            if (!isMoving) {
+                isMoving = true;
+                startCursorAnimation();
+            }
+        }, 16); // ~60fps
+        
+        document.addEventListener('mousemove', handleMouseMove);
+        
+        // Optimized cursor animation using transform3d
+        function animateCursor() {
+            // Use transform3d for hardware acceleration
+            cursor.style.transform = `translate3d(${mouseX}px, ${mouseY}px, 0)`;
+            
+            // Stop animation when mouse stops moving
+            let timeout = setTimeout(() => {
+                isMoving = false;
+                if (animationId) {
+                    cancelAnimationFrame(animationId);
+                    animationId = null;
+                }
+            }, 100);
+            
+            if (isMoving) {
+                animationId = requestAnimationFrame(animateCursor);
+            }
+        }
+        
+        function startCursorAnimation() {
+            if (!animationId) {
+                animationId = requestAnimationFrame(animateCursor);
+            }
+        }
+        
+        // Hide cursor when mouse leaves window
+        document.addEventListener('mouseleave', () => {
+            cursor.style.opacity = '0';
+            isMoving = false;
+            if (animationId) {
+                cancelAnimationFrame(animationId);
+                animationId = null;
+            }
+        });
+        
+        // Show cursor when mouse enters window
+        document.addEventListener('mouseenter', () => {
+            cursor.style.opacity = '1';
+        });
+        
+        // Cursor grow effect when hovering over clickable elements
+        const clickables = document.querySelectorAll('a, button, input[type="submit"], .service-card');
+        
+        clickables.forEach(item => {
+            item.addEventListener('mouseenter', () => {
+                cursor.classList.add('cursor-grow');
+            });
+            item.addEventListener('mouseleave', () => {
+                cursor.classList.remove('cursor-grow');
+            });
+        });
+        
+        // Header scroll effect with hide on scroll down, show on scroll up
+        let lastScrollTop = 0;
+        const header = document.getElementById('header');
+        window.addEventListener('scroll', () => {
+            let scrollTop = window.pageYOffset || document.documentElement.scrollTop;
+            if (scrollTop > lastScrollTop && scrollTop > 50) {
+                // Scrolling down
+                header.style.transform = 'translateY(-100%)';
+            } else {
+                // Scrolling up
+                header.style.transform = 'translateY(0)';
+            }
+            lastScrollTop = scrollTop <= 0 ? 0 : scrollTop; // For Mobile or negative scrolling
+
+            // Also toggle scrolled class for styling
+            if (scrollTop > 50) {
+                header.classList.add('scrolled');
+            } else {
+                header.classList.remove('scrolled');
+            }
+        });
+    </script>
+
+    <!-- Service Form JavaScript -->
+    <script src="js/service-form.js"></script>
+    <script>
+        // Initialize SHA service form when page loads
+        document.addEventListener('DOMContentLoaded', function() {
+            const shaSubServices = [
+                'SHA Registration',
+                'SHA Certificate Retrieval', 
+                'SHA Mobile Number Update',
+                'SHA Beneficiary Management'
+            ];
+            
+            serviceFormHandler.initializeForm('SHA', shaSubServices, 'shaServiceForm');
+        });
+    </script>
+</body>
+</html>

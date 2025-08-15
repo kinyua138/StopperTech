@@ -5,6 +5,7 @@ const bodyParser = require('body-parser');
 const path = require('path');
 const helmet = require('helmet');
 const rateLimit = require('express-rate-limit');
+const axios = require('axios');
 require('dotenv').config();
 
 // Use environment variables for configuration
@@ -140,6 +141,244 @@ const registrationSchema = new mongoose.Schema({
 
 const Registration = mongoose.model('Registration', registrationSchema);
 
+// Define schemas for government service requests
+const serviceRequestSchema = new mongoose.Schema({
+    serviceType: { 
+        type: String, 
+        required: [true, 'Service type is required'],
+        enum: ['KRA', 'SHA', 'NSSF', 'NTSA', 'HELB', 'GHRIS', 'TSC', 'OS_SOFTWARE', 'COMPUTER_REPAIR']
+    },
+    subService: { 
+        type: String, 
+        required: [true, 'Sub-service is required'],
+        trim: true
+    },
+    fullName: { 
+        type: String, 
+        required: [true, 'Full name is required'],
+        trim: true,
+        minlength: [2, 'Full name must be at least 2 characters']
+    },
+    email: { 
+        type: String, 
+        required: [true, 'Email is required'],
+        trim: true,
+        match: [/^\w+([.-]?\w+)*@\w+([.-]?\w+)*(\.\w{2,3})+$/, 'Please enter a valid email']
+    },
+    phone: { 
+        type: String, 
+        required: [true, 'Phone number is required'],
+        trim: true,
+        match: [/^254[0-9]{9}$/, 'Please enter a valid Kenyan phone number (254XXXXXXXXX)']
+    },
+    nationalId: { 
+        type: String, 
+        required: [true, 'National ID is required'],
+        trim: true,
+        match: [/^[0-9]{8}$/, 'Please enter a valid 8-digit National ID']
+    },
+    serviceDetails: {
+        type: mongoose.Schema.Types.Mixed,
+        required: true
+    },
+    paymentStatus: {
+        type: String,
+        enum: ['pending', 'completed', 'failed'],
+        default: 'pending'
+    },
+    paymentReference: {
+        type: String,
+        trim: true
+    },
+    amount: {
+        type: Number,
+        required: [true, 'Service amount is required'],
+        min: [1, 'Amount must be greater than 0']
+    },
+    status: {
+        type: String,
+        enum: ['submitted', 'processing', 'completed', 'cancelled'],
+        default: 'submitted'
+    }
+}, { 
+    timestamps: true 
+});
+
+const ServiceRequest = mongoose.model('ServiceRequest', serviceRequestSchema);
+
+// Safaricom Daraja API Configuration
+const DARAJA_CONFIG = {
+    consumerKey: process.env.DARAJA_CONSUMER_KEY,
+    consumerSecret: process.env.DARAJA_CONSUMER_SECRET,
+    businessShortCode: process.env.DARAJA_BUSINESS_SHORTCODE || '174379',
+    passkey: process.env.DARAJA_PASSKEY,
+    callbackUrl: process.env.DARAJA_CALLBACK_URL || `${corsOrigin}/api/mpesa/callback`,
+    environment: process.env.DARAJA_ENVIRONMENT || 'sandbox' // 'sandbox' or 'production'
+};
+
+// Business Configuration - IMPORTANT FOR RECEIVING PAYMENTS
+const BUSINESS_CONFIG = {
+    name: 'Stopper Tech Services',
+    owner: process.env.BUSINESS_OWNER || 'Stopper Tech',
+    phone: process.env.BUSINESS_PHONE || '+254713159136',
+    email: process.env.BUSINESS_EMAIL || 'services@stoppertech.co.ke',
+    // WARNING: Current setup uses sandbox shortcode 174379
+    // Payments go to Safaricom test account, NOT to you!
+    // Get your own business shortcode for production
+    isReceivingPayments: DARAJA_CONFIG.businessShortCode !== '174379',
+    paymentDestination: DARAJA_CONFIG.businessShortCode === '174379' 
+        ? 'Safaricom Test Account (NO MONEY RECEIVED)' 
+        : `Your Business Account (${DARAJA_CONFIG.businessShortCode})`
+};
+
+// Log payment configuration on startup
+console.log('\n🏢 BUSINESS PAYMENT CONFIGURATION:');
+console.log(`Business Name: ${BUSINESS_CONFIG.name}`);
+console.log(`Environment: ${DARAJA_CONFIG.environment}`);
+console.log(`Business Shortcode: ${DARAJA_CONFIG.businessShortCode}`);
+console.log(`Payment Destination: ${BUSINESS_CONFIG.paymentDestination}`);
+console.log(`Will Receive Real Money: ${BUSINESS_CONFIG.isReceivingPayments ? '✅ YES' : '❌ NO - SANDBOX ONLY'}`);
+if (!BUSINESS_CONFIG.isReceivingPayments) {
+    console.log('⚠️  WARNING: Using sandbox shortcode 174379 - payments go to Safaricom, not you!');
+    console.log('📋 Get your own business shortcode to receive payments');
+}
+console.log('');
+
+// Daraja API URLs
+const DARAJA_URLS = {
+    sandbox: {
+        oauth: 'https://sandbox.safaricom.co.ke/oauth/v1/generate?grant_type=client_credentials',
+        stkPush: 'https://sandbox.safaricom.co.ke/mpesa/stkpush/v1/processrequest'
+    },
+    production: {
+        oauth: 'https://api.safaricom.co.ke/oauth/v1/generate?grant_type=client_credentials',
+        stkPush: 'https://api.safaricom.co.ke/mpesa/stkpush/v1/processrequest'
+    }
+};
+
+// Service pricing configuration
+const SERVICE_PRICING = {
+    KRA: {
+        'PIN Registration': 500,
+        'PIN Certificate Retrieval': 300,
+        'PIN Update': 400,
+        'PIN Email Address Change': 350
+    },
+    SHA: {
+        'SHA Registration': 400,
+        'SHA Certificate Retrieval': 300,
+        'SHA Mobile Number Update': 250,
+        'SHA Beneficiary Management': 450
+    },
+    NSSF: {
+        'NSSF Registration': 450,
+        'NSSF Certificate Retrieval': 300,
+        'NSSF Statement Request': 200,
+        'NSSF Benefits Claims': 600
+    },
+    NTSA: {
+        'Driving License Application': 800,
+        'Vehicle Registration': 700,
+        'PSV License Application': 900,
+        'Logbook Services': 600
+    },
+    HELB: {
+        'HELB Loan Application': 600,
+        'HELB Statement Request': 250,
+        'HELB Clearance Certificate': 400,
+        'HELB Account Management': 500
+    },
+    GHRIS: {
+        'GHRIS Registration': 500,
+        'Payslip Access': 200,
+        'Leave Application': 300,
+        'Employee Records Management': 450
+    },
+    TSC: {
+        'TSC Registration': 550,
+        'Teacher Certification': 600,
+        'Transfer Applications': 500,
+        'Professional Development': 400
+    },
+    OS_SOFTWARE: {
+        'Windows 10 Installation': 1500,
+        'Windows 11 Installation': 1800,
+        'Linux Installation': 1200,
+        'Antivirus Setup': 300,
+        'Premium Antivirus': 2500,
+        'MS Office 2019': 1500,
+        'MS Office 2021': 2000,
+        'System Optimization': 1000,
+        'Driver Updates': 800,
+        'Custom Software Installation': 500
+    },
+    COMPUTER_REPAIR: {
+        'Virus Removal': 800,
+        'Advanced Malware Removal': 1200,
+        'Hardware Diagnosis': 500,
+        'Component Replacement': 800,
+        'Data Recovery': 1500,
+        'Hard Drive Recovery': 3000,
+        'Screen Replacement 14"': 8000,
+        'Screen Replacement 15.6"': 9500,
+        'RAM Upgrade': 4500,
+        'SSD Installation': 6000,
+        'System Cleanup': 800,
+        'Emergency Repair': 1300
+    }
+};
+
+// Function to get Daraja access token
+async function getDarajaAccessToken() {
+    try {
+        const auth = Buffer.from(`${DARAJA_CONFIG.consumerKey}:${DARAJA_CONFIG.consumerSecret}`).toString('base64');
+        const response = await axios.get(DARAJA_URLS[DARAJA_CONFIG.environment].oauth, {
+            headers: {
+                'Authorization': `Basic ${auth}`
+            }
+        });
+        return response.data.access_token;
+    } catch (error) {
+        console.error('Error getting Daraja access token:', error);
+        throw new Error('Failed to get access token');
+    }
+}
+
+// Function to initiate STK Push
+async function initiateStkPush(phoneNumber, amount, accountReference, transactionDesc) {
+    try {
+        const accessToken = await getDarajaAccessToken();
+        const timestamp = new Date().toISOString().replace(/[^0-9]/g, '').slice(0, -3);
+        const password = Buffer.from(`${DARAJA_CONFIG.businessShortCode}${DARAJA_CONFIG.passkey}${timestamp}`).toString('base64');
+
+        const stkPushData = {
+            BusinessShortCode: DARAJA_CONFIG.businessShortCode,
+            Password: password,
+            Timestamp: timestamp,
+            TransactionType: 'CustomerPayBillOnline',
+            Amount: amount,
+            PartyA: phoneNumber,
+            PartyB: DARAJA_CONFIG.businessShortCode,
+            PhoneNumber: phoneNumber,
+            CallBackURL: DARAJA_CONFIG.callbackUrl,
+            AccountReference: accountReference,
+            TransactionDesc: transactionDesc
+        };
+
+        const response = await axios.post(DARAJA_URLS[DARAJA_CONFIG.environment].stkPush, stkPushData, {
+            headers: {
+                'Authorization': `Bearer ${accessToken}`,
+                'Content-Type': 'application/json'
+            }
+        });
+
+        return response.data;
+    } catch (error) {
+        console.error('Error initiating STK Push:', error);
+        throw new Error('Failed to initiate payment');
+    }
+}
+
 // Enhanced API Routes with better error handling
 // POST /register endpoint
 app.post('/api/register', async (req, res) => {
@@ -258,6 +497,314 @@ app.delete('/api/register/:id', async (req, res) => {
         res.status(500).json({
             error: 'Server Error',
             details: 'Failed to delete user registration. Please try again later.'
+        });
+    }
+});
+
+// Government Service Request Endpoints
+
+// POST /api/service-request - Submit a new service request
+app.post('/api/service-request', async (req, res) => {
+    try {
+        const { serviceType, subService, fullName, email, phone, nationalId, serviceDetails } = req.body;
+
+        // Validate required fields
+        if (!serviceType || !subService || !fullName || !email || !phone || !nationalId || !serviceDetails) {
+            return res.status(400).json({
+                error: 'Validation failed',
+                details: 'Please fill in all required fields.',
+                fields: {
+                    serviceType: serviceType ? undefined : 'Service type is required',
+                    subService: subService ? undefined : 'Sub-service is required',
+                    fullName: fullName ? undefined : 'Full name is required',
+                    email: email ? undefined : 'Email is required',
+                    phone: phone ? undefined : 'Phone number is required',
+                    nationalId: nationalId ? undefined : 'National ID is required',
+                    serviceDetails: serviceDetails ? undefined : 'Service details are required'
+                }
+            });
+        }
+
+        // Get service amount from pricing configuration
+        const amount = SERVICE_PRICING[serviceType]?.[subService];
+        if (!amount) {
+            return res.status(400).json({
+                error: 'Invalid service',
+                details: 'The selected service is not available or pricing not configured.'
+            });
+        }
+
+        // Create service request
+        const serviceRequest = new ServiceRequest({
+            serviceType,
+            subService,
+            fullName,
+            email,
+            phone,
+            nationalId,
+            serviceDetails,
+            amount
+        });
+
+        await serviceRequest.save();
+
+        res.status(201).json({
+            message: 'Service request submitted successfully!',
+            success: true,
+            data: {
+                id: serviceRequest._id,
+                serviceType: serviceRequest.serviceType,
+                subService: serviceRequest.subService,
+                amount: serviceRequest.amount,
+                status: serviceRequest.status
+            }
+        });
+    } catch (error) {
+        console.error('Error saving service request:', error);
+        
+        if (error.name === 'ValidationError') {
+            const errors = Object.values(error.errors).map(err => err.message);
+            return res.status(400).json({
+                error: 'Validation Error',
+                details: errors.join(', ')
+            });
+        }
+        
+        res.status(500).json({
+            error: 'Server Error',
+            details: 'An unexpected error occurred while processing your request. Please try again later.'
+        });
+    }
+});
+
+// POST /api/initiate-payment - Initiate M-Pesa payment
+app.post('/api/initiate-payment', async (req, res) => {
+    try {
+        const { serviceRequestId, phoneNumber } = req.body;
+
+        if (!serviceRequestId || !phoneNumber) {
+            return res.status(400).json({
+                error: 'Validation failed',
+                details: 'Service request ID and phone number are required.'
+            });
+        }
+
+        // Find the service request
+        const serviceRequest = await ServiceRequest.findById(serviceRequestId);
+        if (!serviceRequest) {
+            return res.status(404).json({
+                error: 'Not Found',
+                details: 'Service request not found.'
+            });
+        }
+
+        if (serviceRequest.paymentStatus === 'completed') {
+            return res.status(400).json({
+                error: 'Payment already completed',
+                details: 'This service request has already been paid for.'
+            });
+        }
+
+        // Validate phone number format (should be 254XXXXXXXXX)
+        if (!/^254[0-9]{9}$/.test(phoneNumber)) {
+            return res.status(400).json({
+                error: 'Invalid phone number',
+                details: 'Please enter a valid Kenyan phone number in format 254XXXXXXXXX'
+            });
+        }
+
+        // Initiate STK Push
+        const accountReference = `SR${serviceRequest._id.toString().slice(-8)}`;
+        const transactionDesc = `${serviceRequest.serviceType} - ${serviceRequest.subService}`;
+
+        const stkPushResponse = await initiateStkPush(
+            phoneNumber,
+            serviceRequest.amount,
+            accountReference,
+            transactionDesc
+        );
+
+        // Update service request with payment reference
+        serviceRequest.paymentReference = stkPushResponse.CheckoutRequestID;
+        await serviceRequest.save();
+
+        res.status(200).json({
+            message: 'Payment initiated successfully. Please check your phone for M-Pesa prompt.',
+            success: true,
+            data: {
+                checkoutRequestId: stkPushResponse.CheckoutRequestID,
+                merchantRequestId: stkPushResponse.MerchantRequestID,
+                amount: serviceRequest.amount,
+                phoneNumber: phoneNumber
+            }
+        });
+    } catch (error) {
+        console.error('Error initiating payment:', error);
+        res.status(500).json({
+            error: 'Payment Error',
+            details: 'Failed to initiate payment. Please try again later.'
+        });
+    }
+});
+
+// POST /api/mpesa/callback - M-Pesa callback endpoint
+app.post('/api/mpesa/callback', async (req, res) => {
+    try {
+        console.log('M-Pesa Callback received:', JSON.stringify(req.body, null, 2));
+
+        const { Body } = req.body;
+        if (!Body || !Body.stkCallback) {
+            return res.status(400).json({ error: 'Invalid callback data' });
+        }
+
+        const { CheckoutRequestID, ResultCode, ResultDesc } = Body.stkCallback;
+
+        // Find service request by payment reference
+        const serviceRequest = await ServiceRequest.findOne({ paymentReference: CheckoutRequestID });
+        if (!serviceRequest) {
+            console.log(`Service request not found for CheckoutRequestID: ${CheckoutRequestID}`);
+            return res.status(404).json({ error: 'Service request not found' });
+        }
+
+        // Update payment status based on result code
+        if (ResultCode === 0) {
+            // Payment successful
+            serviceRequest.paymentStatus = 'completed';
+            serviceRequest.status = 'processing';
+            console.log(`Payment completed for service request: ${serviceRequest._id}`);
+        } else {
+            // Payment failed
+            serviceRequest.paymentStatus = 'failed';
+            console.log(`Payment failed for service request: ${serviceRequest._id}, Reason: ${ResultDesc}`);
+        }
+
+        await serviceRequest.save();
+
+        res.status(200).json({ message: 'Callback processed successfully' });
+    } catch (error) {
+        console.error('Error processing M-Pesa callback:', error);
+        res.status(500).json({ error: 'Failed to process callback' });
+    }
+});
+
+// GET /api/service-requests - Get all service requests (admin)
+app.get('/api/service-requests', async (req, res) => {
+    try {
+        const serviceRequests = await ServiceRequest.find().sort({ createdAt: -1 });
+        res.json({
+            success: true,
+            count: serviceRequests.length,
+            data: serviceRequests
+        });
+    } catch (error) {
+        console.error('Error fetching service requests:', error);
+        res.status(500).json({
+            error: 'Server Error',
+            details: 'Failed to retrieve service requests. Please try again later.'
+        });
+    }
+});
+
+// GET /api/service-request/:id - Get specific service request
+app.get('/api/service-request/:id', async (req, res) => {
+    try {
+        const { id } = req.params;
+        const serviceRequest = await ServiceRequest.findById(id);
+        
+        if (!serviceRequest) {
+            return res.status(404).json({
+                error: 'Not Found',
+                details: 'Service request not found.'
+            });
+        }
+
+        res.json({
+            success: true,
+            data: serviceRequest
+        });
+    } catch (error) {
+        console.error('Error fetching service request:', error);
+        res.status(500).json({
+            error: 'Server Error',
+            details: 'Failed to retrieve service request. Please try again later.'
+        });
+    }
+});
+
+// GET /api/service-pricing - Get service pricing
+app.get('/api/service-pricing', (req, res) => {
+    res.json({
+        success: true,
+        data: SERVICE_PRICING
+    });
+});
+
+// PUT /api/service-request/:id/status - Update service request status (admin)
+app.put('/api/service-request/:id/status', async (req, res) => {
+    try {
+        const { id } = req.params;
+        const { status } = req.body;
+
+        if (!status || !['submitted', 'processing', 'completed', 'cancelled'].includes(status)) {
+            return res.status(400).json({
+                error: 'Invalid status',
+                details: 'Status must be one of: submitted, processing, completed, cancelled'
+            });
+        }
+
+        const serviceRequest = await ServiceRequest.findByIdAndUpdate(
+            id,
+            { status },
+            { new: true }
+        );
+
+        if (!serviceRequest) {
+            return res.status(404).json({
+                error: 'Not Found',
+                details: 'Service request not found.'
+            });
+        }
+
+        res.json({
+            message: 'Service request status updated successfully.',
+            success: true,
+            data: serviceRequest
+        });
+    } catch (error) {
+        console.error('Error updating service request status:', error);
+        res.status(500).json({
+            error: 'Server Error',
+            details: 'Failed to update service request status. Please try again later.'
+        });
+    }
+});
+
+// DELETE /api/service-request/:id - Delete service request (admin)
+app.delete('/api/service-request/:id', async (req, res) => {
+    try {
+        const { id } = req.params;
+        console.log(`Attempting to delete service request with ID: ${id}`);
+        
+        const deletedServiceRequest = await ServiceRequest.findByIdAndDelete(id);
+        if (!deletedServiceRequest) {
+            console.log(`No service request found with ID: ${id}`);
+            return res.status(404).json({
+                error: 'Not Found',
+                details: 'Service request not found.'
+            });
+        }
+        
+        console.log(`Deleted service request with ID: ${id}`);
+        res.json({
+            message: 'Service request deleted successfully.',
+            success: true,
+            data: deletedServiceRequest
+        });
+    } catch (error) {
+        console.error('Error deleting service request:', error);
+        res.status(500).json({
+            error: 'Server Error',
+            details: 'Failed to delete service request. Please try again later.'
         });
     }
 });

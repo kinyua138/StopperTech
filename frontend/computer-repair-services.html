@@ -1,0 +1,650 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Computer Repair Services - Stopper Tech</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="stylesheet" href="css/main.css">
+    <link rel="stylesheet" href="css/service-form.css">
+    <style>
+        .service-hero {
+            background: linear-gradient(135deg, #ff6b6b 0%, #ee5a24 100%);
+            color: white;
+            padding: 4rem 0;
+            text-align: center;
+        }
+        
+        .service-hero h1 {
+            font-size: 3rem;
+            margin-bottom: 1rem;
+            text-shadow: 2px 2px 4px rgba(0,0,0,0.3);
+        }
+        
+        .service-hero p {
+            font-size: 1.2rem;
+            max-width: 600px;
+            margin: 0 auto;
+            opacity: 0.9;
+        }
+        
+        .services-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
+            gap: 2rem;
+            padding: 4rem 2rem;
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+        
+        .service-card {
+            background: white;
+            border-radius: 15px;
+            padding: 2rem;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.1);
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+            border: 1px solid #e0e0e0;
+        }
+        
+        .service-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 20px 40px rgba(0,0,0,0.15);
+        }
+        
+        .service-icon {
+            width: 80px;
+            height: 80px;
+            background: linear-gradient(135deg, #ff6b6b, #ee5a24);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin: 0 auto 1.5rem;
+            font-size: 2rem;
+            color: white;
+        }
+        
+        .service-card h3 {
+            font-size: 1.5rem;
+            margin-bottom: 1rem;
+            color: #333;
+            text-align: center;
+        }
+        
+        .service-card p {
+            color: #666;
+            line-height: 1.6;
+            margin-bottom: 1.5rem;
+            text-align: center;
+        }
+        
+        .service-features {
+            list-style: none;
+            padding: 0;
+            margin-bottom: 2rem;
+        }
+        
+        .service-features li {
+            padding: 0.5rem 0;
+            color: #555;
+            display: flex;
+            align-items: center;
+        }
+        
+        .service-features li::before {
+            content: '✓';
+            color: #4CAF50;
+            font-weight: bold;
+            margin-right: 0.5rem;
+        }
+        
+        .pricing-table {
+            background: #f8f9fa;
+            border-radius: 10px;
+            padding: 1.5rem;
+            margin-bottom: 2rem;
+        }
+        
+        .pricing-table h4 {
+            color: #333;
+            margin-bottom: 1rem;
+            text-align: center;
+        }
+        
+        .price-item {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 0.5rem 0;
+            border-bottom: 1px solid #e0e0e0;
+        }
+        
+        .price-item:last-child {
+            border-bottom: none;
+        }
+        
+        .price {
+            font-weight: bold;
+            color: #ff6b6b;
+        }
+        
+        .whatsapp-btn {
+            background: #25D366;
+            color: white;
+            padding: 1rem 2rem;
+            border: none;
+            border-radius: 50px;
+            font-size: 1rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            text-decoration: none;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            width: 100%;
+            margin-top: 1rem;
+        }
+        
+        .whatsapp-btn:hover {
+            background: #128C7E;
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(37, 211, 102, 0.3);
+        }
+        
+        .whatsapp-btn i {
+            margin-right: 0.5rem;
+        }
+        
+        .emergency-banner {
+            background: linear-gradient(135deg, #e74c3c, #c0392b);
+            color: white;
+            padding: 2rem;
+            text-align: center;
+            margin: 2rem 0;
+        }
+        
+        .emergency-banner h3 {
+            margin-bottom: 1rem;
+        }
+        
+        .emergency-btn {
+            background: white;
+            color: #e74c3c;
+            padding: 1rem 2rem;
+            border: none;
+            border-radius: 50px;
+            font-weight: bold;
+            text-decoration: none;
+            display: inline-flex;
+            align-items: center;
+            margin-top: 1rem;
+        }
+        
+        @media (max-width: 768px) {
+            .service-hero h1 {
+                font-size: 2rem;
+            }
+            
+            .services-grid {
+                grid-template-columns: 1fr;
+                padding: 2rem 1rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Header Section -->
+    <header id="header">
+        <div class="header-container">
+            <div class="logo-circle-container">
+                <svg class="logo-circle-svg" viewBox="0 0 140 140">
+                    <defs>
+                        <path id="circlePath" d="M70,70 m-60,0 a60,60 0 1,1 120,0 a60,60 0 1,1 -120,0"/>
+                    </defs>
+                    <text class="logo-circle-text">
+                        <textPath xlink:href="#circlePath" startOffset="0" text-anchor="middle" method="stretch" spacing="auto">
+                            Stopper Tech • Stopper Tech • Stopper Tech • Stopper Tech • Stopper Tech • Stopper Tech •
+                        </textPath>
+                    </text>
+                </svg>
+                <img src="Stopper_tech.png" alt="Logo" class="logo-center-image" />
+            </div>
+            
+            <!-- Mobile Menu Toggle -->
+            <button class="mobile-menu-toggle" id="mobileMenuToggle" aria-label="Toggle mobile menu">
+                <span class="hamburger-line"></span>
+                <span class="hamburger-line"></span>
+                <span class="hamburger-line"></span>
+            </button>
+            
+            <nav id="mainNav">
+                <ul>
+                    <li><a href="stopper.html">Home</a></li>
+                    <li><a href="services.html">Services</a></li>
+                    <li><a href="registration.html">Student Registration</a></li>
+                    <li><a href="testimonials.html">Testimonials</a></li>
+                    <li><a href="contact.html">Contact</a></li>
+                </ul>
+            </nav>
+        </div>
+    </header>
+
+    <!-- Service Hero Section -->
+    <section class="service-hero">
+        <div class="container">
+            <h1><i class="fas fa-tools"></i> Computer Repair Services</h1>
+            <p>Comprehensive hardware and software repair services with professional diagnosis and guaranteed solutions.</p>
+        </div>
+    </section>
+
+    <!-- Emergency Service Banner -->
+    <section class="emergency-banner">
+        <div class="container">
+            <h3><i class="fas fa-exclamation-triangle"></i> Emergency Repair Service Available!</h3>
+            <p>Computer crashed? Need urgent repair? We offer same-day emergency repair services.</p>
+            <a href="https://wa.me/254713159136?text=EMERGENCY%20REPAIR%20NEEDED!%20My%20computer%20has%20crashed%20and%20I%20need%20urgent%20repair%20service.%20Please%20help!" class="emergency-btn">
+                <i class="fas fa-phone"></i> Emergency Repair - Call Now!
+            </a>
+        </div>
+    </section>
+
+    <!-- Services Grid -->
+    <section class="services-grid">
+        <!-- Virus Removal -->
+        <div class="service-card">
+            <div class="service-icon">
+                <i class="fas fa-bug"></i>
+            </div>
+            <h3>Virus Removal & Protection</h3>
+            <p>Complete virus, malware, and spyware removal with advanced protection setup to prevent future infections.</p>
+            
+            <ul class="service-features">
+                <li>Deep system virus scan</li>
+                <li>Malware & spyware removal</li>
+                <li>Rootkit detection & removal</li>
+                <li>System file repair</li>
+                <li>Antivirus installation</li>
+                <li>Security configuration</li>
+            </ul>
+            
+            <div class="pricing-table">
+                <h4>Pricing</h4>
+                <div class="price-item">
+                    <span>Basic Virus Removal</span>
+                    <span class="price">KSh 800</span>
+                </div>
+                <div class="price-item">
+                    <span>Advanced Malware Removal</span>
+                    <span class="price">KSh 1,200</span>
+                </div>
+                <div class="price-item">
+                    <span>Complete Security Package</span>
+                    <span class="price">KSh 1,800</span>
+                </div>
+                <div class="price-item">
+                    <span>Emergency Same-Day</span>
+                    <span class="price">+KSh 500</span>
+                </div>
+            </div>
+            
+            <!-- Service Request Form -->
+            <div class="service-request-form">
+                <h4><i class="fas fa-file-alt"></i> Request Virus Removal Service</h4>
+                <form class="repair-service-form" data-service="Virus Removal">
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label for="fullName1">Full Name *</label>
+                            <input type="text" id="fullName1" name="fullName" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="email1">Email Address *</label>
+                            <input type="email" id="email1" name="email" required>
+                        </div>
+                    </div>
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label for="phone1">Phone Number *</label>
+                            <input type="tel" id="phone1" name="phone" required placeholder="254712345678">
+                        </div>
+                        <div class="form-group">
+                            <label for="nationalId1">National ID *</label>
+                            <input type="text" id="nationalId1" name="nationalId" required maxlength="8">
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label for="serviceType1">Service Type *</label>
+                        <select id="serviceType1" name="serviceType" required>
+                            <option value="">Select service...</option>
+                            <option value="Virus Removal">Basic Virus Removal - KSh 800</option>
+                            <option value="Advanced Malware Removal">Advanced Malware Removal - KSh 1,200</option>
+                            <option value="Emergency Repair">Emergency Same-Day - KSh 1,300</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label for="problemDescription1">Problem Description *</label>
+                        <textarea id="problemDescription1" name="problemDescription" rows="3" required placeholder="Describe the virus/malware issues you're experiencing..."></textarea>
+                    </div>
+                    <div class="price-display">
+                        <span>Service Fee: <strong>KSh 800</strong></span>
+                    </div>
+                    <button type="submit" class="submit-btn">
+                        <i class="fas fa-paper-plane"></i> Submit Request & Pay
+                    </button>
+                </form>
+            </div>
+
+            <a href="https://wa.me/254713159136?text=Hi%20Stopper%20Tech!%20My%20computer%20has%20virus%20issues.%20I%20need%20virus%20removal%20service.%20Please%20provide%20more%20details%20about%20the%20service." class="whatsapp-btn">
+                <i class="fab fa-whatsapp"></i> Or Contact via WhatsApp
+            </a>
+        </div>
+
+        <!-- Hardware Repair -->
+        <div class="service-card">
+            <div class="service-icon">
+                <i class="fas fa-microchip"></i>
+            </div>
+            <h3>Hardware Diagnostics & Repair</h3>
+            <p>Professional hardware diagnosis and repair for all computer components with genuine parts replacement.</p>
+            
+            <ul class="service-features">
+                <li>Complete hardware diagnosis</li>
+                <li>Motherboard repair</li>
+                <li>RAM & storage replacement</li>
+                <li>Power supply repair</li>
+                <li>Cooling system maintenance</li>
+                <li>Component upgrade services</li>
+            </ul>
+            
+            <div class="pricing-table">
+                <h4>Pricing</h4>
+                <div class="price-item">
+                    <span>Hardware Diagnosis</span>
+                    <span class="price">KSh 500</span>
+                </div>
+                <div class="price-item">
+                    <span>Component Replacement</span>
+                    <span class="price">KSh 800+</span>
+                </div>
+                <div class="price-item">
+                    <span>Motherboard Repair</span>
+                    <span class="price">KSh 2,500</span>
+                </div>
+                <div class="price-item">
+                    <span>Power Supply Repair</span>
+                    <span class="price">KSh 1,500</span>
+                </div>
+            </div>
+            
+            <a href="https://wa.me/254713159136?text=Hi%20Stopper%20Tech!%20I%20have%20hardware%20issues%20with%20my%20computer.%20Please%20provide%20diagnosis%20and%20repair%20services." class="whatsapp-btn">
+                <i class="fab fa-whatsapp"></i> Get Hardware Repair
+            </a>
+        </div>
+
+        <!-- Data Recovery -->
+        <div class="service-card">
+            <div class="service-icon">
+                <i class="fas fa-hdd"></i>
+            </div>
+            <h3>Data Recovery Services</h3>
+            <p>Professional data recovery from damaged hard drives, corrupted files, and deleted data with high success rates.</p>
+            
+            <ul class="service-features">
+                <li>Hard drive data recovery</li>
+                <li>SSD data recovery</li>
+                <li>Deleted file recovery</li>
+                <li>Corrupted file repair</li>
+                <li>Partition recovery</li>
+                <li>Emergency data backup</li>
+            </ul>
+            
+            <div class="pricing-table">
+                <h4>Pricing</h4>
+                <div class="price-item">
+                    <span>Basic File Recovery</span>
+                    <span class="price">KSh 1,500</span>
+                </div>
+                <div class="price-item">
+                    <span>Hard Drive Recovery</span>
+                    <span class="price">KSh 3,000</span>
+                </div>
+                <div class="price-item">
+                    <span>Advanced Recovery</span>
+                    <span class="price">KSh 5,000</span>
+                </div>
+                <div class="price-item">
+                    <span>Emergency Recovery</span>
+                    <span class="price">+KSh 1,000</span>
+                </div>
+            </div>
+            
+            <a href="https://wa.me/254713159136?text=Hi%20Stopper%20Tech!%20I%20need%20data%20recovery%20service.%20I%20have%20lost%20important%20files.%20Please%20help%20me%20recover%20my%20data." class="whatsapp-btn">
+                <i class="fab fa-whatsapp"></i> Get Data Recovery
+            </a>
+        </div>
+
+        <!-- Laptop Screen Replacement -->
+        <div class="service-card">
+            <div class="service-icon">
+                <i class="fas fa-laptop"></i>
+            </div>
+            <h3>Laptop Screen Replacement</h3>
+            <p>Professional laptop screen replacement service with genuine LCD/LED screens and warranty coverage.</p>
+            
+            <ul class="service-features">
+                <li>LCD/LED screen replacement</li>
+                <li>Touch screen repair</li>
+                <li>Screen calibration</li>
+                <li>Hinge repair</li>
+                <li>Backlight repair</li>
+                <li>Quality assurance testing</li>
+            </ul>
+            
+            <div class="pricing-table">
+                <h4>Pricing</h4>
+                <div class="price-item">
+                    <span>14" Screen Replacement</span>
+                    <span class="price">KSh 8,000</span>
+                </div>
+                <div class="price-item">
+                    <span>15.6" Screen Replacement</span>
+                    <span class="price">KSh 9,500</span>
+                </div>
+                <div class="price-item">
+                    <span>Touch Screen Replacement</span>
+                    <span class="price">KSh 12,000</span>
+                </div>
+                <div class="price-item">
+                    <span>Hinge Repair</span>
+                    <span class="price">KSh 2,500</span>
+                </div>
+            </div>
+            
+            <a href="https://wa.me/254713159136?text=Hi%20Stopper%20Tech!%20My%20laptop%20screen%20is%20damaged%20and%20needs%20replacement.%20Please%20provide%20quote%20and%20availability." class="whatsapp-btn">
+                <i class="fab fa-whatsapp"></i> Get Screen Replacement
+            </a>
+        </div>
+
+        <!-- Component Upgrades -->
+        <div class="service-card">
+            <div class="service-icon">
+                <i class="fas fa-arrow-up"></i>
+            </div>
+            <h3>Component Upgrades</h3>
+            <p>Boost your computer's performance with professional component upgrades including RAM, storage, and graphics.</p>
+            
+            <ul class="service-features">
+                <li>RAM memory upgrades</li>
+                <li>SSD installation</li>
+                <li>Graphics card upgrade</li>
+                <li>Processor upgrade</li>
+                <li>Storage expansion</li>
+                <li>Performance optimization</li>
+            </ul>
+            
+            <div class="pricing-table">
+                <h4>Pricing</h4>
+                <div class="price-item">
+                    <span>RAM Upgrade (8GB)</span>
+                    <span class="price">KSh 4,500</span>
+                </div>
+                <div class="price-item">
+                    <span>SSD Installation (256GB)</span>
+                    <span class="price">KSh 6,000</span>
+                </div>
+                <div class="price-item">
+                    <span>Graphics Card Upgrade</span>
+                    <span class="price">KSh 15,000+</span>
+                </div>
+                <div class="price-item">
+                    <span>Installation Service</span>
+                    <span class="price">KSh 800</span>
+                </div>
+            </div>
+            
+            <a href="https://wa.me/254713159136?text=Hi%20Stopper%20Tech!%20I%20want%20to%20upgrade%20my%20computer%20components%20for%20better%20performance.%20Please%20advise%20on%20available%20options." class="whatsapp-btn">
+                <i class="fab fa-whatsapp"></i> Get Component Upgrade
+            </a>
+        </div>
+
+        <!-- System Cleanup & Maintenance -->
+        <div class="service-card">
+            <div class="service-icon">
+                <i class="fas fa-broom"></i>
+            </div>
+            <h3>System Cleanup & Maintenance</h3>
+            <p>Complete system cleanup and maintenance service to keep your computer running smoothly and efficiently.</p>
+            
+            <ul class="service-features">
+                <li>Physical cleaning (dust removal)</li>
+                <li>System file cleanup</li>
+                <li>Registry optimization</li>
+                <li>Startup program management</li>
+                <li>Disk defragmentation</li>
+                <li>Performance monitoring setup</li>
+            </ul>
+            
+            <div class="pricing-table">
+                <h4>Pricing</h4>
+                <div class="price-item">
+                    <span>Basic System Cleanup</span>
+                    <span class="price">KSh 800</span>
+                </div>
+                <div class="price-item">
+                    <span>Deep System Maintenance</span>
+                    <span class="price">KSh 1,500</span>
+                </div>
+                <div class="price-item">
+                    <span>Physical Cleaning</span>
+                    <span class="price">KSh 500</span>
+                </div>
+                <div class="price-item">
+                    <span>Monthly Maintenance Plan</span>
+                    <span class="price">KSh 2,000</span>
+                </div>
+            </div>
+            
+            <a href="https://wa.me/254713159136?text=Hi%20Stopper%20Tech!%20My%20computer%20is%20running%20slow%20and%20needs%20cleanup%20and%20maintenance.%20Please%20provide%20service%20details." class="whatsapp-btn">
+                <i class="fab fa-whatsapp"></i> Get System Cleanup
+            </a>
+        </div>
+    </section>
+
+    <!-- Warranty Section -->
+    <section style="background: #f8f9fa; padding: 3rem 2rem; text-align: center;">
+        <div class="container">
+            <h2>Our Service Guarantee</h2>
+            <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); gap: 2rem; margin-top: 2rem;">
+                <div>
+                    <i class="fas fa-shield-alt" style="font-size: 3rem; color: #4CAF50; margin-bottom: 1rem;"></i>
+                    <h3>30-Day Warranty</h3>
+                    <p>All repairs come with a 30-day warranty on parts and labor.</p>
+                </div>
+                <div>
+                    <i class="fas fa-clock" style="font-size: 3rem; color: #2196F3; margin-bottom: 1rem;"></i>
+                    <h3>Quick Turnaround</h3>
+                    <p>Most repairs completed within 24-48 hours.</p>
+                </div>
+                <div>
+                    <i class="fas fa-certificate" style="font-size: 3rem; color: #FF9800; margin-bottom: 1rem;"></i>
+                    <h3>Certified Technicians</h3>
+                    <p>Our technicians are certified and experienced professionals.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Back to Top Button -->
+    <button class="back-to-top" id="backToTop">
+        <i class="fas fa-arrow-up"></i>
+    </button>
+
+    <!-- Footer -->
+    <footer>
+        <div class="footer-container">
+            <div class="footer-col">
+                <h3>About Us</h3>
+                <p>Stopper Tech provides professional computer repair services with certified technicians and guaranteed solutions for all your hardware and software issues.</p>
+            </div>
+            
+            <div class="footer-col">
+                <h3>Our Services</h3>
+                <ul>
+                    <li><a href="cyber-cafe-services.html">Cyber Cafe Services</a></li>
+                    <li><a href="os-software-services.html">OS & Software Installation</a></li>
+                    <li><a href="computer-repair-services.html">Computer Repair</a></li>
+                    <li><a href="services.html">Government Services</a></li>
+                    <li><a href="registration.html">Student Registration</a></li>
+                </ul>
+            </div>
+            
+            <div class="footer-col">
+                <h3>Emergency Contact</h3>
+                <ul>
+                    <li><i class="fab fa-whatsapp"></i> +254 713 159 136</li>
+                    <li><i class="fas fa-envelope"></i> repair@stoppertech.co.ke</li>
+                    <li><i class="fas fa-clock"></i> Emergency: 24/7</li>
+                    <li><i class="fas fa-map-marker-alt"></i> On-site Service Available</li>
+                </ul>
+            </div>
+            
+            <div class="footer-col">
+                <h3>Quick Links</h3>
+                <ul>
+                    <li><a href="faqs.html">FAQs</a></li>
+                    <li><a href="privacy-policy.html">Privacy Policy</a></li>
+                    <li><a href="terms-conditions.html">Terms & Conditions</a></li>
+                    <li><a href="support-center.html">Support Center</a></li>
+                </ul>
+            </div>
+        </div>
+        
+        <div class="copyright">
+            <p>&copy; 2024 Stopper Tech. All Rights Reserved. | Professional Computer Repair Services</p>
+        </div>
+    </footer>
+
+    <script src="js/service-form.js"></script>
+    <script>
+        // Initialize Computer Repair service form when page loads
+        document.addEventListener('DOMContentLoaded', function() {
+            const repairSubServices = [
+                'Virus Removal',
+                'Advanced Malware Removal',
+                'Hardware Diagnosis',
+                'Component Replacement',
+                'Data Recovery',
+                'Hard Drive Recovery',
+                'Screen Replacement 14"',
+                'Screen Replacement 15.6"',
+                'RAM Upgrade',
+                'SSD Installation',
+                'System Cleanup',
+                'Emergency Repair'
+            ];
+            
+            serviceFormHandler.initializeForm('COMPUTER_REPAIR', repairSubServices, 'repairServiceForm');
+        });
+    </script>
+</body>
+</html>
