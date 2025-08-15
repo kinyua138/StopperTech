@@ -159,6 +159,24 @@
             color: #00a8ff;
             font-weight: 600;
         }
+
+        /* WhatsApp Contact Styling */
+        .whatsapp-contact {
+            text-decoration: none;
+            color: inherit;
+            transition: all 0.3s ease;
+        }
+
+        .whatsapp-contact:hover {
+            transform: translateY(-2px);
+            background: rgba(37, 211, 102, 0.1);
+            border-radius: 10px;
+        }
+
+        .whatsapp-contact:hover .fab.fa-whatsapp {
+            color: #25D366;
+            transform: scale(1.1);
+        }
     </style>
 </head>
 <body>
@@ -192,30 +210,6 @@
             </nav>
         </div>
     </header>
-
-    <!-- Cyber Cafe Hero Section -->
-    <section class="cyber-hero">
-        <div class="hero-content">
-            <h1><i class="fas fa-desktop"></i> Cyber Cafe Services</h1>
-            <p>Professional cyber cafe services including printing, photocopying, laminating, binding, and document services. Quality work at affordable prices.</p>
-            <div class="hero-contact">
-                <div class="contact-item">
-                    <i class="fab fa-whatsapp"></i>
-                    <div>
-                        <span>Chat with us on WhatsApp:</span>
-                        <strong>+254 713 159 136</strong>
-                    </div>
-                </div>
-                <div class="contact-item">
-                    <i class="fas fa-envelope"></i>
-                    <div>
-                        <span>Contact us via Email:</span>
-                        <strong>services@stoppertech.co.ke</strong>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </section>
 
     <!-- Cyber Cafe Services Details -->
     <section class="services" id="cyber-services">
@@ -550,6 +544,11 @@
             </div>
         </div>
 
+        <!-- Service Request Form -->
+        <div id="cyberServiceForm">
+            <!-- Service form will be dynamically inserted here -->
+        </div>
+
         <!-- Service Information -->
         <div class="service-info">
             <div class="info-container">
@@ -563,6 +562,30 @@
                     <p>Whether you need a single document printed or bulk copying services, we handle projects of all sizes with the same attention to detail and quality. Our fast turnaround times and professional service make us the preferred choice for students, businesses, and individuals.</p>
                     <p>We understand the importance of quality and deadlines. That's why we maintain our equipment regularly and keep adequate supplies to handle urgent requests. Our team is trained to provide excellent customer service and technical expertise.</p>
                     <p>Visit our cyber cafe or contact us via WhatsApp at <strong>+254 713 159 136</strong> for immediate assistance. You can also email us at <strong>services@stoppertech.co.ke</strong> for quotes and service inquiries. We're here to help with all your document service needs.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Cyber Cafe Hero Section -->
+    <section class="cyber-hero">
+        <div class="hero-content">
+            <h1><i class="fas fa-desktop"></i> Cyber Cafe Services</h1>
+            <p>Professional cyber cafe services including printing, photocopying, laminating, binding, and document services. Quality work at affordable prices.</p>
+            <div class="hero-contact">
+                <a href="https://api.whatsapp.com/send/?phone=%2B254713159136&text=Hi%20Stopper%20Tech!%20I%20need%20assistance%20with%20your%20cyber%20cafe%20services.&type=phone_number&app_absent=0" class="contact-item whatsapp-contact" target="_blank">
+                    <i class="fab fa-whatsapp"></i>
+                    <div>
+                        <span>Chat with us on WhatsApp:</span>
+                        <strong>+254 713 159 136</strong>
+                    </div>
+                </a>
+                <div class="contact-item">
+                    <i class="fas fa-envelope"></i>
+                    <div>
+                        <span>Contact us via Email:</span>
+                        <strong>services@stoppertech.co.ke</strong>
+                    </div>
                 </div>
             </div>
         </div>
@@ -617,6 +640,9 @@
         </div>
     </footer>
 
+    <!-- Service Form Script -->
+    <script src="js/service-form.js"></script>
+    
     <!-- Optimized Cursor Script -->
     <script>
         // Optimized Custom Cursor for Better Performance
@@ -725,6 +751,20 @@
             } else {
                 header.classList.remove('scrolled');
             }
+        });
+        
+        // Initialize Cyber Cafe Service Form
+        document.addEventListener('DOMContentLoaded', function() {
+            const cyberSubServices = [
+                'Printing Services',
+                'Photocopying Services', 
+                'Laminating Services',
+                'Binding Services',
+                'Passport Photo Services',
+                'Typesetting Services'
+            ];
+            
+            serviceFormHandler.initializeForm('CYBER_CAFE', cyberSubServices, 'cyberServiceForm');
         });
     </script>
 </body>

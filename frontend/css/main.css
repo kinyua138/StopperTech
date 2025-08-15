@@ -49,6 +49,8 @@ header.scrolled {
     margin: 0;
     cursor: pointer;
     transition: all 0.3s ease;
+    z-index: 10;
+    pointer-events: auto;
 }
 
 .logo-circle-container:hover {
@@ -95,11 +97,19 @@ nav ul li {
 }
 
 nav ul li a {
-    color: white;
+    color: #e0e0e0;
     text-decoration: none;
-    font-weight: 500;
-    transition: color 0.3s;
+    font-weight: 600;
+    padding: 0.8rem 1.2rem;
+    border-radius: 8px;
     position: relative;
+    cursor: pointer;
+    background: rgba(255, 255, 255, 0.05);
+    border: 1px solid rgba(0, 168, 255, 0.2);
+    backdrop-filter: blur(10px);
+    transition: all 0.3s ease;
+    text-shadow: 0 1px 2px rgba(0, 0, 0, 0.3);
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
 }
 
 nav ul li a::after {
@@ -108,17 +118,40 @@ nav ul li a::after {
     width: 0;
     height: 2px;
     background: linear-gradient(90deg, #00a8ff, #e53995);
-    bottom: -5px;
-    left: 0;
-    transition: width 0.3s;
+    bottom: 3px;
+    left: 50%;
+    transform: translateX(-50%);
+    transition: width 0.3s ease;
+    border-radius: 1px;
 }
 
 nav ul li a:hover::after {
-    width: 100%;
+    width: 80%;
 }
 
 nav ul li a:hover {
+    color: #ffffff;
+    background: rgba(0, 168, 255, 0.15);
+    border-color: rgba(0, 168, 255, 0.5);
+    transform: translateY(-2px);
+    box-shadow: 0 4px 15px rgba(0, 168, 255, 0.2);
+    text-shadow: 0 0 8px rgba(0, 168, 255, 0.3);
+}
+
+nav ul li a:active {
+    transform: translateY(0);
+    box-shadow: 0 2px 8px rgba(0, 168, 255, 0.3);
+}
+
+/* Active/Current page indicator */
+nav ul li a.active {
+    background: rgba(0, 168, 255, 0.2);
+    border-color: rgba(0, 168, 255, 0.6);
     color: #00a8ff;
+}
+
+nav ul li a.active::after {
+    width: 80%;
 }
 
 /* Footer */

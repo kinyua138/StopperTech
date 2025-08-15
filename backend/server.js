@@ -6,6 +6,8 @@ const path = require('path');
 const helmet = require('helmet');
 const rateLimit = require('express-rate-limit');
 const axios = require('axios');
+const session = require('express-session');
+const bcrypt = require('bcrypt');
 require('dotenv').config();
 
 // Use environment variables for configuration
@@ -76,8 +78,149 @@ app.use(cors({
 app.use(bodyParser.json({ limit: '10mb' }));
 app.use(bodyParser.urlencoded({ extended: true, limit: '10mb' }));
 
+// Admin credentials configuration
+const ADMIN_CONFIG = {
+    username: 'admin',
+    // Hash of "Stopper@350" - correct hash
+    passwordHash: '$2b$10$ucomOwZANedWzqS88kt6/u3fxA/PRShrmf0EVewt1oLPEK8/B0Fly'
+};
+
+// Session configuration
+app.use(session({
+    secret: process.env.SESSION_SECRET || 'stopper-tech-admin-secret-key-2024',
+    resave: false,
+    saveUninitialized: false,
+    cookie: {
+        secure: nodeEnv === 'production', // Use secure cookies in production
+        httpOnly: true,
+        maxAge: 24 * 60 * 60 * 1000 // 24 hours
+    }
+}));
+
+// Generate password hash on startup (for development)
+async function generatePasswordHash() {
+    try {
+        const hash = await bcrypt.hash('Stopper@350', 10);
+        console.log('🔐 Admin password hash generated:', hash);
+        return hash;
+    } catch (error) {
+        console.error('Error generating password hash:', error);
+        return null;
+    }
+}
+
+// Authentication middleware
+function requireAuth(req, res, next) {
+    if (req.session && req.session.isAuthenticated) {
+        return next();
+    } else {
+        return res.status(401).json({
+            error: 'Unauthorized',
+            details: 'Please login to access this resource.'
+        });
+    }
+}
+
+// Rate limiting for login attempts
+const loginLimiter = rateLimit({
+    windowMs: 15 * 60 * 1000, // 15 minutes
+    max: 5, // limit each IP to 5 login requests per windowMs
+    message: {
+        error: 'Too many login attempts',
+        details: 'Please try again after 15 minutes.'
+    },
+    standardHeaders: true,
+    legacyHeaders: false,
+});
+
 // Serve static files from the frontend directory
 app.use(express.static(path.join(__dirname, '..', 'frontend')));
+
+// Authentication endpoints
+
+// POST /api/admin/login - Admin login
+app.post('/api/admin/login', loginLimiter, async (req, res) => {
+    try {
+        const { username, password } = req.body;
+
+        if (!username || !password) {
+            return res.status(400).json({
+                error: 'Validation failed',
+                details: 'Username and password are required.'
+            });
+        }
+
+        // Check username
+        if (username !== ADMIN_CONFIG.username) {
+            return res.status(401).json({
+                error: 'Invalid credentials',
+                details: 'Invalid username or password.'
+            });
+        }
+
+        // Verify password
+        const isValidPassword = await bcrypt.compare(password, ADMIN_CONFIG.passwordHash);
+        if (!isValidPassword) {
+            return res.status(401).json({
+                error: 'Invalid credentials',
+                details: 'Invalid username or password.'
+            });
+        }
+
+        // Set session
+        req.session.isAuthenticated = true;
+        req.session.username = username;
+
+        res.json({
+            success: true,
+            message: 'Login successful',
+            data: {
+                username: username,
+                loginTime: new Date().toISOString()
+            }
+        });
+    } catch (error) {
+        console.error('Error during login:', error);
+        res.status(500).json({
+            error: 'Server Error',
+            details: 'An error occurred during login. Please try again.'
+        });
+    }
+});
+
+// POST /api/admin/logout - Admin logout
+app.post('/api/admin/logout', (req, res) => {
+    req.session.destroy((err) => {
+        if (err) {
+            console.error('Error destroying session:', err);
+            return res.status(500).json({
+                error: 'Server Error',
+                details: 'Failed to logout. Please try again.'
+            });
+        }
+        
+        res.json({
+            success: true,
+            message: 'Logout successful'
+        });
+    });
+});
+
+// GET /api/admin/status - Check authentication status
+app.get('/api/admin/status', (req, res) => {
+    if (req.session && req.session.isAuthenticated) {
+        res.json({
+            success: true,
+            authenticated: true,
+            username: req.session.username
+        });
+    } else {
+        res.json({
+            success: true,
+            authenticated: false
+        });
+    }
+});
 
 // Newsletter subscription endpoint
 app.post('/api/newsletter', async (req, res) => {
@@ -242,6 +385,22 @@ if (!BUSINESS_CONFIG.isReceivingPayments) {
     console.log('⚠️  WARNING: Using sandbox shortcode 174379 - payments go to Safaricom, not you!');
     console.log('📋 Get your own business shortcode to receive payments');
 }
+
+// Log Daraja API configuration status
+console.log('\n🔐 DARAJA API CONFIGURATION:');
+console.log(`Consumer Key: ${DARAJA_CONFIG.consumerKey ? '✅ SET' : '❌ MISSING'}`);
+console.log(`Consumer Secret: ${DARAJA_CONFIG.consumerSecret ? '✅ SET' : '❌ MISSING'}`);
+console.log(`Passkey: ${DARAJA_CONFIG.passkey ? '✅ SET' : '❌ MISSING'}`);
+console.log(`Callback URL: ${DARAJA_CONFIG.callbackUrl}`);
+
+if (!DARAJA_CONFIG.consumerKey || !DARAJA_CONFIG.consumerSecret) {
+    console.log('\n❌ CRITICAL: Missing Daraja API credentials!');
+    console.log('Please set the following environment variables:');
+    console.log('- DARAJA_CONSUMER_KEY');
+    console.log('- DARAJA_CONSUMER_SECRET');
+    console.log('- DARAJA_PASSKEY');
+    console.log('\nPayment functionality will not work without these credentials.');
+}
 console.log('');
 
 // Daraja API URLs
@@ -331,15 +490,44 @@ const SERVICE_PRICING = {
 // Function to get Daraja access token
 async function getDarajaAccessToken() {
     try {
+        // Check if credentials are available
+        if (!DARAJA_CONFIG.consumerKey || !DARAJA_CONFIG.consumerSecret) {
+            throw new Error('Missing Daraja API credentials. Please check DARAJA_CONSUMER_KEY and DARAJA_CONSUMER_SECRET environment variables.');
+        }
+
         const auth = Buffer.from(`${DARAJA_CONFIG.consumerKey}:${DARAJA_CONFIG.consumerSecret}`).toString('base64');
+        console.log(`🔐 Attempting to get Daraja access token from: ${DARAJA_URLS[DARAJA_CONFIG.environment].oauth}`);
+        
         const response = await axios.get(DARAJA_URLS[DARAJA_CONFIG.environment].oauth, {
             headers: {
                 'Authorization': `Basic ${auth}`
             }
         });
+        
+        console.log('✅ Successfully obtained Daraja access token');
         return response.data.access_token;
     } catch (error) {
-        console.error('Error getting Daraja access token:', error);
+        console.error('❌ Error getting Daraja access token:');
+        
+        if (error.response) {
+            // The request was made and the server responded with a status code
+            console.error(`Status: ${error.response.status} ${error.response.statusText}`);
+            console.error(`Response data:`, error.response.data);
+            console.error(`Response headers:`, error.response.headers);
+            
+            if (error.response.status === 400) {
+                console.error('🔍 This is likely due to invalid API credentials.');
+                console.error('Please verify your DARAJA_CONSUMER_KEY and DARAJA_CONSUMER_SECRET are correct.');
+            }
+        } else if (error.request) {
+            // The request was made but no response was received
+            console.error('No response received from Daraja API');
+            console.error('Request details:', error.request);
+        } else {
+            // Something happened in setting up the request
+            console.error('Error setting up request:', error.message);
+        }
+        
         throw new Error('Failed to get access token');
     }
 }
@@ -455,8 +643,8 @@ app.post('/api/register', async (req, res) => {
     }
 });
 
-// GET /registrations endpoint to fetch all registrations
-app.get('/api/registrations', async (req, res) => {
+// GET /registrations endpoint to fetch all registrations (protected)
+app.get('/api/registrations', requireAuth, async (req, res) => {
     try {
         const registrations = await Registration.find().sort({ createdAt: -1 });
         res.json({ 
@@ -473,8 +661,8 @@ app.get('/api/registrations', async (req, res) => {
     }
 });
 
-// DELETE /register/:id endpoint to delete a user registration by ID
-app.delete('/api/register/:id', async (req, res) => {
+// DELETE /register/:id endpoint to delete a user registration by ID (protected)
+app.delete('/api/register/:id', requireAuth, async (req, res) => {
     try {
         const { id } = req.params;
         console.log(`Attempting to delete registration with ID: ${id}`);
@@ -687,8 +875,8 @@ app.post('/api/mpesa/callback', async (req, res) => {
     }
 });
 
-// GET /api/service-requests - Get all service requests (admin)
-app.get('/api/service-requests', async (req, res) => {
+// GET /api/service-requests - Get all service requests (admin) (protected)
+app.get('/api/service-requests', requireAuth, async (req, res) => {
     try {
         const serviceRequests = await ServiceRequest.find().sort({ createdAt: -1 });
         res.json({
@@ -739,8 +927,8 @@ app.get('/api/service-pricing', (req, res) => {
     });
 });
 
-// PUT /api/service-request/:id/status - Update service request status (admin)
-app.put('/api/service-request/:id/status', async (req, res) => {
+// PUT /api/service-request/:id/status - Update service request status (admin) (protected)
+app.put('/api/service-request/:id/status', requireAuth, async (req, res) => {
     try {
         const { id } = req.params;
         const { status } = req.body;
@@ -779,8 +967,8 @@ app.put('/api/service-request/:id/status', async (req, res) => {
     }
 });
 
-// DELETE /api/service-request/:id - Delete service request (admin)
-app.delete('/api/service-request/:id', async (req, res) => {
+// DELETE /api/service-request/:id - Delete service request (admin) (protected)
+app.delete('/api/service-request/:id', requireAuth, async (req, res) => {
     try {
         const { id } = req.params;
         console.log(`Attempting to delete service request with ID: ${id}`);

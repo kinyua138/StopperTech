@@ -23,6 +23,91 @@
             color: #2c3e50;
         }
         
+        /* Login Form Styles */
+        .login-container {
+            max-width: 400px;
+            margin: 5rem auto;
+            background: white;
+            padding: 2rem;
+            border-radius: 8px;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+        }
+        .login-form {
+            display: flex;
+            flex-direction: column;
+            gap: 1rem;
+        }
+        .form-group {
+            display: flex;
+            flex-direction: column;
+        }
+        .form-group label {
+            margin-bottom: 0.5rem;
+            font-weight: 500;
+            color: #2c3e50;
+        }
+        .form-group input {
+            padding: 0.75rem;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+            font-size: 1rem;
+        }
+        .form-group input:focus {
+            outline: none;
+            border-color: #3498db;
+            box-shadow: 0 0 0 2px rgba(52, 152, 219, 0.2);
+        }
+        .login-btn {
+            background-color: #3498db;
+            color: white;
+            border: none;
+            padding: 0.75rem;
+            border-radius: 4px;
+            cursor: pointer;
+            font-size: 1rem;
+            font-weight: 500;
+            transition: background-color 0.3s ease;
+        }
+        .login-btn:hover {
+            background-color: #2980b9;
+        }
+        .login-btn:disabled {
+            background-color: #bdc3c7;
+            cursor: not-allowed;
+        }
+        
+        /* Admin Panel Styles */
+        .admin-panel {
+            display: none;
+        }
+        .admin-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 2rem;
+            background: white;
+            padding: 1rem 2rem;
+            border-radius: 8px;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+        }
+        .admin-info {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+        }
+        .logout-btn {
+            background-color: #e74c3c;
+            color: white;
+            border: none;
+            padding: 0.5rem 1rem;
+            border-radius: 4px;
+            cursor: pointer;
+            font-size: 0.9rem;
+        }
+        .logout-btn:hover {
+            background-color: #c0392b;
+        }
+        
         /* Tab Styles */
         .tabs {
             display: flex;
@@ -194,71 +279,234 @@
     </style>
 </head>
 <body>
-    <div class="container">
+    <!-- Login Form -->
+    <div id="loginContainer" class="login-container">
         <div class="logo-container">
-            <img src="Stopper_tech.png" alt="Avatar" class="header-avatar" />
-            <h1>Admin Panel - Stopper Tech</h1>
+            <img src="Stopper_tech.png" alt="Stopper Tech" class="header-avatar" />
+            <h1>Admin Login</h1>
         </div>
-        
-        <!-- Tabs -->
-        <div class="tabs">
-            <button class="tab active" onclick="switchTab('registrations')">User Registrations</button>
-            <button class="tab" onclick="switchTab('services')">Service Requests</button>
-        </div>
-        
-        <!-- User Registrations Tab -->
-        <div id="registrations" class="tab-content active">
-            <button class="refresh-btn" onclick="fetchRegistrations()">Refresh Data</button>
-            <div id="registrationsMessageContainer"></div>
-            <table id="registrationsTable">
-                <thead>
-                    <tr>
-                        <th>Full Name</th>
-                        <th>Email</th>
-                        <th>Phone</th>
-                        <th>Location</th>
-                        <th>Service</th>
-                        <th>Message</th>
-                        <th>Submitted At</th>
-                        <th>Actions</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    <tr><td colspan="8" class="no-data">Loading data...</td></tr>
-                </tbody>
-            </table>
-        </div>
-        
-        <!-- Service Requests Tab -->
-        <div id="services" class="tab-content">
-            <button class="refresh-btn" onclick="fetchServiceRequests()">Refresh Data</button>
-            <div id="servicesMessageContainer"></div>
-            <table id="serviceRequestsTable">
-                <thead>
-                    <tr>
-                        <th>Service Type</th>
-                        <th>Sub Service</th>
-                        <th>Full Name</th>
-                        <th>Email</th>
-                        <th>Phone</th>
-                        <th>National ID</th>
-                        <th>Amount</th>
-                        <th>Payment Status</th>
-                        <th>Status</th>
-                        <th>Submitted At</th>
-                        <th>Actions</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    <tr><td colspan="11" class="no-data">Loading data...</td></tr>
-                </tbody>
-            </table>
+        <form id="loginForm" class="login-form">
+            <div class="form-group">
+                <label for="username">Username:</label>
+                <input type="text" id="username" name="username" required />
+            </div>
+            <div class="form-group">
+                <label for="password">Password:</label>
+                <input type="password" id="password" name="password" required />
+            </div>
+            <button type="submit" id="loginBtn" class="login-btn">Login</button>
+        </form>
+        <div id="loginMessage"></div>
+    </div>
+
+    <!-- Admin Panel -->
+    <div id="adminPanel" class="admin-panel">
+        <div class="container">
+            <div class="admin-header">
+                <div class="admin-info">
+                    <img src="Stopper_tech.png" alt="Stopper Tech" class="header-avatar" />
+                    <div>
+                        <h1>Admin Panel - Stopper Tech</h1>
+                        <p>Welcome, <span id="adminUsername">Admin</span></p>
+                    </div>
+                </div>
+                <button id="logoutBtn" class="logout-btn">Logout</button>
+            </div>
+            
+            <!-- Tabs -->
+            <div class="tabs">
+                <button class="tab active" onclick="switchTab('registrations')">User Registrations</button>
+                <button class="tab" onclick="switchTab('services')">Service Requests</button>
+            </div>
+            
+            <!-- User Registrations Tab -->
+            <div id="registrations" class="tab-content active">
+                <button class="refresh-btn" onclick="fetchRegistrations()">Refresh Data</button>
+                <div id="registrationsMessageContainer"></div>
+                <table id="registrationsTable">
+                    <thead>
+                        <tr>
+                            <th>Full Name</th>
+                            <th>Email</th>
+                            <th>Phone</th>
+                            <th>Location</th>
+                            <th>Service</th>
+                            <th>Message</th>
+                            <th>Submitted At</th>
+                            <th>Actions</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr><td colspan="8" class="no-data">Loading data...</td></tr>
+                    </tbody>
+                </table>
+            </div>
+            
+            <!-- Service Requests Tab -->
+            <div id="services" class="tab-content">
+                <button class="refresh-btn" onclick="fetchServiceRequests()">Refresh Data</button>
+                <div id="servicesMessageContainer"></div>
+                <table id="serviceRequestsTable">
+                    <thead>
+                        <tr>
+                            <th>Service Type</th>
+                            <th>Sub Service</th>
+                            <th>Full Name</th>
+                            <th>Email</th>
+                            <th>Phone</th>
+                            <th>National ID</th>
+                            <th>Amount</th>
+                            <th>Payment Status</th>
+                            <th>Status</th>
+                            <th>Submitted At</th>
+                            <th>Actions</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr><td colspan="11" class="no-data">Loading data...</td></tr>
+                    </tbody>
+                </table>
+            </div>
         </div>
     </div>
 
     <script>
+        // Authentication state
+        let isAuthenticated = false;
+        let currentUser = null;
+
+        // Check authentication status on page load
+        async function checkAuthStatus() {
+            try {
+                const response = await fetch('/api/admin/status', {
+                    credentials: 'include'
+                });
+                const result = await response.json();
+                
+                if (result.success && result.authenticated) {
+                    isAuthenticated = true;
+                    currentUser = result.username;
+                    showAdminPanel();
+                } else {
+                    showLoginForm();
+                }
+            } catch (error) {
+                console.error('Error checking auth status:', error);
+                showLoginForm();
+            }
+        }
+
+        // Show login form
+        function showLoginForm() {
+            document.getElementById('loginContainer').style.display = 'block';
+            document.getElementById('adminPanel').style.display = 'none';
+            isAuthenticated = false;
+            currentUser = null;
+        }
+
+        // Show admin panel
+        function showAdminPanel() {
+            document.getElementById('loginContainer').style.display = 'none';
+            document.getElementById('adminPanel').style.display = 'block';
+            document.getElementById('adminUsername').textContent = currentUser || 'Admin';
+            
+            // Load initial data
+            fetchRegistrations();
+        }
+
+        // Handle login form submission
+        document.getElementById('loginForm').addEventListener('submit', async (e) => {
+            e.preventDefault();
+            
+            const username = document.getElementById('username').value;
+            const password = document.getElementById('password').value;
+            const loginBtn = document.getElementById('loginBtn');
+            const messageContainer = document.getElementById('loginMessage');
+            
+            // Disable login button and show loading state
+            loginBtn.disabled = true;
+            loginBtn.textContent = 'Logging in...';
+            messageContainer.innerHTML = '';
+            
+            try {
+                const response = await fetch('/api/admin/login', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    credentials: 'include',
+                    body: JSON.stringify({ username, password })
+                });
+                
+                const result = await response.json();
+                
+                if (response.ok && result.success) {
+                    isAuthenticated = true;
+                    currentUser = result.data.username;
+                    messageContainer.innerHTML = '<div class="success-message">Login successful! Redirecting...</div>';
+                    
+                    // Clear form
+                    document.getElementById('loginForm').reset();
+                    
+                    // Show admin panel after a short delay
+                    setTimeout(() => {
+                        showAdminPanel();
+                    }, 1000);
+                } else {
+                    messageContainer.innerHTML = `<div class="error-message">${result.details || 'Login failed. Please try again.'}</div>`;
+                }
+            } catch (error) {
+                console.error('Login error:', error);
+                messageContainer.innerHTML = '<div class="error-message">Network error. Please check your connection and try again.</div>';
+            } finally {
+                // Re-enable login button
+                loginBtn.disabled = false;
+                loginBtn.textContent = 'Login';
+            }
+        });
+
+        // Handle logout
+        document.getElementById('logoutBtn').addEventListener('click', async () => {
+            try {
+                const response = await fetch('/api/admin/logout', {
+                    method: 'POST',
+                    credentials: 'include'
+                });
+                
+                if (response.ok) {
+                    showLoginForm();
+                } else {
+                    alert('Logout failed. Please try again.');
+                }
+            } catch (error) {
+                console.error('Logout error:', error);
+                alert('Network error during logout. Please try again.');
+            }
+        });
+
+        // Enhanced fetch function with authentication handling
+        async function authenticatedFetch(url, options = {}) {
+            const response = await fetch(url, {
+                ...options,
+                credentials: 'include'
+            });
+            
+            // If unauthorized, redirect to login
+            if (response.status === 401) {
+                showLoginForm();
+                throw new Error('Authentication required');
+            }
+            
+            return response;
+        }
+
         // Tab switching functionality
         function switchTab(tabName) {
+            if (!isAuthenticated) {
+                showLoginForm();
+                return;
+            }
+            
             // Hide all tab contents
             document.querySelectorAll('.tab-content').forEach(content => {
                 content.classList.remove('active');
@@ -285,6 +533,11 @@
 
         // Fetch User Registrations
         async function fetchRegistrations() {
+            if (!isAuthenticated) {
+                showLoginForm();
+                return;
+            }
+            
             const tbody = document.querySelector('#registrationsTable tbody');
             const messageContainer = document.getElementById('registrationsMessageContainer');
             
@@ -302,7 +555,7 @@
                     </tr>
                 `;
 
-                const response = await fetch('/api/registrations');
+                const response = await authenticatedFetch('/api/registrations');
                 
                 if (!response.ok) {
                     throw new Error(`Failed to fetch registrations: ${response.status} ${response.statusText}`);
@@ -344,6 +597,11 @@
 
         // Fetch Service Requests
         async function fetchServiceRequests() {
+            if (!isAuthenticated) {
+                showLoginForm();
+                return;
+            }
+            
             const tbody = document.querySelector('#serviceRequestsTable tbody');
             const messageContainer = document.getElementById('servicesMessageContainer');
             
@@ -361,7 +619,7 @@
                     </tr>
                 `;
 
-                const response = await fetch('/api/service-requests');
+                const response = await authenticatedFetch('/api/service-requests');
                 
                 if (!response.ok) {
                     throw new Error(`Failed to fetch service requests: ${response.status} ${response.statusText}`);
@@ -409,9 +667,14 @@
 
         // Delete Registration
         async function deleteRegistration(id) {
+            if (!isAuthenticated) {
+                showLoginForm();
+                return;
+            }
+            
             if (confirm('Are you sure you want to delete this user registration?')) {
                 try {
-                    const response = await fetch(`/api/register/${id}`, {
+                    const response = await authenticatedFetch(`/api/register/${id}`, {
                         method: 'DELETE'
                     });
                     if (!response.ok) {
@@ -428,10 +691,15 @@
 
         // Update Service Status
         async function updateServiceStatus(id) {
+            if (!isAuthenticated) {
+                showLoginForm();
+                return;
+            }
+            
             const newStatus = prompt('Enter new status (submitted, processing, completed, cancelled):');
             if (newStatus && ['submitted', 'processing', 'completed', 'cancelled'].includes(newStatus)) {
                 try {
-                    const response = await fetch(`/api/service-request/${id}/status`, {
+                    const response = await authenticatedFetch(`/api/service-request/${id}/status`, {
                         method: 'PUT',
                         headers: {
                             'Content-Type': 'application/json'
@@ -452,9 +720,14 @@
 
         // Delete Service Request
         async function deleteServiceRequest(id) {
+            if (!isAuthenticated) {
+                showLoginForm();
+                return;
+            }
+            
             if (confirm('Are you sure you want to delete this service request?')) {
                 try {
-                    const response = await fetch(`/api/service-request/${id}`, {
+                    const response = await authenticatedFetch(`/api/service-request/${id}`, {
                         method: 'DELETE'
                     });
                     if (!response.ok) {
@@ -469,8 +742,10 @@
             }
         }
 
-        // Initial load
-        fetchRegistrations();
+        // Initialize the application
+        document.addEventListener('DOMContentLoaded', () => {
+            checkAuthStatus();
+        });
     </script>
 </body>
 </html>

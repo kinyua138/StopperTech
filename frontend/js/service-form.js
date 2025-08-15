@@ -519,6 +519,100 @@ class ServiceFormHandler {
 // Initialize global service form handler
 const serviceFormHandler = new ServiceFormHandler();
 
+// Handle existing service forms on page load
+document.addEventListener('DOMContentLoaded', function() {
+    // Find all existing service forms with various classes
+    const serviceForms = document.querySelectorAll('.kra-service-form, .sha-service-form, .nssf-service-form, .os-service-form, .repair-service-form');
+    
+    serviceForms.forEach(form => {
+        // Prevent default form submission
+        form.addEventListener('submit', async (e) => {
+            e.preventDefault();
+            
+            const subService = form.getAttribute('data-service');
+            const serviceType = serviceFormHandler.getServiceTypeFromForm(form);
+            await serviceFormHandler.handleServiceFormSubmission(form, serviceType, subService);
+        });
+    });
+});
+
+// Add method to determine service type from form class
+ServiceFormHandler.prototype.getServiceTypeFromForm = function(form) {
+    if (form.classList.contains('kra-service-form')) return 'KRA';
+    if (form.classList.contains('sha-service-form')) return 'SHA';
+    if (form.classList.contains('nssf-service-form')) return 'NSSF';
+    if (form.classList.contains('os-service-form')) return 'OS_SOFTWARE';
+    if (form.classList.contains('repair-service-form')) return 'COMPUTER_REPAIR';
+    return 'UNKNOWN';
+};
+
+// Add method to handle all service form submissions
+ServiceFormHandler.prototype.handleServiceFormSubmission = async function(form, serviceType, subService) {
+    const submitButton = form.querySelector('button[type="submit"]');
+    const originalButtonText = submitButton.innerHTML;
+
+    try {
+        // Show loading state
+        this.showLoading(submitButton, 'Submitting request...');
+
+        // Collect form data
+        const formData = new FormData(form);
+        const serviceDetails = {};
+        
+        // Collect all form fields into serviceDetails
+        for (let [key, value] of formData.entries()) {
+            if (!['fullName', 'email', 'phone', 'nationalId'].includes(key)) {
+                serviceDetails[key] = value;
+            }
+        }
+
+        const requestData = {
+            serviceType: serviceType,
+            subService: subService,
+            fullName: formData.get('fullName'),
+            email: formData.get('email'),
+            phone: formData.get('phone'),
+            nationalId: formData.get('nationalId'),
+            serviceDetails: serviceDetails
+        };
+
+        // Submit service request
+        const response = await this.submitServiceRequest(requestData);
+        
+        // Show success and initiate payment
+        this.showSuccess(submitButton, 'Request submitted! Initiating payment...');
+
+        // Wait a moment then initiate payment
+        setTimeout(async () => {
+            try {
+                this.showLoading(submitButton, 'Initiating M-Pesa payment...');
+                
+                const paymentResponse = await this.initiatePayment(
+                    response.data.id,
+                    requestData.phone
+                );
+
+                // Show payment instructions
+                this.showPaymentInstructions(paymentResponse, response.data);
+                this.resetButton(submitButton, originalButtonText);
+
+            } catch (paymentError) {
+                this.showError(submitButton, `Payment Error: ${paymentError.message}`);
+                setTimeout(() => {
+                    this.resetButton(submitButton, originalButtonText);
+                }, 3000);
+            }
+        }, 2000);
+
+    } catch (error) {
+        this.showError(submitButton, `Error: ${error.message}`);
+        setTimeout(() => {
+            this.resetButton(submitButton, originalButtonText);
+        }, 3000);
+    }
+};
+
 // Export for use in other scripts
 if (typeof module !== 'undefined' && module.exports) {
     module.exports = ServiceFormHandler;
+}

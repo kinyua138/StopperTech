@@ -162,30 +162,6 @@
         </div>
     </header>
 
-    <!-- GHRIS Hero Section -->
-    <section class="ghris-hero">
-        <div class="hero-content">
-            <h1><i class="fas fa-users-cog"></i> GHRIS Services</h1>
-            <p>Complete assistance with Government Human Resource Information System services. Manage your civil service records, payslips, and employment details efficiently.</p>
-            <div class="hero-contact">
-                <div class="contact-item">
-                    <i class="fab fa-whatsapp"></i>
-                    <div>
-                        <span>Chat with us on WhatsApp:</span>
-                        <strong>+254 713 159 136</strong>
-                    </div>
-                </div>
-                <div class="contact-item">
-                    <i class="fas fa-envelope"></i>
-                    <div>
-                        <span>Contact us via Email:</span>
-                        <strong>services@stoppertech.co.ke</strong>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </section>
-
     <!-- GHRIS Services Details -->
     <section class="services" id="ghris-services">
         <div class="section-title">
@@ -337,6 +313,11 @@
             </div>
         </div>
 
+        <!-- Service Request Form -->
+        <div id="ghrisServiceForm">
+            <!-- Service form will be dynamically inserted here -->
+        </div>
+
         <!-- Service Information -->
         <div class="service-info">
             <div class="info-container">
@@ -350,6 +331,30 @@
                     <p>Our online digital platform provides a seamless online experience, allowing you to focus on what matters the most while we take care of your GHRIS Service requests.</p>
                     <p>Our experienced customer support team is dedicated to providing fast and efficient online assistance. We understand the intricacies of GHRIS Services and ensure that your submitted service requests are handled properly. With our streamlined online processes and vast expert knowledge in the GHRIS niche, STOPPER TECH guarantees a smooth and efficient service experience every time you submit your service request online.</p>
                     <p>Ready to get started? Simply contact us via WhatsApp using <strong>+254 713 159 136</strong>. Alternatively, you can also send an Email to <strong>services@stoppertech.co.ke</strong> for quick and immediate assistance with your service request. We are here and ready to assist you with all GHRIS Service needs in Kenya conveniently and efficiently.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- GHRIS Hero Section -->
+    <section class="ghris-hero">
+        <div class="hero-content">
+            <h1><i class="fas fa-users-cog"></i> GHRIS Services</h1>
+            <p>Complete assistance with Government Human Resource Information System services. Manage your civil service records, payslips, and employment details efficiently.</p>
+            <div class="hero-contact">
+                <a href="https://api.whatsapp.com/send/?phone=%2B254713159136&text=Hi%20Stopper%20Tech!%20I%20need%20assistance%20with%20your%20GHRIS%20services.&type=phone_number&app_absent=0" class="contact-item whatsapp-contact" target="_blank">
+                    <i class="fab fa-whatsapp"></i>
+                    <div>
+                        <span>Chat with us on WhatsApp:</span>
+                        <strong>+254 713 159 136</strong>
+                    </div>
+                </a>
+                <div class="contact-item">
+                    <i class="fas fa-envelope"></i>
+                    <div>
+                        <span>Contact us via Email:</span>
+                        <strong>services@stoppertech.co.ke</strong>
+                    </div>
                 </div>
             </div>
         </div>
@@ -512,6 +517,22 @@
             } else {
                 header.classList.remove('scrolled');
             }
+        });
+    </script>
+
+    <!-- Service Form JavaScript -->
+    <script src="js/service-form.js"></script>
+    <script>
+        // Initialize GHRIS service form when page loads
+        document.addEventListener('DOMContentLoaded', function() {
+            const ghrisSubServices = [
+                'GHRIS Registration',
+                'Payslip Access', 
+                'Leave Application',
+                'Employee Records Management'
+            ];
+            
+            serviceFormHandler.initializeForm('GHRIS', ghrisSubServices, 'ghrisServiceForm');
         });
     </script>
 </body>
