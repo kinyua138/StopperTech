@@ -45,8 +45,8 @@
 }
 
 .content-section:hover {
-    transform: translateY(-5px);
-    box-shadow: 0 10px 30px rgba(0, 168, 255, 0.1);
+    transform: translateY(-3px);
+    box-shadow: 0 5px 15px rgba(0, 168, 255, 0.1);
     border-color: rgba(0, 168, 255, 0.3);
 }
 
@@ -206,8 +206,8 @@
 }
 
 .contact-card:hover {
-    transform: translateY(-5px);
-    box-shadow: 0 10px 30px rgba(0, 168, 255, 0.15);
+    transform: translateY(-3px);
+    box-shadow: 0 5px 15px rgba(0, 168, 255, 0.15);
     border-color: rgba(0, 168, 255, 0.4);
 }
 
@@ -264,8 +264,8 @@
 }
 
 .back-to-top:hover {
-    transform: translateY(-3px);
-    box-shadow: 0 5px 15px rgba(0, 168, 255, 0.3);
+    transform: translateY(-2px);
+    box-shadow: 0 3px 10px rgba(0, 168, 255, 0.3);
 }
 
 /* Mobile Responsive */

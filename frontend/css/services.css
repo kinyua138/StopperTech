@@ -75,8 +75,8 @@
 }
 
 .cta-button:hover {
-    transform: translateY(-3px);
-    box-shadow: 0 15px 40px rgba(0, 168, 255, 0.4);
+    transform: translateY(-2px);
+    box-shadow: 0 8px 20px rgba(0, 168, 255, 0.3);
 }
 
 /* Section Styles */
@@ -134,16 +134,16 @@
     background: rgba(31, 31, 58, 0.5);
     border-radius: 20px;
     overflow: hidden;
-    box-shadow: 0 10px 30px rgba(0,0,0,0.2);
-    transition: all 0.4s ease;
+    box-shadow: 0 5px 15px rgba(0,0,0,0.2);
+    transition: transform 0.3s ease, box-shadow 0.3s ease, border-color 0.3s ease;
     position: relative;
     border: 1px solid #00a8ff;
-    backdrop-filter: blur(5px);
+    will-change: transform;
 }
 
 .service-card:hover {
-    transform: translateY(-15px) scale(1.02);
-    box-shadow: 0 20px 40px rgba(0, 168, 255, 0.3);
+    transform: translateY(-8px);
+    box-shadow: 0 12px 25px rgba(0, 168, 255, 0.2);
     border-color: #e53995;
     cursor: pointer;
 }
@@ -242,8 +242,8 @@
 }
 
 .submit-btn:hover {
-    transform: translateY(-2px);
-    box-shadow: 0 8px 25px rgba(0, 168, 255, 0.4);
+    transform: translateY(-1px);
+    box-shadow: 0 5px 15px rgba(0, 168, 255, 0.3);
 }
 
 /* Service Information Section */

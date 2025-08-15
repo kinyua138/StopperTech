@@ -54,7 +54,7 @@ header.scrolled {
 }
 
 .logo-circle-container:hover {
-    transform: scale(1.05);
+    transform: translateY(-2px);
 }
 
 .logo-circle-svg {
@@ -83,7 +83,7 @@ header.scrolled {
 }
 
 .logo-circle-container:hover .logo-center-image {
-    box-shadow: 0 0 15px rgba(0, 168, 255, 0.5);
+    box-shadow: 0 0 8px rgba(0, 168, 255, 0.3);
 }
 
 nav ul {
@@ -133,14 +133,13 @@ nav ul li a:hover {
     color: #ffffff;
     background: rgba(0, 168, 255, 0.15);
     border-color: rgba(0, 168, 255, 0.5);
-    transform: translateY(-2px);
-    box-shadow: 0 4px 15px rgba(0, 168, 255, 0.2);
-    text-shadow: 0 0 8px rgba(0, 168, 255, 0.3);
+    transform: translateY(-1px);
+    box-shadow: 0 2px 8px rgba(0, 168, 255, 0.15);
 }
 
 nav ul li a:active {
     transform: translateY(0);
-    box-shadow: 0 2px 8px rgba(0, 168, 255, 0.3);
+    box-shadow: 0 1px 4px rgba(0, 168, 255, 0.2);
 }
 
 /* Active/Current page indicator */
@@ -227,7 +226,7 @@ footer {
 
 .social-links a:hover {
     background-color: #00a8ff;
-    transform: translateY(-3px);
+    transform: translateY(-2px);
 }
 
 .newsletter-form {
@@ -280,14 +279,14 @@ footer {
     left: 0;
     transform: translate3d(-50%, -50%, 0);
     will-change: transform;
-    transition: width 0.2s ease, height 0.2s ease, background-color 0.2s ease;
+    transition: width 0.15s ease, height 0.15s ease;
     backface-visibility: hidden;
 }
 
 .cursor-grow {
-    width: 40px;
-    height: 40px;
-    background-color: rgba(0, 168, 255, 0.1);
+    width: 30px;
+    height: 30px;
+    opacity: 0.8;
 }
 
 /* Mobile Menu Toggle */
@@ -410,7 +409,7 @@ body.menu-open {
     
     nav ul li a:hover {
         background: rgba(0, 168, 255, 0.1);
-        transform: scale(1.05);
+        transform: translateY(-1px);
     }
     
     /* Footer Mobile Styles */
