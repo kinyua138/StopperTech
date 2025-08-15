@@ -352,6 +352,66 @@ const serviceRequestSchema = new mongoose.Schema({
 
 const ServiceRequest = mongoose.model('ServiceRequest', serviceRequestSchema);
 
+// Define schema for service pricing
+const servicePricingSchema = new mongoose.Schema({
+    serviceType: {
+        type: String,
+        required: true,
+        enum: ['KRA', 'SHA', 'NSSF', 'NTSA', 'HELB', 'GHRIS', 'TSC', 'OS_SOFTWARE', 'COMPUTER_REPAIR']
+    },
+    subService: {
+        type: String,
+        required: true,
+        trim: true
+    },
+    price: {
+        type: Number,
+        required: true,
+        min: [1, 'Price must be greater than 0']
+    }
+}, {
+    timestamps: true
+});
+
+// Create compound index to ensure unique service-subservice combinations
+servicePricingSchema.index({ serviceType: 1, subService: 1 }, { unique: true });
+
+const ServicePricing = mongoose.model('ServicePricing', servicePricingSchema);
+
+// Function to initialize default pricing in database
+async function initializeDefaultPricing() {
+    try {
+        const existingCount = await ServicePricing.countDocuments();
+        if (existingCount === 0) {
+            console.log('Initializing default service pricing in database...');
+            
+            const pricingEntries = [];
+            for (const [serviceType, services] of Object.entries(SERVICE_PRICING)) {
+                for (const [subService, price] of Object.entries(services)) {
+                    pricingEntries.push({
+                        serviceType,
+                        subService,
+                        price
+                    });
+                }
+            }
+            
+            await ServicePricing.insertMany(pricingEntries);
+            console.log(`✅ Initialized ${pricingEntries.length} default pricing entries`);
+        } else {
+            console.log(`📋 Found ${existingCount} existing pricing entries in database`);
+        }
+    } catch (error) {
+        console.error('Error initializing default pricing:', error);
+        console.log('⚠️  Will use in-memory pricing as fallback');
+    }
+}
+
+// Initialize default pricing after MongoDB connection
+mongoose.connection.once('open', () => {
+    initializeDefaultPricing();
+});
+
 // Safaricom Daraja API Configuration
 const DARAJA_CONFIG = {
     consumerKey: process.env.DARAJA_CONSUMER_KEY,
@@ -672,8 +732,16 @@ app.post('/api/service-request', async (req, res) => {
             });
         }
 
-        // Get service amount from pricing configuration
-        const amount = SERVICE_PRICING[serviceType]?.[subService];
+        // Get service amount from database first, fallback to in-memory pricing
+        let amount;
+        try {
+            const pricingDoc = await ServicePricing.findOne({ serviceType, subService });
+            amount = pricingDoc ? pricingDoc.price : SERVICE_PRICING[serviceType]?.[subService];
+        } catch (error) {
+            console.error('Error fetching pricing from database:', error);
+            amount = SERVICE_PRICING[serviceType]?.[subService];
+        }
+        
         if (!amount) {
             return res.status(400).json({
                 error: 'Invalid service',
@@ -883,16 +951,37 @@ app.get('/api/service-request/:id', async (req, res) => {
     }
 });
 
-// GET /api/service-pricing - Get service pricing
-app.get('/api/service-pricing', (req, res) => {
-    res.json({
-        success: true,
-        data: SERVICE_PRICING
-    });
+// GET /api/service-pricing - Get service pricing (combines database and in-memory pricing)
+app.get('/api/service-pricing', async (req, res) => {
+    try {
+        // Start with in-memory pricing as base
+        const combinedPricing = JSON.parse(JSON.stringify(SERVICE_PRICING));
+        
+        // Get all pricing from database and override in-memory prices
+        const dbPricing = await ServicePricing.find();
+        
+        dbPricing.forEach(item => {
+            if (combinedPricing[item.serviceType]) {
+                combinedPricing[item.serviceType][item.subService] = item.price;
+            }
+        });
+
+        res.json({
+            success: true,
+            data: combinedPricing
+        });
+    } catch (error) {
+        console.error('Error fetching service pricing:', error);
+        // Fallback to in-memory pricing if database fails
+        res.json({
+            success: true,
+            data: SERVICE_PRICING
+        });
+    }
 });
 
-// PUT /api/service-pricing - Update service pricing (admin)
-app.put('/api/service-pricing', (req, res) => {
+// PUT /api/service-pricing - Update service pricing (admin) - saves to database
+app.put('/api/service-pricing', requireAuth, async (req, res) => {
     try {
         const { serviceType, subService, price } = req.body;
 
@@ -924,11 +1013,26 @@ app.put('/api/service-pricing', (req, res) => {
             });
         }
 
-        // Update the price
-        const oldPrice = SERVICE_PRICING[serviceType][subService];
+        // Get old price (from database first, then fallback to in-memory)
+        let oldPrice;
+        try {
+            const existingPricing = await ServicePricing.findOne({ serviceType, subService });
+            oldPrice = existingPricing ? existingPricing.price : SERVICE_PRICING[serviceType][subService];
+        } catch (error) {
+            oldPrice = SERVICE_PRICING[serviceType][subService];
+        }
+
+        // Update or create pricing in database
+        await ServicePricing.findOneAndUpdate(
+            { serviceType, subService },
+            { price },
+            { upsert: true, new: true }
+        );
+
+        // Also update in-memory pricing for immediate consistency
         SERVICE_PRICING[serviceType][subService] = price;
 
-        console.log(`Price updated: ${serviceType} - ${subService}: ${oldPrice} → ${price}`);
+        console.log(`Price updated in database: ${serviceType} - ${subService}: ${oldPrice} → ${price}`);
 
         res.json({
             message: 'Service price updated successfully.',
@@ -942,6 +1046,14 @@ app.put('/api/service-pricing', (req, res) => {
         });
     } catch (error) {
         console.error('Error updating service price:', error);
+        
+        if (error.code === 11000) {
+            return res.status(409).json({
+                error: 'Duplicate Entry',
+                details: 'This service pricing already exists.'
+            });
+        }
+        
         res.status(500).json({
             error: 'Server Error',
             details: 'Failed to update service price. Please try again later.'
