@@ -276,6 +276,58 @@
             font-weight: 600;
             color: #27ae60;
         }
+        
+        /* Pricing Styles */
+        .pricing-section {
+            margin-bottom: 2rem;
+        }
+        .pricing-section h3 {
+            background-color: #34495e;
+            color: white;
+            padding: 1rem;
+            margin: 0 0 1rem 0;
+            border-radius: 4px;
+            font-size: 1.1rem;
+        }
+        .pricing-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 1rem;
+            margin-bottom: 1rem;
+        }
+        .pricing-item {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 0.75rem 1rem;
+            background-color: #f8f9fa;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+        }
+        .pricing-item:nth-child(even) {
+            background-color: #ffffff;
+        }
+        .pricing-service {
+            font-weight: 500;
+            color: #2c3e50;
+        }
+        .pricing-amount {
+            font-weight: 600;
+            color: #27ae60;
+            margin-right: 1rem;
+        }
+        .edit-price-btn {
+            background-color: #3498db;
+            color: white;
+            border: none;
+            padding: 0.25rem 0.5rem;
+            border-radius: 3px;
+            cursor: pointer;
+            font-size: 0.8rem;
+        }
+        .edit-price-btn:hover {
+            background-color: #2980b9;
+        }
     </style>
 </head>
 <body>
@@ -317,6 +369,7 @@
             <div class="tabs">
                 <button class="tab active" onclick="switchTab('registrations')">User Registrations</button>
                 <button class="tab" onclick="switchTab('services')">Service Requests</button>
+                <button class="tab" onclick="switchTab('pricing')">Service Pricing</button>
             </div>
             
             <!-- User Registrations Tab -->
@@ -366,6 +419,15 @@
                         <tr><td colspan="11" class="no-data">Loading data...</td></tr>
                     </tbody>
                 </table>
+            </div>
+            
+            <!-- Service Pricing Tab -->
+            <div id="pricing" class="tab-content">
+                <button class="refresh-btn" onclick="fetchServicePricing()">Refresh Data</button>
+                <div id="pricingMessageContainer"></div>
+                <div id="pricingContainer">
+                    <div class="no-data">Loading pricing data...</div>
+                </div>
             </div>
         </div>
     </div>
@@ -528,6 +590,130 @@
                 fetchRegistrations();
             } else if (tabName === 'services') {
                 fetchServiceRequests();
+            } else if (tabName === 'pricing') {
+                fetchServicePricing();
+            }
+        }
+
+        // Fetch Service Pricing
+        async function fetchServicePricing() {
+            if (!isAuthenticated) {
+                showLoginForm();
+                return;
+            }
+            
+            const container = document.getElementById('pricingContainer');
+            const messageContainer = document.getElementById('pricingMessageContainer');
+            
+            messageContainer.innerHTML = '';
+            
+            try {
+                container.innerHTML = `
+                    <div class="loading-container">
+                        <div class="spinner"></div>
+                        <p>Loading pricing data...</p>
+                    </div>
+                `;
+
+                const response = await fetch('/api/service-pricing');
+                
+                if (!response.ok) {
+                    throw new Error(`Failed to fetch pricing: ${response.status} ${response.statusText}`);
+                }
+                
+                const result = await response.json();
+                const data = result.data || {};
+                
+                container.innerHTML = '';
+
+                if (Object.keys(data).length === 0) {
+                    container.innerHTML = '<div class="no-data">No pricing data found.</div>';
+                    messageContainer.innerHTML = '<div class="success-message">Successfully loaded. No pricing data found.</div>';
+                    return;
+                }
+
+                // Create pricing sections for each service type
+                Object.keys(data).forEach(serviceType => {
+                    const section = document.createElement('div');
+                    section.className = 'pricing-section';
+                    
+                    const header = document.createElement('h3');
+                    header.textContent = serviceType;
+                    section.appendChild(header);
+                    
+                    const grid = document.createElement('div');
+                    grid.className = 'pricing-grid';
+                    
+                    Object.keys(data[serviceType]).forEach(subService => {
+                        const price = data[serviceType][subService];
+                        const item = document.createElement('div');
+                        item.className = 'pricing-item';
+                        item.innerHTML = `
+                            <span class="pricing-service">${subService}</span>
+                            <div>
+                                <span class="pricing-amount">KSh ${price}</span>
+                                <button class="edit-price-btn" onclick="editPrice('${serviceType}', '${subService}', ${price})">Edit</button>
+                            </div>
+                        `;
+                        grid.appendChild(item);
+                    });
+                    
+                    section.appendChild(grid);
+                    container.appendChild(section);
+                });
+                
+                messageContainer.innerHTML = `<div class="success-message">Successfully loaded pricing for ${Object.keys(data).length} service types.</div>`;
+            } catch (error) {
+                console.error('Error fetching pricing:', error);
+                container.innerHTML = '<div class="no-data">Error loading pricing data.</div>';
+                messageContainer.innerHTML = `<div class="error-message">Error: ${error.message || 'Failed to load pricing. Please try again.'}</div>`;
+            }
+        }
+
+        // Edit Price Function
+        async function editPrice(serviceType, subService, currentPrice) {
+            if (!isAuthenticated) {
+                showLoginForm();
+                return;
+            }
+            
+            const newPrice = prompt(`Update price for ${serviceType} - ${subService}:\nCurrent price: KSh ${currentPrice}`, currentPrice);
+            
+            if (newPrice === null) return; // User cancelled
+            
+            const price = parseFloat(newPrice);
+            if (isNaN(price) || price <= 0) {
+                alert('Please enter a valid price greater than 0.');
+                return;
+            }
+            
+            try {
+                const response = await fetch('/api/service-pricing', {
+                    method: 'PUT',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify({
+                        serviceType: serviceType,
+                        subService: subService,
+                        price: price
+                    })
+                });
+                
+                if (!response.ok) {
+                    throw new Error(`Failed to update price: ${response.status} ${response.statusText}`);
+                }
+                
+                const result = await response.json();
+                document.getElementById('pricingMessageContainer').innerHTML = 
+                    `<div class="success-message">Price updated successfully: ${serviceType} - ${subService} from KSh ${result.data.oldPrice} to KSh ${result.data.newPrice}</div>`;
+                
+                // Refresh pricing data
+                fetchServicePricing();
+            } catch (error) {
+                console.error('Error updating price:', error);
+                document.getElementById('pricingMessageContainer').innerHTML = 
+                    `<div class="error-message">Error: ${error.message || 'Failed to update price. Please try again.'}</div>`;
             }
         }
 
@@ -555,7 +741,7 @@
                     </tr>
                 `;
 
-                const response = await authenticatedFetch('/api/registrations');
+                const response = await fetch('/api/registrations');
                 
                 if (!response.ok) {
                     throw new Error(`Failed to fetch registrations: ${response.status} ${response.statusText}`);
@@ -619,7 +805,7 @@
                     </tr>
                 `;
 
-                const response = await authenticatedFetch('/api/service-requests');
+                const response = await fetch('/api/service-requests');
                 
                 if (!response.ok) {
                     throw new Error(`Failed to fetch service requests: ${response.status} ${response.statusText}`);
@@ -674,7 +860,7 @@
             
             if (confirm('Are you sure you want to delete this user registration?')) {
                 try {
-                    const response = await authenticatedFetch(`/api/register/${id}`, {
+                    const response = await fetch(`/api/register/${id}`, {
                         method: 'DELETE'
                     });
                     if (!response.ok) {
@@ -699,7 +885,7 @@
             const newStatus = prompt('Enter new status (submitted, processing, completed, cancelled):');
             if (newStatus && ['submitted', 'processing', 'completed', 'cancelled'].includes(newStatus)) {
                 try {
-                    const response = await authenticatedFetch(`/api/service-request/${id}/status`, {
+                    const response = await fetch(`/api/service-request/${id}/status`, {
                         method: 'PUT',
                         headers: {
                             'Content-Type': 'application/json'
@@ -727,7 +913,7 @@
             
             if (confirm('Are you sure you want to delete this service request?')) {
                 try {
-                    const response = await authenticatedFetch(`/api/service-request/${id}`, {
+                    const response = await fetch(`/api/service-request/${id}`, {
                         method: 'DELETE'
                     });
                     if (!response.ok) {

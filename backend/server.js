@@ -38,6 +38,44 @@ const app = express();
 
 const { sendNewsletterEmail } = require('./newsletter');
 
+// Simple session storage (in production, use Redis or database)
+const adminSessions = new Map();
+
+// Admin credentials
+const ADMIN_CREDENTIALS = {
+    username: 'admin',
+    password: 'Stopper@350'
+};
+
+// Generate simple session ID
+function generateSessionId() {
+    return Math.random().toString(36).substring(2, 15) + Math.random().toString(36).substring(2, 15);
+}
+
+// Middleware to check admin authentication
+function requireAuth(req, res, next) {
+    const sessionId = req.headers.authorization?.replace('Bearer ', '') || req.cookies?.adminSession;
+    
+    if (!sessionId || !adminSessions.has(sessionId)) {
+        return res.status(401).json({
+            error: 'Unauthorized',
+            details: 'Authentication required'
+        });
+    }
+    
+    const session = adminSessions.get(sessionId);
+    if (Date.now() > session.expires) {
+        adminSessions.delete(sessionId);
+        return res.status(401).json({
+            error: 'Session expired',
+            details: 'Please login again'
+        });
+    }
+    
+    req.adminUser = session.username;
+    next();
+}
+
 // Security middleware with custom CSP
 app.use(helmet({
     contentSecurityPolicy: {
@@ -78,6 +116,114 @@ app.use(bodyParser.urlencoded({ extended: true, limit: '10mb' }));
 
 // Serve static files from the frontend directory
 app.use(express.static(path.join(__dirname, '..', 'frontend')));
+
+// Admin Authentication Endpoints
+// POST /api/admin/login - Admin login
+app.post('/api/admin/login', (req, res) => {
+    try {
+        const { username, password } = req.body;
+
+        if (!username || !password) {
+            return res.status(400).json({
+                error: 'Validation failed',
+                details: 'Username and password are required.'
+            });
+        }
+
+        if (username !== ADMIN_CREDENTIALS.username || password !== ADMIN_CREDENTIALS.password) {
+            return res.status(401).json({
+                error: 'Invalid credentials',
+                details: 'Incorrect username or password.'
+            });
+        }
+
+        // Create session
+        const sessionId = generateSessionId();
+        const expires = Date.now() + (24 * 60 * 60 * 1000); // 24 hours
+
+        adminSessions.set(sessionId, {
+            username: username,
+            expires: expires,
+            createdAt: Date.now()
+        });
+
+        console.log(`Admin login successful: ${username}`);
+
+        res.json({
+            message: 'Login successful',
+            success: true,
+            data: {
+                username: username,
+                sessionId: sessionId,
+                expires: expires
+            }
+        });
+    } catch (error) {
+        console.error('Error during admin login:', error);
+        res.status(500).json({
+            error: 'Server Error',
+            details: 'An unexpected error occurred during login.'
+        });
+    }
+});
+
+// POST /api/admin/logout - Admin logout
+app.post('/api/admin/logout', (req, res) => {
+    try {
+        const sessionId = req.headers.authorization?.replace('Bearer ', '') || req.cookies?.adminSession;
+        
+        if (sessionId && adminSessions.has(sessionId)) {
+            adminSessions.delete(sessionId);
+            console.log('Admin logout successful');
+        }
+
+        res.json({
+            message: 'Logout successful',
+            success: true
+        });
+    } catch (error) {
+        console.error('Error during admin logout:', error);
+        res.status(500).json({
+            error: 'Server Error',
+            details: 'An unexpected error occurred during logout.'
+        });
+    }
+});
+
+// GET /api/admin/status - Check admin authentication status
+app.get('/api/admin/status', (req, res) => {
+    try {
+        const sessionId = req.headers.authorization?.replace('Bearer ', '') || req.cookies?.adminSession;
+        
+        if (!sessionId || !adminSessions.has(sessionId)) {
+            return res.json({
+                success: true,
+                authenticated: false
+            });
+        }
+
+        const session = adminSessions.get(sessionId);
+        if (Date.now() > session.expires) {
+            adminSessions.delete(sessionId);
+            return res.json({
+                success: true,
+                authenticated: false
+            });
+        }
+
+        res.json({
+            success: true,
+            authenticated: true,
+            username: session.username
+        });
+    } catch (error) {
+        console.error('Error checking admin status:', error);
+        res.status(500).json({
+            error: 'Server Error',
+            details: 'An unexpected error occurred while checking authentication status.'
+        });
+    }
+});
 
 // Newsletter subscription endpoint
 app.post('/api/newsletter', async (req, res) => {
@@ -743,6 +889,64 @@ app.get('/api/service-pricing', (req, res) => {
         success: true,
         data: SERVICE_PRICING
     });
+});
+
+// PUT /api/service-pricing - Update service pricing (admin)
+app.put('/api/service-pricing', (req, res) => {
+    try {
+        const { serviceType, subService, price } = req.body;
+
+        if (!serviceType || !subService || !price) {
+            return res.status(400).json({
+                error: 'Validation failed',
+                details: 'Service type, sub-service, and price are required.'
+            });
+        }
+
+        if (price <= 0) {
+            return res.status(400).json({
+                error: 'Invalid price',
+                details: 'Price must be greater than 0.'
+            });
+        }
+
+        if (!SERVICE_PRICING[serviceType]) {
+            return res.status(404).json({
+                error: 'Service type not found',
+                details: `Service type '${serviceType}' does not exist.`
+            });
+        }
+
+        if (!SERVICE_PRICING[serviceType][subService]) {
+            return res.status(404).json({
+                error: 'Sub-service not found',
+                details: `Sub-service '${subService}' does not exist in '${serviceType}'.`
+            });
+        }
+
+        // Update the price
+        const oldPrice = SERVICE_PRICING[serviceType][subService];
+        SERVICE_PRICING[serviceType][subService] = price;
+
+        console.log(`Price updated: ${serviceType} - ${subService}: ${oldPrice} → ${price}`);
+
+        res.json({
+            message: 'Service price updated successfully.',
+            success: true,
+            data: {
+                serviceType,
+                subService,
+                oldPrice,
+                newPrice: price
+            }
+        });
+    } catch (error) {
+        console.error('Error updating service price:', error);
+        res.status(500).json({
+            error: 'Server Error',
+            details: 'Failed to update service price. Please try again later.'
+        });
+    }
 });
 
 // PUT /api/service-request/:id/status - Update service request status (admin)
