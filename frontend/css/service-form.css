@@ -77,6 +77,48 @@
     margin-top: 0.3rem;
 }
 
+/* Phone Input Container */
+.phone-input-container {
+    display: flex;
+    align-items: center;
+    border: 1px solid #3c3c5a;
+    border-radius: 8px;
+    background-color: rgba(26, 26, 46, 0.8);
+    transition: all 0.3s ease;
+    overflow: hidden;
+}
+
+.phone-input-container:focus-within {
+    border-color: #00a8ff;
+    box-shadow: 0 0 0 1px rgba(0, 168, 255, 0.3);
+    background-color: rgba(26, 26, 46, 0.9);
+}
+
+.phone-prefix {
+    background: linear-gradient(135deg, #00a8ff, #0095e0);
+    color: white;
+    padding: 0.8rem 1rem;
+    font-weight: 600;
+    font-size: 0.95rem;
+    border-right: 1px solid #3c3c5a;
+    white-space: nowrap;
+}
+
+.phone-input-container input {
+    border: none !important;
+    background: transparent !important;
+    box-shadow: none !important;
+    flex: 1;
+    margin: 0;
+    padding: 0.8rem 1rem;
+}
+
+.phone-input-container input:focus {
+    outline: none;
+    border: none !important;
+    box-shadow: none !important;
+}
+
 /* Service Details Section */
 .service-details-section {
     background: rgba(26, 26, 46, 0.5);

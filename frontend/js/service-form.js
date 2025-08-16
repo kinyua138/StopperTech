@@ -38,11 +38,49 @@ class ServiceFormHandler {
             // Already in correct format
             phone = phone;
         } else if (phone.startsWith('7') || phone.startsWith('1')) {
-            // Handle 7XXXXXXXX or 1XXXXXXXX
+            // Handle 7XXXXXXXX or 1XXXXXXXX (9 digits from new input format)
             phone = '254' + phone;
         }
         
         return phone;
+    }
+
+    // Setup phone input formatting and validation
+    setupPhoneInput(phoneInput) {
+        if (!phoneInput) return;
+
+        // Only allow digits
+        phoneInput.addEventListener('input', (e) => {
+            let value = e.target.value.replace(/\D/g, '');
+            
+            // Limit to 9 digits
+            if (value.length > 9) {
+                value = value.substring(0, 9);
+            }
+            
+            e.target.value = value;
+        });
+
+        // Prevent non-digit characters
+        phoneInput.addEventListener('keypress', (e) => {
+            if (!/[0-9]/.test(e.key) && !['Backspace', 'Delete', 'Tab', 'Enter', 'ArrowLeft', 'ArrowRight'].includes(e.key)) {
+                e.preventDefault();
+            }
+        });
+
+        // Add visual feedback for validation
+        phoneInput.addEventListener('blur', (e) => {
+            const value = e.target.value;
+            const container = e.target.closest('.phone-input-container');
+            
+            if (value.length === 9 && /^[0-9]{9}$/.test(value)) {
+                container.style.borderColor = '#28a745';
+            } else if (value.length > 0) {
+                container.style.borderColor = '#e53995';
+            } else {
+                container.style.borderColor = '#3c3c5a';
+            }
+        });
     }
 
     // Validate form data
@@ -223,8 +261,11 @@ class ServiceFormHandler {
 
                     <div class="form-group">
                         <label for="phone">Phone Number *</label>
-                        <input type="tel" id="phone" name="phone" required placeholder="0712345678 or 254712345678">
-                        <small>Enter your M-Pesa phone number for payment</small>
+                        <div class="phone-input-container">
+                            <span class="phone-prefix">+254</span>
+                            <input type="tel" id="phone" name="phone" required placeholder="712345678" maxlength="9" pattern="[0-9]{9}">
+                        </div>
+                        <small>Enter your M-Pesa phone number for payment (9 digits after 254)</small>
                     </div>
 
                     <div class="form-group">
@@ -291,6 +332,10 @@ class ServiceFormHandler {
             // Update service details fields based on selected service
             this.updateServiceDetailsFields(serviceType, e.target.value, serviceDetailsFields);
         });
+
+        // Setup phone input formatting
+        const phoneInput = form.querySelector('#phone');
+        this.setupPhoneInput(phoneInput);
 
         // Handle form submission
         form.addEventListener('submit', async (e) => {
@@ -525,6 +570,12 @@ document.addEventListener('DOMContentLoaded', function() {
     const serviceForms = document.querySelectorAll('.kra-service-form, .sha-service-form, .nssf-service-form, .os-service-form, .repair-service-form');
     
     serviceForms.forEach(form => {
+        // Setup phone input formatting for existing forms
+        const phoneInputs = form.querySelectorAll('input[name="phone"]');
+        phoneInputs.forEach(phoneInput => {
+            serviceFormHandler.setupPhoneInput(phoneInput);
+        });
+
         // Prevent default form submission
         form.addEventListener('submit', async (e) => {
             e.preventDefault();
