@@ -6,6 +6,7 @@ const path = require('path');
 const helmet = require('helmet');
 const rateLimit = require('express-rate-limit');
 const axios = require('axios');
+const cookieParser = require('cookie-parser');
 require('dotenv').config();
 
 // Use environment variables for configuration
@@ -81,7 +82,7 @@ app.use(helmet({
     contentSecurityPolicy: {
         directives: {
             defaultSrc: ["'self'"],
-            scriptSrc: ["'self'", "cdn.jsdelivr.net", "'unsafe-inline'"],
+            scriptSrc: ["'self'", "cdn.jsdelivr.net", "'unsafe-inline'", "'unsafe-eval'"],
             styleSrc: ["'self'", "cdn.jsdelivr.net", "cdnjs.cloudflare.com", "'unsafe-inline'", "fonts.googleapis.com"],
             fontSrc: ["'self'", "fonts.googleapis.com", "fonts.gstatic.com", "data:", "cdnjs.cloudflare.com"],
             imgSrc: ["'self'", "data:", "https://images.unsplash.com", "https://randomuser.me"],
@@ -111,6 +112,7 @@ app.use(cors({
     origin: corsOrigin,
     credentials: true
 }));
+app.use(cookieParser());
 app.use(bodyParser.json({ limit: '10mb' }));
 app.use(bodyParser.urlencoded({ extended: true, limit: '10mb' }));
 
@@ -149,6 +151,14 @@ app.post('/api/admin/login', (req, res) => {
 
         console.log(`Admin login successful: ${username}`);
 
+        // Set session cookie
+        res.cookie('adminSession', sessionId, {
+            httpOnly: true,
+            secure: nodeEnv === 'production',
+            sameSite: 'lax',
+            maxAge: 24 * 60 * 60 * 1000 // 24 hours
+        });
+
         res.json({
             message: 'Login successful',
             success: true,
@@ -176,6 +186,9 @@ app.post('/api/admin/logout', (req, res) => {
             adminSessions.delete(sessionId);
             console.log('Admin logout successful');
         }
+
+        // Clear session cookie
+        res.clearCookie('adminSession');
 
         res.json({
             message: 'Logout successful',
@@ -292,7 +305,7 @@ const serviceRequestSchema = new mongoose.Schema({
     serviceType: { 
         type: String, 
         required: [true, 'Service type is required'],
-        enum: ['KRA', 'SHA', 'NSSF', 'NTSA', 'HELB', 'GHRIS', 'TSC', 'OS_SOFTWARE', 'COMPUTER_REPAIR']
+        enum: ['KRA', 'SHA', 'NSSF', 'NTSA', 'HELB', 'GHRIS', 'TSC', 'OS_SOFTWARE', 'COMPUTER_REPAIR', 'CYBER_CAFE']
     },
     subService: { 
         type: String, 
@@ -357,7 +370,7 @@ const servicePricingSchema = new mongoose.Schema({
     serviceType: {
         type: String,
         required: true,
-        enum: ['KRA', 'SHA', 'NSSF', 'NTSA', 'HELB', 'GHRIS', 'TSC', 'OS_SOFTWARE', 'COMPUTER_REPAIR']
+        enum: ['KRA', 'SHA', 'NSSF', 'NTSA', 'HELB', 'GHRIS', 'TSC', 'OS_SOFTWARE', 'COMPUTER_REPAIR', 'CYBER_CAFE']
     },
     subService: {
         type: String,
@@ -532,6 +545,31 @@ const SERVICE_PRICING = {
         'SSD Installation': 6000,
         'System Cleanup': 800,
         'Emergency Repair': 1300
+    },
+    CYBER_CAFE: {
+        'Internet Browsing (1 Hour)': 50,
+        'Internet Browsing (2 Hours)': 90,
+        'Internet Browsing (Half Day)': 200,
+        'Internet Browsing (Full Day)': 350,
+        'Document Typing (Per Page)': 50,
+        'Document Printing (Black & White)': 10,
+        'Document Printing (Color)': 20,
+        'Document Scanning': 20,
+        'Photocopying (Per Page)': 5,
+        'Email Services': 30,
+        'CV Writing': 300,
+        'Application Letter Writing': 200,
+        'Research Services (Per Hour)': 100,
+        'Online Form Filling': 150,
+        'Social Media Management': 200,
+        'Video Conferencing (Per Hour)': 100,
+        'File Transfer Services': 50,
+        'USB/Flash Disk Services': 30,
+        'CD/DVD Burning': 100,
+        'Lamination (A4)': 50,
+        'Lamination (A3)': 80,
+        'Binding Services': 100,
+        'Passport Photo Printing': 100
     }
 };
 

@@ -6,54 +6,142 @@
     <title>Service Charges - Stopper Tech</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <link rel="stylesheet" href="css/main.css">
-    <link rel="stylesheet" href="css/help-support.css">
+    <link rel="stylesheet" href="css/services.css">
     <style>
-        /* Custom Cursor Styles */
-        .cursor {
-            width: 20px;
-            height: 20px;
-            border-radius: 50%;
-            background-color: #3498db;
-            position: fixed;
-            pointer-events: none;
-            mix-blend-mode: difference;
-            z-index: 9999;
-            transform: translate(-50%, -50%);
-            transition: all 0.1s ease-out;
-            opacity: 1;
+        .pricing-container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 2rem;
         }
         
-        .cursor-grow {
-            transform: translate(-50%, -50%) scale(1.5);
-            background-color: #e74c3c;
+        .pricing-section {
+            margin-bottom: 3rem;
+            background: white;
+            border-radius: 12px;
+            box-shadow: 0 4px 20px rgba(0,0,0,0.1);
+            overflow: hidden;
         }
-
-        /* Hide default cursor */
-        * {
-            cursor: none !important;
+        
+        .pricing-header {
+            background: linear-gradient(135deg, #3498db, #2980b9);
+            color: white;
+            padding: 2rem;
+            text-align: center;
         }
-
-        /* Show default cursor on form elements for better UX */
-        input, textarea, select, button {
-            cursor: pointer !important;
+        
+        .pricing-header h2 {
+            margin: 0;
+            font-size: 2rem;
+            font-weight: 600;
         }
-
-        input[type="text"], input[type="email"], input[type="tel"], textarea {
-            cursor: text !important;
+        
+        .pricing-header p {
+            margin: 0.5rem 0 0 0;
+            opacity: 0.9;
+        }
+        
+        .pricing-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 0;
+        }
+        
+        .pricing-item {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 1.5rem 2rem;
+            border-bottom: 1px solid #f0f0f0;
+            transition: background-color 0.3s ease;
+        }
+        
+        .pricing-item:hover {
+            background-color: #f8f9fa;
+        }
+        
+        .pricing-item:last-child {
+            border-bottom: none;
+        }
+        
+        .service-name {
+            font-weight: 500;
+            color: #2c3e50;
+            font-size: 1.1rem;
+        }
+        
+        .service-price {
+            font-weight: 600;
+            color: #27ae60;
+            font-size: 1.2rem;
+        }
+        
+        .loading-spinner {
+            display: inline-block;
+            width: 20px;
+            height: 20px;
+            border: 3px solid #f3f3f3;
+            border-top: 3px solid #3498db;
+            border-radius: 50%;
+            animation: spin 1s linear infinite;
+        }
+        
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+        
+        .update-notice {
+            background: #e8f5e8;
+            border: 1px solid #27ae60;
+            border-radius: 8px;
+            padding: 1rem;
+            margin: 2rem 0;
+            text-align: center;
+            color: #27ae60;
+        }
+        
+        .contact-section {
+            background: linear-gradient(135deg, #34495e, #2c3e50);
+            color: white;
+            padding: 3rem 2rem;
+            text-align: center;
+            margin-top: 3rem;
+            border-radius: 12px;
+        }
+        
+        .contact-section h3 {
+            margin-bottom: 1rem;
+            font-size: 1.8rem;
+        }
+        
+        .contact-info {
+            display: flex;
+            justify-content: center;
+            gap: 2rem;
+            flex-wrap: wrap;
+            margin-top: 2rem;
+        }
+        
+        .contact-item {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+        
+        .contact-item i {
+            font-size: 1.2rem;
+            color: #3498db;
         }
     </style>
 </head>
 <body>
-    <!-- Custom Cursor -->
-    <div class="cursor"></div>
-
     <!-- Header Section -->
     <header id="header">
         <div class="header-container">
-            <div class="logo-circle-container">
-                <svg class="logo-circle-svg" viewBox="0 0 140 140">
+            <div class="logo-circle-container" onclick="window.location.href='stopper.html'">
+                <svg class="logo-circle-svg" viewBox="0 0 80 80">
                     <defs>
-                        <path id="circlePath" d="M70,70 m-60,0 a60,60 0 1,1 120,0 a60,60 0 1,1 -120,0"/>
+                        <path id="circlePath" d="M40,40 m-30,0 a30,30 0 1,1 60,0 a30,30 0 1,1 -60,0"/>
                     </defs>
                     <text class="logo-circle-text">
                         <textPath xlink:href="#circlePath" startOffset="0" text-anchor="middle" method="stretch" spacing="auto">
@@ -63,15 +151,7 @@
                 </svg>
                 <img src="Stopper_tech.png" alt="Logo" class="logo-center-image" />
             </div>
-            
-            <!-- Mobile Menu Toggle -->
-            <button class="mobile-menu-toggle" id="mobileMenuToggle" aria-label="Toggle mobile menu">
-                <span class="hamburger-line"></span>
-                <span class="hamburger-line"></span>
-                <span class="hamburger-line"></span>
-            </button>
-            
-            <nav id="mainNav">
+            <nav>
                 <ul>
                     <li><a href="stopper.html">Home</a></li>
                     <li><a href="services.html">Services</a></li>
@@ -84,420 +164,290 @@
     </header>
 
     <!-- Main Content -->
-    <main class="help-support-container">
-        <div class="page-header">
+    <main class="pricing-container">
+        <div class="section-title">
             <h1>Service Charges</h1>
-            <p>Transparent pricing for all our services. All prices are inclusive of applicable taxes.</p>
+            <p>Transparent and competitive pricing for all our services. All prices are in Kenyan Shillings (KSh).</p>
         </div>
 
-        <div class="content-section">
-            <h2>Cyber Cafe Services</h2>
-            <p>High-speed internet access with modern computers and comfortable seating.</p>
-            
-            <table class="charges-table">
-                <thead>
-                    <tr>
-                        <th>Service</th>
-                        <th>Duration</th>
-                        <th>Price</th>
-                        <th>Student Price</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    <tr>
-                        <td class="service-name">Internet Browsing</td>
-                        <td>Per Hour</td>
-                        <td class="price">KSh 50</td>
-                        <td class="price">KSh 40</td>
-                    </tr>
-                    <tr>
-                        <td class="service-name">Internet Browsing</td>
-                        <td>Half Day (4 hours)</td>
-                        <td class="price">KSh 150</td>
-                        <td class="price">KSh 120</td>
-                    </tr>
-                    <tr>
-                        <td class="service-name">Internet Browsing</td>
-                        <td>Full Day (8 hours)</td>
-                        <td class="price">KSh 280</td>
-                        <td class="price">KSh 230</td>
-                    </tr>
-                    <tr>
-                        <td class="service-name">Gaming Station</td>
-                        <td>Per Hour</td>
-                        <td class="price">KSh 80</td>
-                        <td class="price">KSh 65</td>
-                    </tr>
-                    <tr>
-                        <td class="service-name">Gaming Station</td>
-                        <td>3 Hours Package</td>
-                        <td class="price">KSh 200</td>
-                        <td class="price">KSh 160</td>
-                    </tr>
-                </tbody>
-            </table>
+        <div class="update-notice">
+            <i class="fas fa-info-circle"></i>
+            <strong>Live Pricing:</strong> Our prices are updated in real-time. Contact us for any special requirements or bulk discounts.
         </div>
 
-        <div class="content-section">
-            <h2>Printing & Scanning Services</h2>
-            <p>Professional quality printing and scanning with various paper sizes and formats.</p>
-            
-            <table class="charges-table">
-                <thead>
-                    <tr>
-                        <th>Service</th>
-                        <th>Specification</th>
-                        <th>Price</th>
-                        <th>Bulk Rate (50+)</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    <tr>
-                        <td class="service-name">Black & White Print</td>
-                        <td>A4 Size</td>
-                        <td class="price">KSh 5</td>
-                        <td class="price">KSh 3</td>
-                    </tr>
-                    <tr>
-                        <td class="service-name">Color Print</td>
-                        <td>A4 Size</td>
-                        <td class="price">KSh 12</td>
-                        <td class="price">KSh 10</td>
-                    </tr>
-                    <tr>
-                        <td class="service-name">Photo Print</td>
-                        <td>4x6 inches</td>
-                        <td class="price">KSh 15</td>
-                        <td class="price">KSh 12</td>
-                    </tr>
-                    <tr>
-                        <td class="service-name">Photo Print</td>
-                        <td>5x7 inches</td>
-                        <td class="price">KSh 25</td>
-                        <td class="price">KSh 20</td>
-                    </tr>
-                    <tr>
-                        <td class="service-name">Scanning</td>
-                        <td>Per Page (A4)</td>
-                        <td class="price">KSh 8</td>
-                        <td class="price">KSh 5</td>
-                    </tr>
-                    <tr>
-                        <td class="service-name">Photocopy</td>
-                        <td>Per Page (A4)</td>
-                        <td class="price">KSh 3</td>
-                        <td class="price">KSh 2</td>
-                    </tr>
-                    <tr>
-                        <td class="service-name">Lamination</td>
-                        <td>A4 Size</td>
-                        <td class="price">KSh 25</td>
-                        <td class="price">KSh 20</td>
-                    </tr>
-                    <tr>
-                        <td class="service-name">Spiral Binding</td>
-                        <td>Up to 100 pages</td>
-                        <td class="price">KSh 40</td>
-                        <td class="price">KSh 30</td>
-                    </tr>
-                </tbody>
-            </table>
+        <!-- Government Services -->
+        <div class="pricing-section">
+            <div class="pricing-header">
+                <h2><i class="fas fa-university"></i> Government Services</h2>
+                <p>Professional assistance with Kenyan government services</p>
+            </div>
+            <div class="pricing-grid">
+                <!-- KRA Services -->
+                <div class="pricing-item" data-service-type="KRA" data-sub-service="PIN Registration">
+                    <span class="service-name">KRA PIN Registration</span>
+                    <span class="service-price price-display"><span class="loading-spinner"></span></span>
+                </div>
+                <div class="pricing-item" data-service-type="KRA" data-sub-service="PIN Certificate Retrieval">
+                    <span class="service-name">KRA PIN Certificate Retrieval</span>
+                    <span class="service-price price-display"><span class="loading-spinner"></span></span>
+                </div>
+                <div class="pricing-item" data-service-type="KRA" data-sub-service="PIN Update">
+                    <span class="service-name">KRA PIN Update</span>
+                    <span class="service-price price-display"><span class="loading-spinner"></span></span>
+                </div>
+                <div class="pricing-item" data-service-type="KRA" data-sub-service="PIN Email Address Change">
+                    <span class="service-name">KRA PIN Email Address Change</span>
+                    <span class="service-price price-display"><span class="loading-spinner"></span></span>
+                </div>
+                
+                <!-- SHA Services -->
+                <div class="pricing-item" data-service-type="SHA" data-sub-service="SHA Registration">
+                    <span class="service-name">SHA Registration</span>
+                    <span class="service-price price-display"><span class="loading-spinner"></span></span>
+                </div>
+                <div class="pricing-item" data-service-type="SHA" data-sub-service="SHA Certificate Retrieval">
+                    <span class="service-name">SHA Certificate Retrieval</span>
+                    <span class="service-price price-display"><span class="loading-spinner"></span></span>
+                </div>
+                <div class="pricing-item" data-service-type="SHA" data-sub-service="SHA Mobile Number Update">
+                    <span class="service-name">SHA Mobile Number Update</span>
+                    <span class="service-price price-display"><span class="loading-spinner"></span></span>
+                </div>
+                <div class="pricing-item" data-service-type="SHA" data-sub-service="SHA Beneficiary Management">
+                    <span class="service-name">SHA Beneficiary Management</span>
+                    <span class="service-price price-display"><span class="loading-spinner"></span></span>
+                </div>
+                
+                <!-- NSSF Services -->
+                <div class="pricing-item" data-service-type="NSSF" data-sub-service="NSSF Registration">
+                    <span class="service-name">NSSF Registration</span>
+                    <span class="service-price price-display"><span class="loading-spinner"></span></span>
+                </div>
+                <div class="pricing-item" data-service-type="NSSF" data-sub-service="NSSF Certificate Retrieval">
+                    <span class="service-name">NSSF Certificate Retrieval</span>
+                    <span class="service-price price-display"><span class="loading-spinner"></span></span>
+                </div>
+                <div class="pricing-item" data-service-type="NSSF" data-sub-service="NSSF Statement Request">
+                    <span class="service-name">NSSF Statement Request</span>
+                    <span class="service-price price-display"><span class="loading-spinner"></span></span>
+                </div>
+                <div class="pricing-item" data-service-type="NSSF" data-sub-service="NSSF Benefits Claims">
+                    <span class="service-name">NSSF Benefits Claims</span>
+                    <span class="service-price price-display"><span class="loading-spinner"></span></span>
+                </div>
+                
+                <!-- NTSA Services -->
+                <div class="pricing-item" data-service-type="NTSA" data-sub-service="Driving License Application">
+                    <span class="service-name">Driving License Application</span>
+                    <span class="service-price price-display"><span class="loading-spinner"></span></span>
+                </div>
+                <div class="pricing-item" data-service-type="NTSA" data-sub-service="Vehicle Registration">
+                    <span class="service-name">Vehicle Registration</span>
+                    <span class="service-price price-display"><span class="loading-spinner"></span></span>
+                </div>
+                <div class="pricing-item" data-service-type="NTSA" data-sub-service="PSV License Application">
+                    <span class="service-name">PSV License Application</span>
+                    <span class="service-price price-display"><span class="loading-spinner"></span></span>
+                </div>
+                <div class="pricing-item" data-service-type="NTSA" data-sub-service="Logbook Services">
+                    <span class="service-name">Logbook Services</span>
+                    <span class="service-price price-display"><span class="loading-spinner"></span></span>
+                </div>
+                
+                <!-- HELB Services -->
+                <div class="pricing-item" data-service-type="HELB" data-sub-service="HELB Loan Application">
+                    <span class="service-name">HELB Loan Application</span>
+                    <span class="service-price price-display"><span class="loading-spinner"></span></span>
+                </div>
+                <div class="pricing-item" data-service-type="HELB" data-sub-service="HELB Statement Request">
+                    <span class="service-name">HELB Statement Request</span>
+                    <span class="service-price price-display"><span class="loading-spinner"></span></span>
+                </div>
+                <div class="pricing-item" data-service-type="HELB" data-sub-service="HELB Clearance Certificate">
+                    <span class="service-name">HELB Clearance Certificate</span>
+                    <span class="service-price price-display"><span class="loading-spinner"></span></span>
+                </div>
+                <div class="pricing-item" data-service-type="HELB" data-sub-service="HELB Account Management">
+                    <span class="service-name">HELB Account Management</span>
+                    <span class="service-price price-display"><span class="loading-spinner"></span></span>
+                </div>
+                
+                <!-- GHRIS Services -->
+                <div class="pricing-item" data-service-type="GHRIS" data-sub-service="GHRIS Registration">
+                    <span class="service-name">GHRIS Registration</span>
+                    <span class="service-price price-display"><span class="loading-spinner"></span></span>
+                </div>
+                <div class="pricing-item" data-service-type="GHRIS" data-sub-service="Payslip Access">
+                    <span class="service-name">Payslip Access</span>
+                    <span class="service-price price-display"><span class="loading-spinner"></span></span>
+                </div>
+                <div class="pricing-item" data-service-type="GHRIS" data-sub-service="Leave Application">
+                    <span class="service-name">Leave Application</span>
+                    <span class="service-price price-display"><span class="loading-spinner"></span></span>
+                </div>
+                <div class="pricing-item" data-service-type="GHRIS" data-sub-service="Employee Records Management">
+                    <span class="service-name">Employee Records Management</span>
+                    <span class="service-price price-display"><span class="loading-spinner"></span></span>
+                </div>
+                
+                <!-- TSC Services -->
+                <div class="pricing-item" data-service-type="TSC" data-sub-service="TSC Registration">
+                    <span class="service-name">TSC Registration</span>
+                    <span class="service-price price-display"><span class="loading-spinner"></span></span>
+                </div>
+                <div class="pricing-item" data-service-type="TSC" data-sub-service="Teacher Certification">
+                    <span class="service-name">Teacher Certification</span>
+                    <span class="service-price price-display"><span class="loading-spinner"></span></span>
+                </div>
+                <div class="pricing-item" data-service-type="TSC" data-sub-service="Transfer Applications">
+                    <span class="service-name">Transfer Applications</span>
+                    <span class="service-price price-display"><span class="loading-spinner"></span></span>
+                </div>
+                <div class="pricing-item" data-service-type="TSC" data-sub-service="Professional Development">
+                    <span class="service-name">Professional Development</span>
+                    <span class="service-price price-display"><span class="loading-spinner"></span></span>
+                </div>
+            </div>
         </div>
 
-        <div class="content-section">
-            <h2>Computer Repair Services</h2>
-            <p>Professional computer repair and maintenance services with warranty.</p>
-            
-            <table class="charges-table">
-                <thead>
-                    <tr>
-                        <th>Service</th>
-                        <th>Description</th>
-                        <th>Price</th>
-                        <th>Home Service</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    <tr>
-                        <td class="service-name">Virus Removal</td>
-                        <td>Complete system cleanup</td>
-                        <td class="price">KSh 500</td>
-                        <td class="price">KSh 800</td>
-                    </tr>
-                    <tr>
-                        <td class="service-name">OS Installation</td>
-                        <td>Windows/Linux installation</td>
-                        <td class="price">KSh 800</td>
-                        <td class="price">KSh 1200</td>
-                    </tr>
-                    <tr>
-                        <td class="service-name">Software Installation</td>
-                        <td>Per software package</td>
-                        <td class="price">KSh 150</td>
-                        <td class="price">KSh 300</td>
-                    </tr>
-                    <tr>
-                        <td class="service-name">Hardware Diagnosis</td>
-                        <td>Complete system check</td>
-                        <td class="price">KSh 300</td>
-                        <td class="price">KSh 600</td>
-                    </tr>
-                    <tr>
-                        <td class="service-name">Data Recovery</td>
-                        <td>Basic recovery (up to 100GB)</td>
-                        <td class="price">KSh 1500</td>
-                        <td class="price">KSh 2500</td>
-                    </tr>
-                    <tr>
-                        <td class="service-name">Screen Replacement</td>
-                        <td>Laptop screen (parts extra)</td>
-                        <td class="price">KSh 1200</td>
-                        <td class="price">KSh 1800</td>
-                    </tr>
-                    <tr>
-                        <td class="service-name">Keyboard Replacement</td>
-                        <td>Laptop keyboard (parts extra)</td>
-                        <td class="price">KSh 600</td>
-                        <td class="price">KSh 900</td>
-                    </tr>
-                    <tr>
-                        <td class="service-name">System Optimization</td>
-                        <td>Performance tuning</td>
-                        <td class="price">KSh 400</td>
-                        <td class="price">KSh 600</td>
-                    </tr>
-                </tbody>
-            </table>
+        <!-- Technical Services -->
+        <div class="pricing-section">
+            <div class="pricing-header">
+                <h2><i class="fas fa-laptop-code"></i> Technical Services</h2>
+                <p>Professional IT support and software solutions</p>
+            </div>
+            <div class="pricing-grid">
+                <!-- OS & Software Services -->
+                <div class="pricing-item" data-service-type="OS_SOFTWARE" data-sub-service="Windows 10 Installation">
+                    <span class="service-name">Windows 10 Installation</span>
+                    <span class="service-price price-display"><span class="loading-spinner"></span></span>
+                </div>
+                <div class="pricing-item" data-service-type="OS_SOFTWARE" data-sub-service="Windows 11 Installation">
+                    <span class="service-name">Windows 11 Installation</span>
+                    <span class="service-price price-display"><span class="loading-spinner"></span></span>
+                </div>
+                <div class="pricing-item" data-service-type="OS_SOFTWARE" data-sub-service="Linux Installation">
+                    <span class="service-name">Linux Installation</span>
+                    <span class="service-price price-display"><span class="loading-spinner"></span></span>
+                </div>
+                <div class="pricing-item" data-service-type="OS_SOFTWARE" data-sub-service="Antivirus Setup">
+                    <span class="service-name">Antivirus Setup</span>
+                    <span class="service-price price-display"><span class="loading-spinner"></span></span>
+                </div>
+                <div class="pricing-item" data-service-type="OS_SOFTWARE" data-sub-service="Premium Antivirus">
+                    <span class="service-name">Premium Antivirus</span>
+                    <span class="service-price price-display"><span class="loading-spinner"></span></span>
+                </div>
+                <div class="pricing-item" data-service-type="OS_SOFTWARE" data-sub-service="MS Office 2019">
+                    <span class="service-name">MS Office 2019</span>
+                    <span class="service-price price-display"><span class="loading-spinner"></span></span>
+                </div>
+                <div class="pricing-item" data-service-type="OS_SOFTWARE" data-sub-service="MS Office 2021">
+                    <span class="service-name">MS Office 2021</span>
+                    <span class="service-price price-display"><span class="loading-spinner"></span></span>
+                </div>
+                <div class="pricing-item" data-service-type="OS_SOFTWARE" data-sub-service="System Optimization">
+                    <span class="service-name">System Optimization</span>
+                    <span class="service-price price-display"><span class="loading-spinner"></span></span>
+                </div>
+                <div class="pricing-item" data-service-type="OS_SOFTWARE" data-sub-service="Driver Updates">
+                    <span class="service-name">Driver Updates</span>
+                    <span class="service-price price-display"><span class="loading-spinner"></span></span>
+                </div>
+                <div class="pricing-item" data-service-type="OS_SOFTWARE" data-sub-service="Custom Software Installation">
+                    <span class="service-name">Custom Software Installation</span>
+                    <span class="service-price price-display"><span class="loading-spinner"></span></span>
+                </div>
+                
+                <!-- Computer Repair Services -->
+                <div class="pricing-item" data-service-type="COMPUTER_REPAIR" data-sub-service="Virus Removal">
+                    <span class="service-name">Virus Removal</span>
+                    <span class="service-price price-display"><span class="loading-spinner"></span></span>
+                </div>
+                <div class="pricing-item" data-service-type="COMPUTER_REPAIR" data-sub-service="Advanced Malware Removal">
+                    <span class="service-name">Advanced Malware Removal</span>
+                    <span class="service-price price-display"><span class="loading-spinner"></span></span>
+                </div>
+                <div class="pricing-item" data-service-type="COMPUTER_REPAIR" data-sub-service="Hardware Diagnosis">
+                    <span class="service-name">Hardware Diagnosis</span>
+                    <span class="service-price price-display"><span class="loading-spinner"></span></span>
+                </div>
+                <div class="pricing-item" data-service-type="COMPUTER_REPAIR" data-sub-service="Component Replacement">
+                    <span class="service-name">Component Replacement</span>
+                    <span class="service-price price-display"><span class="loading-spinner"></span></span>
+                </div>
+                <div class="pricing-item" data-service-type="COMPUTER_REPAIR" data-sub-service="Data Recovery">
+                    <span class="service-name">Data Recovery</span>
+                    <span class="service-price price-display"><span class="loading-spinner"></span></span>
+                </div>
+                <div class="pricing-item" data-service-type="COMPUTER_REPAIR" data-sub-service="Hard Drive Recovery">
+                    <span class="service-name">Hard Drive Recovery</span>
+                    <span class="service-price price-display"><span class="loading-spinner"></span></span>
+                </div>
+                <div class="pricing-item" data-service-type="COMPUTER_REPAIR" data-sub-service="Screen Replacement 14"">
+                    <span class="service-name">Screen Replacement 14"</span>
+                    <span class="service-price price-display"><span class="loading-spinner"></span></span>
+                </div>
+                <div class="pricing-item" data-service-type="COMPUTER_REPAIR" data-sub-service="Screen Replacement 15.6"">
+                    <span class="service-name">Screen Replacement 15.6"</span>
+                    <span class="service-price price-display"><span class="loading-spinner"></span></span>
+                </div>
+                <div class="pricing-item" data-service-type="COMPUTER_REPAIR" data-sub-service="RAM Upgrade">
+                    <span class="service-name">RAM Upgrade</span>
+                    <span class="service-price price-display"><span class="loading-spinner"></span></span>
+                </div>
+                <div class="pricing-item" data-service-type="COMPUTER_REPAIR" data-sub-service="SSD Installation">
+                    <span class="service-name">SSD Installation</span>
+                    <span class="service-price price-display"><span class="loading-spinner"></span></span>
+                </div>
+                <div class="pricing-item" data-service-type="COMPUTER_REPAIR" data-sub-service="System Cleanup">
+                    <span class="service-name">System Cleanup</span>
+                    <span class="service-price price-display"><span class="loading-spinner"></span></span>
+                </div>
+                <div class="pricing-item" data-service-type="COMPUTER_REPAIR" data-sub-service="Emergency Repair">
+                    <span class="service-name">Emergency Repair</span>
+                    <span class="service-price price-display"><span class="loading-spinner"></span></span>
+                </div>
+            </div>
         </div>
 
-        <div class="content-section">
-            <h2>Government Services</h2>
-            <p>Assistance with government documentation and online applications. Government fees are additional.</p>
-            
-            <table class="charges-table">
-                <thead>
-                    <tr>
-                        <th>Service</th>
-                        <th>Description</th>
-                        <th>Our Service Fee</th>
-                        <th>Govt. Fee (Approx.)</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    <tr>
-                        <td class="service-name">National ID Registration</td>
-                        <td>New National ID application</td>
-                        <td class="price">KSh 80</td>
-                        <td class="price">Free</td>
-                    </tr>
-                    <tr>
-                        <td class="service-name">National ID Update</td>
-                        <td>Address/phone/email update</td>
-                        <td class="price">KSh 50</td>
-                        <td class="price">KSh 80</td>
-                    </tr>
-                    <tr>
-                        <td class="service-name">KRA PIN Application</td>
-                        <td>New KRA PIN certificate</td>
-                        <td class="price">KSh 150</td>
-                        <td class="price">KSh 200</td>
-                    </tr>
-                    <tr>
-                        <td class="service-name">KRA PIN Correction</td>
-                        <td>Name/details correction</td>
-                        <td class="price">KSh 120</td>
-                        <td class="price">KSh 200</td>
-                    </tr>
-                    <tr>
-                        <td class="service-name">Voter Registration</td>
-                        <td>New voter registration</td>
-                        <td class="price">KSh 80</td>
-                        <td class="price">Free</td>
-                    </tr>
-                    <tr>
-                        <td class="service-name">Passport Application</td>
-                        <td>Form filling & documentation</td>
-                        <td class="price">KSh 300</td>
-                        <td class="price">KSh 4500-7500</td>
-                    </tr>
-                    <tr>
-                        <td class="service-name">Birth Certificate</td>
-                        <td>Birth certificate application</td>
-                        <td class="price">KSh 150</td>
-                        <td class="price">KSh 50</td>
-                    </tr>
-                    <tr>
-                        <td class="service-name">Good Conduct Certificate</td>
-                        <td>Application assistance</td>
-                        <td class="price">KSh 120</td>
-                        <td class="price">KSh 1000</td>
-                    </tr>
-                </tbody>
-            </table>
-        </div>
-
-        <div class="content-section">
-            <h2>Student Services</h2>
-            <p>Specialized services for students with discounted rates.</p>
-            
-            <table class="charges-table">
-                <thead>
-                    <tr>
-                        <th>Service</th>
-                        <th>Description</th>
-                        <th>Price</th>
-                        <th>Notes</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    <tr>
-                        <td class="service-name">University Registration</td>
-                        <td>Online form filling</td>
-                        <td class="price">KSh 250</td>
-                        <td>University fees extra</td>
-                    </tr>
-                    <tr>
-                        <td class="service-name">Exam Form Submission</td>
-                        <td>Semester/annual exam forms</td>
-                        <td class="price">KSh 80</td>
-                        <td>Exam fees extra</td>
-                    </tr>
-                    <tr>
-                        <td class="service-name">Scholarship Application</td>
-                        <td>Government scholarship forms</td>
-                        <td class="price">KSh 150</td>
-                        <td>Document verification included</td>
-                    </tr>
-                    <tr>
-                        <td class="service-name">Project Printing</td>
-                        <td>Complete project with binding</td>
-                        <td class="price">KSh 8 per page</td>
-                        <td>Includes spiral binding</td>
-                    </tr>
-                    <tr>
-                        <td class="service-name">Resume Creation</td>
-                        <td>Professional resume design</td>
-                        <td class="price">KSh 300</td>
-                        <td>Includes 3 revisions</td>
-                    </tr>
-                    <tr>
-                        <td class="service-name">Assignment Typing</td>
-                        <td>Per page typing</td>
-                        <td class="price">KSh 15</td>
-                        <td>Formatting included</td>
-                    </tr>
-                </tbody>
-            </table>
-        </div>
-
-        <div class="content-section">
-            <h2>Mobile Services</h2>
-            <p>Basic mobile phone services and assistance.</p>
-            
-            <table class="charges-table">
-                <thead>
-                    <tr>
-                        <th>Service</th>
-                        <th>Description</th>
-                        <th>Price</th>
-                        <th>Time Required</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    <tr>
-                        <td class="service-name">App Installation</td>
-                        <td>Installing apps and setup</td>
-                        <td class="price">KSh 30 per app</td>
-                        <td>5-10 minutes</td>
-                    </tr>
-                    <tr>
-                        <td class="service-name">Data Transfer</td>
-                        <td>Phone to phone data transfer</td>
-                        <td class="price">KSh 150</td>
-                        <td>30-60 minutes</td>
-                    </tr>
-                    <tr>
-                        <td class="service-name">Mobile Backup</td>
-                        <td>Complete phone backup</td>
-                        <td class="price">KSh 250</td>
-                        <td>45-90 minutes</td>
-                    </tr>
-                    <tr>
-                        <td class="service-name">Software Update</td>
-                        <td>OS and app updates</td>
-                        <td class="price">KSh 80</td>
-                        <td>20-30 minutes</td>
-                    </tr>
-                    <tr>
-                        <td class="service-name">Mobile Printing</td>
-                        <td>Print from mobile device</td>
-                        <td class="price">KSh 8 per page</td>
-                        <td>Immediate</td>
-                    </tr>
-                </tbody>
-            </table>
-        </div>
-
-        <div class="content-section">
-            <h2>Additional Information</h2>
-            
-            <h3>Payment Methods</h3>
-            <ul>
-                <li>Cash payments accepted</li>
-                <li>UPI payments (Google Pay, PhonePe, Paytm)</li>
-                <li>Debit/Credit cards accepted</li>
-                <li>Net banking for larger amounts</li>
-            </ul>
-            
-            <h3>Discounts & Offers</h3>
-            <ul>
-                <li><strong>Student Discount:</strong> 10-20% off on most services with valid student ID</li>
-                <li><strong>Bulk Printing:</strong> Special rates for orders above 50 pages</li>
-                <li><strong>Regular Customer:</strong> Loyalty discounts for frequent users</li>
-                <li><strong>Package Deals:</strong> Combined service packages at reduced rates</li>
-            </ul>
-            
-            <h3>Terms & Conditions</h3>
-            <ul>
-                <li>All prices are subject to change without prior notice</li>
-                <li>Government fees are additional and paid directly to respective departments</li>
-                <li>Home service charges include travel costs within 5km radius</li>
-                <li>Warranty period: 30 days for repairs, 15 days for software services</li>
-                <li>Payment is due at the time of service completion</li>
-                <li>Cancellation charges may apply for home services</li>
-            </ul>
-            
-            <h3>Service Hours</h3>
-            <ul>
-                <li><strong>Monday to Saturday:</strong> 9:00 AM - 9:00 PM</li>
-                <li><strong>Sunday:</strong> 10:00 AM - 6:00 PM</li>
-                <li><strong>Home Service:</strong> 10:00 AM - 7:00 PM (All days)</li>
-                <li><strong>Emergency Repair:</strong> Available on request (additional charges apply)</li>
-            </ul>
+        <!-- Contact Section -->
+        <div class="contact-section">
+            <h3>Need a Custom Quote?</h3>
+            <p>Contact us for personalized pricing, bulk discounts, or special requirements.</p>
+            <div class="contact-info">
+                <div class="contact-item">
+                    <i class="fab fa-whatsapp"></i>
+                    <span>+254 713 159 136</span>
+                </div>
+                <div class="contact-item">
+                    <i class="fas fa-envelope"></i>
+                    <span>services@stoppertech.co.ke</span>
+                </div>
+                <div class="contact-item">
+                    <i class="fas fa-phone"></i>
+                    <span>0710 590 670</span>
+                </div>
+            </div>
         </div>
     </main>
-
-    <!-- Back to Top Button -->
-    <button class="back-to-top" id="backToTop">
-        <i class="fas fa-arrow-up"></i>
-    </button>
 
     <!-- Footer -->
     <footer>
         <div class="footer-container">
             <div class="footer-col">
                 <h3>About Us</h3>
-                <p>Stopper Tech has been serving the community since 2023 with reliable IT solutions and cyber cafe services. We're committed to providing quality service with a personal touch.</p>
+                <p>Stopper Tech has been serving the community since 2019 with reliable IT solutions and cyber cafe services. We're committed to providing quality service with a personal touch.</p>
             </div>
             
             <div class="footer-col">
                 <h3>Our Services</h3>
                 <ul>
-                    <li><a href="services.html">Cyber Cafe</a></li>
-                    <li><a href="services.html">Software Installation</a></li>
+                    <li><a href="cyber-cafe-services.html">Cyber Cafe</a></li>
+                    <li><a href="os-software-services.html">Software Installation</a></li>
                     <li><a href="services.html">Government Services</a></li>
                     <li><a href="registration.html">Student Registration</a></li>
-                    <li><a href="services.html">Computer Repair</a></li>
+                    <li><a href="computer-repair-services.html">Computer Repair</a></li>
                 </ul>
             </div>
             
@@ -528,148 +478,6 @@
     </footer>
 
     <!-- Scripts -->
-    <script>
-        // Custom Cursor Script
-        const cursor = document.querySelector('.cursor');
-        let mouseX = 0;
-        let mouseY = 0;
-        let isMoving = false;
-        let animationId = null;
-        
-        function throttle(func, limit) {
-            let inThrottle;
-            return function() {
-                const args = arguments;
-                const context = this;
-                if (!inThrottle) {
-                    func.apply(context, args);
-                    inThrottle = true;
-                    setTimeout(() => inThrottle = false, limit);
-                }
-            }
-        }
-        
-        const handleMouseMove = throttle((e) => {
-            mouseX = e.clientX;
-            mouseY = e.clientY;
-            
-            if (!isMoving) {
-                isMoving = true;
-                startCursorAnimation();
-            }
-        }, 16);
-        
-        document.addEventListener('mousemove', handleMouseMove);
-        
-        function animateCursor() {
-            cursor.style.transform = `translate3d(${mouseX}px, ${mouseY}px, 0)`;
-            
-            let timeout = setTimeout(() => {
-                isMoving = false;
-                if (animationId) {
-                    cancelAnimationFrame(animationId);
-                    animationId = null;
-                }
-            }, 100);
-            
-            if (isMoving) {
-                animationId = requestAnimationFrame(animateCursor);
-            }
-        }
-        
-        function startCursorAnimation() {
-            if (!animationId) {
-                animationId = requestAnimationFrame(animateCursor);
-            }
-        }
-        
-        document.addEventListener('mouseleave', () => {
-            cursor.style.opacity = '0';
-            isMoving = false;
-            if (animationId) {
-                cancelAnimationFrame(animationId);
-                animationId = null;
-            }
-        });
-        
-        document.addEventListener('mouseenter', () => {
-            cursor.style.opacity = '1';
-        });
-        
-        const clickables = document.querySelectorAll('a, button');
-        
-        clickables.forEach(item => {
-            item.addEventListener('mouseenter', () => {
-                cursor.classList.add('cursor-grow');
-            });
-            item.addEventListener('mouseleave', () => {
-                cursor.classList.remove('cursor-grow');
-            });
-        });
-
-        // Header scroll effect
-        let lastScrollTop = 0;
-        const header = document.getElementById('header');
-        window.addEventListener('scroll', () => {
-            let scrollTop = window.pageYOffset || document.documentElement.scrollTop;
-            if (scrollTop > lastScrollTop && scrollTop > 50) {
-                header.style.transform = 'translateY(-100%)';
-            } else {
-                header.style.transform = 'translateY(0)';
-            }
-            lastScrollTop = scrollTop <= 0 ? 0 : scrollTop;
-
-            if (scrollTop > 50) {
-                header.classList.add('scrolled');
-            } else {
-                header.classList.remove('scrolled');
-            }
-        });
-
-        // Mobile Menu Toggle
-        const mobileMenuToggle = document.getElementById('mobileMenuToggle');
-        const mainNav = document.getElementById('mainNav');
-        
-        mobileMenuToggle.addEventListener('click', () => {
-            mainNav.classList.toggle('mobile-nav-open');
-            mobileMenuToggle.classList.toggle('active');
-            document.body.classList.toggle('menu-open');
-        });
-        
-        const navLinks = document.querySelectorAll('#mainNav a');
-        navLinks.forEach(link => {
-            link.addEventListener('click', () => {
-                mainNav.classList.remove('mobile-nav-open');
-                mobileMenuToggle.classList.remove('active');
-                document.body.classList.remove('menu-open');
-            });
-        });
-        
-        document.addEventListener('click', (e) => {
-            if (!mainNav.contains(e.target) && !mobileMenuToggle.contains(e.target)) {
-                mainNav.classList.remove('mobile-nav-open');
-                mobileMenuToggle.classList.remove('active');
-                document.body.classList.remove('menu-open');
-            }
-        });
-
-        // Back to Top Button
-        const backToTop = document.getElementById('backToTop');
-        
-        window.addEventListener('scroll', () => {
-            if (window.pageYOffset > 300) {
-                backToTop.classList.add('visible');
-            } else {
-                backToTop.classList.remove('visible');
-            }
-        });
-        
-        backToTop.addEventListener('click', () => {
-            window.scrollTo({
-                top: 0,
-                behavior: 'smooth'
-            });
-        });
-    </script>
+    <script src="js/pricing.js"></script>
 </body>
 </html>

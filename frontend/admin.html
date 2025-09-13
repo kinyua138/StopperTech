@@ -51,6 +51,8 @@
             border: 1px solid #ddd;
             border-radius: 4px;
             font-size: 1rem;
+            min-height: 44px; /* Touch-friendly */
+            box-sizing: border-box;
         }
         .form-group input:focus {
             outline: none;
@@ -67,6 +69,7 @@
             font-size: 1rem;
             font-weight: 500;
             transition: background-color 0.3s ease;
+            min-height: 44px; /* Touch-friendly */
         }
         .login-btn:hover {
             background-color: #2980b9;
@@ -99,10 +102,11 @@
             background-color: #e74c3c;
             color: white;
             border: none;
-            padding: 0.5rem 1rem;
+            padding: 0.75rem 1rem;
             border-radius: 4px;
             cursor: pointer;
             font-size: 0.9rem;
+            min-height: 44px; /* Touch-friendly */
         }
         .logout-btn:hover {
             background-color: #c0392b;
@@ -115,6 +119,7 @@
             border-radius: 8px 8px 0 0;
             box-shadow: 0 2px 4px rgba(0,0,0,0.1);
             margin-bottom: 0;
+            overflow-x: auto; /* Allow horizontal scroll on mobile */
         }
         .tab {
             flex: 1;
@@ -126,6 +131,9 @@
             font-weight: 500;
             transition: all 0.3s ease;
             border-radius: 8px 8px 0 0;
+            white-space: nowrap;
+            min-height: 44px; /* Touch-friendly */
+            min-width: 120px; /* Prevent tabs from being too narrow */
         }
         .tab.active {
             background: #3498db;
@@ -147,24 +155,83 @@
             display: block;
         }
         
+        /* Table Styles - Desktop */
+        .table-container {
+            overflow-x: auto;
+            -webkit-overflow-scrolling: touch;
+        }
         table {
             width: 100%;
             border-collapse: collapse;
             background: white;
+            min-width: 800px; /* Ensure table doesn't get too cramped */
         }
         th, td {
             padding: 0.75rem 1rem;
             border: 1px solid #ddd;
             text-align: left;
+            word-wrap: break-word;
         }
         th {
             background-color: #34495e;
             color: white;
             font-weight: 500;
+            position: sticky;
+            top: 0;
+            z-index: 10;
         }
         tr:nth-child(even) {
             background-color: #f9fbfd;
         }
+        
+        /* Mobile Card Layout for Tables */
+        .mobile-cards {
+            display: none;
+        }
+        .mobile-card {
+            background: white;
+            border: 1px solid #ddd;
+            border-radius: 8px;
+            margin-bottom: 1rem;
+            padding: 1rem;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+        }
+        .mobile-card-header {
+            font-weight: 600;
+            color: #2c3e50;
+            margin-bottom: 0.5rem;
+            padding-bottom: 0.5rem;
+            border-bottom: 1px solid #eee;
+        }
+        .mobile-card-row {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 0.25rem 0;
+            border-bottom: 1px solid #f8f9fa;
+        }
+        .mobile-card-row:last-child {
+            border-bottom: none;
+            margin-top: 0.5rem;
+            padding-top: 0.5rem;
+        }
+        .mobile-card-label {
+            font-weight: 500;
+            color: #7f8c8d;
+            font-size: 0.9rem;
+        }
+        .mobile-card-value {
+            text-align: right;
+            flex: 1;
+            margin-left: 1rem;
+        }
+        .mobile-card-actions {
+            display: flex;
+            gap: 0.5rem;
+            flex-wrap: wrap;
+            justify-content: flex-end;
+        }
+        
         .no-data {
             text-align: center;
             padding: 2rem;
@@ -192,11 +259,12 @@
             background-color: #3498db;
             color: white;
             border: none;
-            padding: 0.5rem 1rem;
+            padding: 0.75rem 1rem;
             border-radius: 4px;
             cursor: pointer;
             margin-bottom: 1rem;
             float: right;
+            min-height: 44px; /* Touch-friendly */
         }
         .refresh-btn:hover {
             background-color: #2980b9;
@@ -205,10 +273,12 @@
             background-color: #e74c3c;
             color: white;
             border: none;
-            padding: 0.25rem 0.5rem;
+            padding: 0.5rem 0.75rem;
             border-radius: 3px;
             cursor: pointer;
-            font-size: 0.8rem;
+            font-size: 0.9rem;
+            min-height: 44px; /* Touch-friendly */
+            min-width: 60px;
         }
         .delete-btn:hover {
             background-color: #c0392b;
@@ -217,11 +287,13 @@
             background-color: #f39c12;
             color: white;
             border: none;
-            padding: 0.25rem 0.5rem;
+            padding: 0.5rem 0.75rem;
             border-radius: 3px;
             cursor: pointer;
-            font-size: 0.8rem;
+            font-size: 0.9rem;
             margin-right: 0.25rem;
+            min-height: 44px; /* Touch-friendly */
+            min-width: 80px;
         }
         .status-btn:hover {
             background-color: #e67e22;
@@ -291,7 +363,7 @@
         }
         .pricing-grid {
             display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
             gap: 1rem;
             margin-bottom: 1rem;
         }
@@ -310,6 +382,7 @@
         .pricing-service {
             font-weight: 500;
             color: #2c3e50;
+            flex: 1;
         }
         .pricing-amount {
             font-weight: 600;
@@ -320,13 +393,165 @@
             background-color: #3498db;
             color: white;
             border: none;
-            padding: 0.25rem 0.5rem;
+            padding: 0.5rem 0.75rem;
             border-radius: 3px;
             cursor: pointer;
-            font-size: 0.8rem;
+            font-size: 0.9rem;
+            min-height: 44px; /* Touch-friendly */
+            min-width: 60px;
         }
         .edit-price-btn:hover {
             background-color: #2980b9;
+        }
+        
+        /* Mobile Responsive Styles */
+        @media (max-width: 768px) {
+            .container {
+                padding: 1rem;
+            }
+            
+            .login-container {
+                margin: 2rem auto;
+                padding: 1.5rem;
+                max-width: 90%;
+            }
+            
+            .admin-header {
+                flex-direction: column;
+                gap: 1rem;
+                padding: 1rem;
+                text-align: center;
+            }
+            
+            .admin-info {
+                flex-direction: column;
+                gap: 0.5rem;
+            }
+            
+            .admin-info h1 {
+                font-size: 1.5rem;
+                margin-bottom: 0.5rem;
+            }
+            
+            .header-avatar {
+                width: 40px;
+                height: 40px;
+            }
+            
+            .tabs {
+                flex-direction: column;
+                border-radius: 8px;
+            }
+            
+            .tab {
+                border-radius: 0;
+                padding: 1rem;
+                border-bottom: 1px solid #ddd;
+            }
+            
+            .tab:first-child {
+                border-radius: 8px 8px 0 0;
+            }
+            
+            .tab:last-child {
+                border-bottom: none;
+            }
+            
+            .tab-content {
+                padding: 1rem;
+                border-radius: 0 0 8px 8px;
+            }
+            
+            /* Hide tables on mobile, show cards */
+            .table-container {
+                display: none;
+            }
+            
+            .mobile-cards {
+                display: block;
+            }
+            
+            .refresh-btn {
+                float: none;
+                width: 100%;
+                margin-bottom: 1rem;
+            }
+            
+            .pricing-grid {
+                grid-template-columns: 1fr;
+                gap: 0.5rem;
+            }
+            
+            .pricing-item {
+                flex-direction: column;
+                align-items: flex-start;
+                gap: 0.5rem;
+                padding: 1rem;
+            }
+            
+            .pricing-service {
+                font-size: 1rem;
+            }
+            
+            .pricing-amount {
+                margin-right: 0;
+                font-size: 1.1rem;
+            }
+            
+            .edit-price-btn {
+                width: 100%;
+                padding: 0.75rem;
+            }
+            
+            .mobile-card-actions .delete-btn,
+            .mobile-card-actions .status-btn {
+                flex: 1;
+                min-width: auto;
+            }
+        }
+        
+        @media (max-width: 480px) {
+            .container {
+                padding: 0.5rem;
+            }
+            
+            .login-container {
+                margin: 1rem auto;
+                padding: 1rem;
+            }
+            
+            .admin-header {
+                padding: 0.75rem;
+            }
+            
+            .tab-content {
+                padding: 0.75rem;
+            }
+            
+            .mobile-card {
+                padding: 0.75rem;
+            }
+            
+            .mobile-card-row {
+                flex-direction: column;
+                align-items: flex-start;
+                gap: 0.25rem;
+            }
+            
+            .mobile-card-value {
+                margin-left: 0;
+                text-align: left;
+            }
+            
+            .mobile-card-actions {
+                width: 100%;
+                margin-top: 0.5rem;
+            }
+            
+            .mobile-card-actions .delete-btn,
+            .mobile-card-actions .status-btn {
+                flex: 1;
+            }
         }
     </style>
 </head>
@@ -367,63 +592,81 @@
             
             <!-- Tabs -->
             <div class="tabs">
-                <button class="tab active" onclick="switchTab('registrations')">User Registrations</button>
-                <button class="tab" onclick="switchTab('services')">Service Requests</button>
-                <button class="tab" onclick="switchTab('pricing')">Service Pricing</button>
+                <button class="tab active" data-tab="registrations">User Registrations</button>
+                <button class="tab" data-tab="services">Service Requests</button>
+                <button class="tab" data-tab="pricing">Service Pricing</button>
             </div>
             
             <!-- User Registrations Tab -->
             <div id="registrations" class="tab-content active">
-                <button class="refresh-btn" onclick="fetchRegistrations()">Refresh Data</button>
+                <button class="refresh-btn" id="refreshRegistrations">Refresh Data</button>
                 <div id="registrationsMessageContainer"></div>
-                <table id="registrationsTable">
-                    <thead>
-                        <tr>
-                            <th>Full Name</th>
-                            <th>Email</th>
-                            <th>Phone</th>
-                            <th>Location</th>
-                            <th>Service</th>
-                            <th>Message</th>
-                            <th>Submitted At</th>
-                            <th>Actions</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        <tr><td colspan="8" class="no-data">Loading data...</td></tr>
-                    </tbody>
-                </table>
+                
+                <!-- Desktop Table View -->
+                <div class="table-container">
+                    <table id="registrationsTable">
+                        <thead>
+                            <tr>
+                                <th>Full Name</th>
+                                <th>Email</th>
+                                <th>Phone</th>
+                                <th>Location</th>
+                                <th>Service</th>
+                                <th>Message</th>
+                                <th>Submitted At</th>
+                                <th>Actions</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr><td colspan="8" class="no-data">Loading data...</td></tr>
+                        </tbody>
+                    </table>
+                </div>
+                
+                <!-- Mobile Card View -->
+                <div class="mobile-cards" id="registrationsMobileCards">
+                    <div class="no-data">Loading data...</div>
+                </div>
             </div>
             
             <!-- Service Requests Tab -->
             <div id="services" class="tab-content">
-                <button class="refresh-btn" onclick="fetchServiceRequests()">Refresh Data</button>
+                <button class="refresh-btn" id="refreshServices">Refresh Data</button>
                 <div id="servicesMessageContainer"></div>
-                <table id="serviceRequestsTable">
-                    <thead>
-                        <tr>
-                            <th>Service Type</th>
-                            <th>Sub Service</th>
-                            <th>Full Name</th>
-                            <th>Email</th>
-                            <th>Phone</th>
-                            <th>National ID</th>
-                            <th>Amount</th>
-                            <th>Payment Status</th>
-                            <th>Status</th>
-                            <th>Submitted At</th>
-                            <th>Actions</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        <tr><td colspan="11" class="no-data">Loading data...</td></tr>
-                    </tbody>
-                </table>
+                
+                <!-- Desktop Table View -->
+                <div class="table-container">
+                    <table id="serviceRequestsTable">
+                        <thead>
+                            <tr>
+                                <th>Service Type</th>
+                                <th>Sub Service</th>
+                                <th>Full Name</th>
+                                <th>Email</th>
+                                <th>Phone</th>
+                                <th>National ID</th>
+                                <th>Amount</th>
+                                <th>Payment Status</th>
+                                <th>Status</th>
+                                <th>Submitted At</th>
+                                <th>Actions</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr><td colspan="11" class="no-data">Loading data...</td></tr>
+                        </tbody>
+                    </table>
+                </div>
+                
+                <!-- Mobile Card View -->
+                <div class="mobile-cards" id="servicesMobileCards">
+                    <div class="no-data">Loading data...</div>
+                </div>
             </div>
             
             <!-- Service Pricing Tab -->
             <div id="pricing" class="tab-content">
-                <button class="refresh-btn" onclick="fetchServicePricing()">Refresh Data</button>
+                <button class="refresh-btn" id="refreshPricing">Refresh Data</button>
                 <div id="pricingMessageContainer"></div>
                 <div id="pricingContainer">
                     <div class="no-data">Loading pricing data...</div>
@@ -652,7 +895,7 @@
                             <span class="pricing-service">${subService}</span>
                             <div>
                                 <span class="pricing-amount">KSh ${price}</span>
-                                <button class="edit-price-btn" onclick="editPrice('${serviceType}', '${subService}', ${price})">Edit</button>
+                                <button class="edit-price-btn" data-action="edit-price" data-service-type="${serviceType}" data-sub-service="${subService}" data-price="${price}">Edit</button>
                             </div>
                         `;
                         grid.appendChild(item);
@@ -693,12 +936,19 @@
                     headers: {
                         'Content-Type': 'application/json'
                     },
+                    credentials: 'include', // Include authentication cookies
                     body: JSON.stringify({
                         serviceType: serviceType,
                         subService: subService,
                         price: price
                     })
                 });
+                
+                if (response.status === 401) {
+                    // Authentication failed, redirect to login
+                    showLoginForm();
+                    return;
+                }
                 
                 if (!response.ok) {
                     throw new Error(`Failed to update price: ${response.status} ${response.statusText}`);
@@ -725,11 +975,13 @@
             }
             
             const tbody = document.querySelector('#registrationsTable tbody');
+            const mobileCards = document.getElementById('registrationsMobileCards');
             const messageContainer = document.getElementById('registrationsMessageContainer');
             
             messageContainer.innerHTML = '';
             
             try {
+                // Show loading in both views
                 tbody.innerHTML = `
                     <tr>
                         <td colspan="8">
@@ -739,6 +991,12 @@
                             </div>
                         </td>
                     </tr>
+                `;
+                mobileCards.innerHTML = `
+                    <div class="loading-container">
+                        <div class="spinner"></div>
+                        <p>Loading registrations...</p>
+                    </div>
                 `;
 
                 const response = await fetch('/api/registrations');
@@ -751,13 +1009,16 @@
                 const data = result.data || [];
                 
                 tbody.innerHTML = '';
+                mobileCards.innerHTML = '';
 
                 if (data.length === 0) {
                     tbody.innerHTML = '<tr><td colspan="8" class="no-data">No registrations found.</td></tr>';
+                    mobileCards.innerHTML = '<div class="no-data">No registrations found.</div>';
                     messageContainer.innerHTML = '<div class="success-message">Successfully loaded. No registrations found.</div>';
                     return;
                 }
 
+                // Populate table view
                 data.forEach(reg => {
                     const tr = document.createElement('tr');
                     tr.innerHTML = `
@@ -768,15 +1029,55 @@
                         <td>${reg.service}</td>
                         <td>${reg.message || ''}</td>
                         <td>${new Date(reg.createdAt).toLocaleString()}</td>
-                        <td><button class="delete-btn" onclick="deleteRegistration('${reg._id}')">Delete</button></td>
+                        <td><button class="delete-btn" data-action="delete-registration" data-id="${reg._id}">Delete</button></td>
                     `;
                     tbody.appendChild(tr);
+                });
+
+                // Populate mobile card view
+                data.forEach(reg => {
+                    const card = document.createElement('div');
+                    card.className = 'mobile-card';
+                    card.innerHTML = `
+                        <div class="mobile-card-header">${reg.fullname}</div>
+                        <div class="mobile-card-row">
+                            <span class="mobile-card-label">Email:</span>
+                            <span class="mobile-card-value">${reg.email}</span>
+                        </div>
+                        <div class="mobile-card-row">
+                            <span class="mobile-card-label">Phone:</span>
+                            <span class="mobile-card-value">${reg.phone}</span>
+                        </div>
+                        <div class="mobile-card-row">
+                            <span class="mobile-card-label">Location:</span>
+                            <span class="mobile-card-value">${reg.location}</span>
+                        </div>
+                        <div class="mobile-card-row">
+                            <span class="mobile-card-label">Service:</span>
+                            <span class="mobile-card-value">${reg.service}</span>
+                        </div>
+                        <div class="mobile-card-row">
+                            <span class="mobile-card-label">Message:</span>
+                            <span class="mobile-card-value">${reg.message || 'N/A'}</span>
+                        </div>
+                        <div class="mobile-card-row">
+                            <span class="mobile-card-label">Submitted:</span>
+                            <span class="mobile-card-value">${new Date(reg.createdAt).toLocaleString()}</span>
+                        </div>
+                        <div class="mobile-card-row">
+                            <div class="mobile-card-actions">
+                                <button class="delete-btn" data-action="delete-registration" data-id="${reg._id}">Delete</button>
+                            </div>
+                        </div>
+                    `;
+                    mobileCards.appendChild(card);
                 });
                 
                 messageContainer.innerHTML = `<div class="success-message">Successfully loaded ${data.length} registrations.</div>`;
             } catch (error) {
                 console.error('Error fetching registrations:', error);
                 tbody.innerHTML = '<tr><td colspan="8" class="no-data">Error loading data.</td></tr>';
+                mobileCards.innerHTML = '<div class="no-data">Error loading data.</div>';
                 messageContainer.innerHTML = `<div class="error-message">Error: ${error.message || 'Failed to load registrations. Please try again.'}</div>`;
             }
         }
@@ -789,11 +1090,13 @@
             }
             
             const tbody = document.querySelector('#serviceRequestsTable tbody');
+            const mobileCards = document.getElementById('servicesMobileCards');
             const messageContainer = document.getElementById('servicesMessageContainer');
             
             messageContainer.innerHTML = '';
             
             try {
+                // Show loading in both views
                 tbody.innerHTML = `
                     <tr>
                         <td colspan="11">
@@ -803,6 +1106,12 @@
                             </div>
                         </td>
                     </tr>
+                `;
+                mobileCards.innerHTML = `
+                    <div class="loading-container">
+                        <div class="spinner"></div>
+                        <p>Loading service requests...</p>
+                    </div>
                 `;
 
                 const response = await fetch('/api/service-requests');
@@ -815,13 +1124,16 @@
                 const data = result.data || [];
                 
                 tbody.innerHTML = '';
+                mobileCards.innerHTML = '';
 
                 if (data.length === 0) {
                     tbody.innerHTML = '<tr><td colspan="11" class="no-data">No service requests found.</td></tr>';
+                    mobileCards.innerHTML = '<div class="no-data">No service requests found.</div>';
                     messageContainer.innerHTML = '<div class="success-message">Successfully loaded. No service requests found.</div>';
                     return;
                 }
 
+                // Populate table view
                 data.forEach(req => {
                     const tr = document.createElement('tr');
                     tr.innerHTML = `
@@ -836,17 +1148,66 @@
                         <td><span class="status-badge status-${req.status}">${req.status}</span></td>
                         <td>${new Date(req.createdAt).toLocaleString()}</td>
                         <td>
-                            <button class="status-btn" onclick="updateServiceStatus('${req._id}')">Update Status</button>
-                            <button class="delete-btn" onclick="deleteServiceRequest('${req._id}')">Delete</button>
+                            <button class="status-btn" data-action="update-status" data-id="${req._id}">Update Status</button>
+                            <button class="delete-btn" data-action="delete-service" data-id="${req._id}">Delete</button>
                         </td>
                     `;
                     tbody.appendChild(tr);
+                });
+
+                // Populate mobile card view
+                data.forEach(req => {
+                    const card = document.createElement('div');
+                    card.className = 'mobile-card';
+                    card.innerHTML = `
+                        <div class="mobile-card-header">${req.serviceType} - ${req.subService}</div>
+                        <div class="mobile-card-row">
+                            <span class="mobile-card-label">Name:</span>
+                            <span class="mobile-card-value">${req.fullName}</span>
+                        </div>
+                        <div class="mobile-card-row">
+                            <span class="mobile-card-label">Email:</span>
+                            <span class="mobile-card-value">${req.email}</span>
+                        </div>
+                        <div class="mobile-card-row">
+                            <span class="mobile-card-label">Phone:</span>
+                            <span class="mobile-card-value">${req.phone}</span>
+                        </div>
+                        <div class="mobile-card-row">
+                            <span class="mobile-card-label">National ID:</span>
+                            <span class="mobile-card-value">${req.nationalId}</span>
+                        </div>
+                        <div class="mobile-card-row">
+                            <span class="mobile-card-label">Amount:</span>
+                            <span class="mobile-card-value amount">KSh ${req.amount}</span>
+                        </div>
+                        <div class="mobile-card-row">
+                            <span class="mobile-card-label">Payment Status:</span>
+                            <span class="mobile-card-value"><span class="status-badge status-${req.paymentStatus}">${req.paymentStatus}</span></span>
+                        </div>
+                        <div class="mobile-card-row">
+                            <span class="mobile-card-label">Status:</span>
+                            <span class="mobile-card-value"><span class="status-badge status-${req.status}">${req.status}</span></span>
+                        </div>
+                        <div class="mobile-card-row">
+                            <span class="mobile-card-label">Submitted:</span>
+                            <span class="mobile-card-value">${new Date(req.createdAt).toLocaleString()}</span>
+                        </div>
+                        <div class="mobile-card-row">
+                            <div class="mobile-card-actions">
+                                <button class="status-btn" data-action="update-status" data-id="${req._id}">Update Status</button>
+                                <button class="delete-btn" data-action="delete-service" data-id="${req._id}">Delete</button>
+                            </div>
+                        </div>
+                    `;
+                    mobileCards.appendChild(card);
                 });
                 
                 messageContainer.innerHTML = `<div class="success-message">Successfully loaded ${data.length} service requests.</div>`;
             } catch (error) {
                 console.error('Error fetching service requests:', error);
                 tbody.innerHTML = '<tr><td colspan="11" class="no-data">Error loading data.</td></tr>';
+                mobileCards.innerHTML = '<div class="no-data">Error loading data.</div>';
                 messageContainer.innerHTML = `<div class="error-message">Error: ${error.message || 'Failed to load service requests. Please try again.'}</div>`;
             }
         }
@@ -925,6 +1286,73 @@
                     console.error('Error deleting service request:', error);
                     document.getElementById('servicesMessageContainer').innerHTML = `<div class="error-message">Error: ${error.message || 'Failed to delete service request. Please try again.'}</div>`;
                 }
+            }
+        }
+
+        // Event delegation for dynamic buttons
+        document.addEventListener('click', (e) => {
+            const action = e.target.getAttribute('data-action');
+            const id = e.target.getAttribute('data-id');
+            
+            if (action === 'delete-registration') {
+                deleteRegistration(id);
+            } else if (action === 'update-status') {
+                updateServiceStatus(id);
+            } else if (action === 'delete-service') {
+                deleteServiceRequest(id);
+            } else if (action === 'edit-price') {
+                const serviceType = e.target.getAttribute('data-service-type');
+                const subService = e.target.getAttribute('data-sub-service');
+                const price = e.target.getAttribute('data-price');
+                editPrice(serviceType, subService, price);
+            }
+        });
+
+        // Tab switching event listeners
+        document.addEventListener('click', (e) => {
+            if (e.target.classList.contains('tab')) {
+                const tabName = e.target.getAttribute('data-tab');
+                if (tabName) {
+                    switchTab(tabName, e.target);
+                }
+            }
+        });
+
+        // Refresh button event listeners
+        document.getElementById('refreshRegistrations').addEventListener('click', fetchRegistrations);
+        document.getElementById('refreshServices').addEventListener('click', fetchServiceRequests);
+        document.getElementById('refreshPricing').addEventListener('click', fetchServicePricing);
+
+        // Updated switchTab function to accept the clicked element
+        function switchTab(tabName, clickedTab) {
+            if (!isAuthenticated) {
+                showLoginForm();
+                return;
+            }
+            
+            // Hide all tab contents
+            document.querySelectorAll('.tab-content').forEach(content => {
+                content.classList.remove('active');
+            });
+            
+            // Remove active class from all tabs
+            document.querySelectorAll('.tab').forEach(tab => {
+                tab.classList.remove('active');
+            });
+            
+            // Show selected tab content
+            document.getElementById(tabName).classList.add('active');
+            
+            // Add active class to clicked tab
+            clickedTab.classList.add('active');
+            
+            // Load data for the selected tab
+            if (tabName === 'registrations') {
+                fetchRegistrations();
+            } else if (tabName === 'services') {
+                fetchServiceRequests();
+            } else if (tabName === 'pricing') {
+                fetchServicePricing();
             }
         }
 
