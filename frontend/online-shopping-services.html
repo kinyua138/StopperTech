@@ -1,0 +1,543 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Online Shopping Services - Stopper Tech</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="stylesheet" href="css/main.css">
+    <link rel="stylesheet" href="css/service-form.css">
+    <script src="js/dynamic-pricing.js"></script>
+    <style>
+        .service-hero {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            padding: 4rem 0;
+            text-align: center;
+        }
+        
+        .service-hero h1 {
+            font-size: 2.5rem;
+            margin-bottom: 1rem;
+        }
+        
+        .service-hero p {
+            font-size: 1.2rem;
+            max-width: 600px;
+            margin: 0 auto;
+        }
+        
+        .kilimall-info {
+            background: #f8f9fa;
+            padding: 3rem 0;
+        }
+        
+        .info-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 2rem;
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 2rem;
+        }
+        
+        .info-card {
+            background: white;
+            padding: 2rem;
+            border-radius: 10px;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+            text-align: center;
+        }
+        
+        .info-card i {
+            font-size: 3rem;
+            color: #667eea;
+            margin-bottom: 1rem;
+        }
+        
+        .info-card h3 {
+            color: #2c3e50;
+            margin-bottom: 1rem;
+        }
+        
+        .kilimall-button {
+            display: inline-block;
+            background: linear-gradient(135deg, #ff6b6b, #ee5a24);
+            color: white;
+            padding: 1rem 2rem;
+            border-radius: 50px;
+            text-decoration: none;
+            font-weight: bold;
+            font-size: 1.1rem;
+            margin: 2rem 0;
+            transition: transform 0.3s ease;
+        }
+        
+        .kilimall-button:hover {
+            transform: translateY(-2px);
+            color: white;
+        }
+        
+        .instructions-section {
+            padding: 3rem 0;
+            max-width: 1000px;
+            margin: 0 auto;
+            padding-left: 2rem;
+            padding-right: 2rem;
+        }
+        
+        .instruction-step {
+            background: white;
+            margin: 2rem 0;
+            padding: 2rem;
+            border-radius: 10px;
+            box-shadow: 0 3px 10px rgba(0,0,0,0.1);
+            border-left: 5px solid #667eea;
+        }
+        
+        .step-number {
+            background: #667eea;
+            color: white;
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: bold;
+            margin-right: 1rem;
+        }
+        
+        .step-title {
+            display: inline-block;
+            font-size: 1.3rem;
+            font-weight: bold;
+            color: #2c3e50;
+            margin-bottom: 1rem;
+        }
+        
+        .address-info {
+            background: #e8f4fd;
+            padding: 2rem;
+            border-radius: 10px;
+            margin: 2rem 0;
+            border: 2px solid #3498db;
+        }
+        
+        .address-info h4 {
+            color: #2c3e50;
+            margin-bottom: 1rem;
+        }
+        
+        .contact-info {
+            background: #f0f8f0;
+            padding: 2rem;
+            border-radius: 10px;
+            margin: 2rem 0;
+            border: 2px solid #27ae60;
+        }
+        
+        .pricing-section {
+            background: #f8f9fa;
+            padding: 3rem 0;
+        }
+        
+        .pricing-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 1.5rem;
+            max-width: 1000px;
+            margin: 0 auto;
+            padding: 0 2rem;
+        }
+        
+        .pricing-card {
+            background: white;
+            padding: 1.5rem;
+            border-radius: 10px;
+            box-shadow: 0 3px 10px rgba(0,0,0,0.1);
+            text-align: center;
+        }
+        
+        .pricing-card h4 {
+            color: #2c3e50;
+            margin-bottom: 0.5rem;
+        }
+        
+        .price {
+            font-size: 1.5rem;
+            font-weight: bold;
+            color: #27ae60;
+        }
+    </style>
+</head>
+<body>
+    <!-- Header Section -->
+    <header id="header">
+        <div class="header-container">
+            <div class="logo-circle-container" onclick="window.location.href='stopper.html'">
+                <svg class="logo-circle-svg" viewBox="0 0 80 80">
+                    <defs>
+                        <path id="circlePath" d="M40,40 m-30,0 a30,30 0 1,1 60,0 a30,30 0 1,1 -60,0"/>
+                    </defs>
+                    <text class="logo-circle-text">
+                        <textPath xlink:href="#circlePath" startOffset="0" text-anchor="middle" method="stretch" spacing="auto">
+                            Stopper Tech • Stopper Tech • Stopper Tech • Stopper Tech • Stopper Tech • Stopper Tech •
+                        </textPath>
+                    </text>
+                </svg>
+                <img src="Stopper_tech.png" alt="Logo" class="logo-center-image" />
+            </div>
+            <nav>
+                <ul>
+                    <li><a href="stopper.html">Home</a></li>
+                    <li><a href="services.html">Services</a></li>
+                    <li><a href="registration.html">Student Registration</a></li>
+                    <li><a href="testimonials.html">Testimonials</a></li>
+                    <li><a href="contact.html">Contact</a></li>
+                </ul>
+            </nav>
+        </div>
+    </header>
+
+    <!-- Service Hero Section -->
+    <section class="service-hero">
+        <div class="container">
+            <h1><i class="fas fa-shopping-cart"></i> Online Shopping Services</h1>
+            <p>Shop online with confidence through our Kilimall partnership. We're your trusted agent for secure delivery and pickup services.</p>
+            <a href="https://www.kilimall.co.ke" target="_blank" class="kilimall-button">
+                <i class="fas fa-external-link-alt"></i> Shop on Kilimall Now
+            </a>
+        </div>
+    </section>
+
+    <!-- Kilimall Information Section -->
+    <section class="kilimall-info">
+        <div class="info-grid">
+            <div class="info-card">
+                <i class="fas fa-shield-alt"></i>
+                <h3>Secure Shopping</h3>
+                <p>Shop with confidence on Kilimall's secure platform with buyer protection and quality assurance.</p>
+            </div>
+            <div class="info-card">
+                <i class="fas fa-truck"></i>
+                <h3>Safe Delivery</h3>
+                <p>Your orders are delivered safely to our cyber cafe where you can pick them up at your convenience.</p>
+            </div>
+            <div class="info-card">
+                <i class="fas fa-user-friends"></i>
+                <h3>Personal Assistance</h3>
+                <p>Our team provides personal shopping assistance and helps you navigate the online shopping process.</p>
+            </div>
+            <div class="info-card">
+                <i class="fas fa-clock"></i>
+                <h3>Order Tracking</h3>
+                <p>We help you track your orders and keep you updated on delivery status throughout the process.</p>
+            </div>
+        </div>
+    </section>
+
+    <!-- Instructions Section -->
+    <section class="instructions-section">
+        <h2 style="text-align: center; color: #2c3e50; margin-bottom: 3rem;">How to Shop with Stopper Tech & Kilimall</h2>
+        
+        <div class="instruction-step">
+            <span class="step-number">1</span>
+            <span class="step-title">Create Your Kilimall Account</span>
+            <p>Visit <a href="https://www.kilimall.co.ke" target="_blank" style="color: #3498db;">www.kilimall.co.ke</a> and click "Sign Up" to create your account. Use a valid email address and phone number that you can access easily.</p>
+            <ul>
+                <li>Click "Register" on the top right corner</li>
+                <li>Fill in your personal details accurately</li>
+                <li>Verify your email address and phone number</li>
+                <li>Create a strong password for security</li>
+            </ul>
+        </div>
+
+        <div class="instruction-step">
+            <span class="step-number">2</span>
+            <span class="step-title">Set Up Your Address Book</span>
+            <p>This is the most important step! You must configure your delivery address to our cyber cafe location for pickup.</p>
+            
+            <div class="address-info">
+                <h4><i class="fas fa-map-marker-alt"></i> Use This Delivery Address:</h4>
+                <p><strong>Name:</strong> [Your Full Name]</p>
+                <p><strong>Phone:</strong> [Your Phone Number]</p>
+                <p><strong>Address:</strong> Stopper Tech Cyber Cafe</p>
+                <p><strong>Location:</strong> [Your Cyber Cafe Address]</p>
+                <p><strong>City:</strong> [Your City]</p>
+                <p><strong>Additional Info:</strong> "Deliver to Stopper Tech Cyber Cafe for pickup"</p>
+            </div>
+            
+            <p><strong>Steps to add address:</strong></p>
+            <ul>
+                <li>Go to "My Account" → "Address Book"</li>
+                <li>Click "Add New Address"</li>
+                <li>Enter the delivery details exactly as shown above</li>
+                <li>Set this as your default delivery address</li>
+                <li>Save the address</li>
+            </ul>
+        </div>
+
+        <div class="instruction-step">
+            <span class="step-number">3</span>
+            <span class="step-title">Browse and Shop</span>
+            <p>Browse through thousands of products on Kilimall and add items to your cart. We recommend starting with smaller items for your first order.</p>
+            <ul>
+                <li>Use the search function to find specific products</li>
+                <li>Check product reviews and ratings</li>
+                <li>Compare prices from different sellers</li>
+                <li>Add items to your cart</li>
+                <li>Review your cart before checkout</li>
+            </ul>
+        </div>
+
+        <div class="instruction-step">
+            <span class="step-number">4</span>
+            <span class="step-title">Complete Your Order</span>
+            <p>Proceed to checkout and ensure your delivery address is set to our cyber cafe. Choose your preferred payment method.</p>
+            <ul>
+                <li>Review your cart and quantities</li>
+                <li>Confirm delivery address is set to Stopper Tech</li>
+                <li>Choose payment method (M-Pesa, Card, etc.)</li>
+                <li>Apply any discount codes if available</li>
+                <li>Complete the payment process</li>
+            </ul>
+        </div>
+
+        <div class="instruction-step">
+            <span class="step-number">5</span>
+            <span class="step-title">Order Tracking & Communication</span>
+            <p>After placing your order, keep us informed so we can track the delivery and notify you when it arrives.</p>
+            
+            <div class="contact-info">
+                <h4><i class="fas fa-phone"></i> Contact Us After Ordering:</h4>
+                <p><strong>WhatsApp:</strong> +254 713 159 136</p>
+                <p><strong>Email:</strong> services@stoppertech.co.ke</p>
+                <p><strong>What to share:</strong></p>
+                <ul>
+                    <li>Your order number</li>
+                    <li>Items ordered</li>
+                    <li>Expected delivery date</li>
+                    <li>Your contact information</li>
+                </ul>
+            </div>
+        </div>
+
+        <div class="instruction-step">
+            <span class="step-number">6</span>
+            <span class="step-title">Pickup Your Order</span>
+            <p>We'll notify you immediately when your order arrives at our cyber cafe. Come and collect your items at your convenience.</p>
+            <ul>
+                <li>We'll call/text you when the order arrives</li>
+                <li>Bring a valid ID for verification</li>
+                <li>Inspect your items before leaving</li>
+                <li>Keep your receipt for warranty purposes</li>
+            </ul>
+        </div>
+    </section>
+
+    <!-- Pricing Section -->
+    <section class="pricing-section">
+        <div class="container">
+            <h2 style="text-align: center; color: #2c3e50; margin-bottom: 2rem;">Our Service Charges</h2>
+            <div class="pricing-grid">
+                <div class="pricing-card">
+                    <h4>Account Setup Assistance</h4>
+                    <div class="price" data-service="ONLINE_SHOPPING" data-subservice="Account Setup">KSh 200</div>
+                    <p>Help creating and configuring your Kilimall account</p>
+                </div>
+                <div class="pricing-card">
+                    <h4>Address Book Configuration</h4>
+                    <div class="price" data-service="ONLINE_SHOPPING" data-subservice="Address Book">KSh 150</div>
+                    <p>Setting up delivery address to our cyber cafe</p>
+                </div>
+                <div class="pricing-card">
+                    <h4>Personal Shopping Assistance</h4>
+                    <div class="price" data-service="ONLINE_SHOPPING" data-subservice="Shopping Assistance">KSh 300</div>
+                    <p>Help finding and ordering products online</p>
+                </div>
+                <div class="pricing-card">
+                    <h4>Order Tracking & Management</h4>
+                    <div class="price" data-service="ONLINE_SHOPPING" data-subservice="Order Tracking">KSh 100</div>
+                    <p>Tracking your orders and delivery updates</p>
+                </div>
+                <div class="pricing-card">
+                    <h4>Secure Pickup Service</h4>
+                    <div class="price" data-service="ONLINE_SHOPPING" data-subservice="Pickup Service">KSh 100</div>
+                    <p>Safe storage and pickup coordination</p>
+                </div>
+                <div class="pricing-card">
+                    <h4>Complete Shopping Package</h4>
+                    <div class="price" data-service="ONLINE_SHOPPING" data-subservice="Complete Package">KSh 500</div>
+                    <p>Full service from account setup to pickup</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Service Request Form -->
+    <section class="service-form-section">
+        <div class="container">
+            <h2>Request Online Shopping Assistance</h2>
+            <p>Need help with online shopping? Fill out the form below and we'll assist you with your Kilimall shopping needs.</p>
+            
+            <form id="serviceForm" class="service-form">
+                <div class="form-row">
+                    <div class="form-group">
+                        <label for="fullName">Full Name *</label>
+                        <input type="text" id="fullName" name="fullName" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="email">Email Address *</label>
+                        <input type="email" id="email" name="email" required>
+                    </div>
+                </div>
+                
+                <div class="form-row">
+                    <div class="form-group">
+                        <label for="phone">Phone Number *</label>
+                        <input type="tel" id="phone" name="phone" placeholder="254XXXXXXXXX" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="nationalId">National ID *</label>
+                        <input type="text" id="nationalId" name="nationalId" placeholder="12345678" required>
+                    </div>
+                </div>
+                
+                <div class="form-group">
+                    <label for="subService">Service Needed *</label>
+                    <select id="subService" name="subService" required>
+                        <option value="">Select a service</option>
+                        <option value="Account Setup">Account Setup Assistance - KSh 200</option>
+                        <option value="Address Book">Address Book Configuration - KSh 150</option>
+                        <option value="Shopping Assistance">Personal Shopping Assistance - KSh 300</option>
+                        <option value="Order Tracking">Order Tracking & Management - KSh 100</option>
+                        <option value="Pickup Service">Secure Pickup Service - KSh 100</option>
+                        <option value="Complete Package">Complete Shopping Package - KSh 500</option>
+                    </select>
+                </div>
+                
+                <div class="form-group">
+                    <label for="shoppingDetails">Shopping Details</label>
+                    <textarea id="shoppingDetails" name="shoppingDetails" rows="4" placeholder="Tell us what you want to buy, any specific requirements, or questions you have about online shopping..."></textarea>
+                </div>
+                
+                <div class="form-group">
+                    <label for="preferredContact">Preferred Contact Method</label>
+                    <select id="preferredContact" name="preferredContact">
+                        <option value="whatsapp">WhatsApp</option>
+                        <option value="phone">Phone Call</option>
+                        <option value="email">Email</option>
+                    </select>
+                </div>
+                
+                <div class="service-amount">
+                    <span>Service Amount: </span>
+                    <span id="serviceAmount">KSh 0</span>
+                </div>
+                
+                <button type="submit" class="submit-btn">
+                    <i class="fas fa-paper-plane"></i> Request Shopping Assistance
+                </button>
+            </form>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer>
+        <div class="footer-container">
+            <div class="footer-col">
+                <h3>About Us</h3>
+                <p>Stopper Tech has been serving the community since 2023 with reliable IT solutions and cyber cafe services. We're committed to providing quality service with a personal touch.</p>
+            </div>
+            
+            <div class="footer-col">
+                <h3>Our Services</h3>
+                <ul>
+                    <li><a href="cyber-cafe-services.html">Cyber Cafe</a></li>
+                    <li><a href="os-software-services.html">Software Installation</a></li>
+                    <li><a href="services.html">Government Services</a></li>
+                    <li><a href="registration.html">Student Registration</a></li>
+                    <li><a href="computer-repair-services.html">Computer Repair</a></li>
+                </ul>
+            </div>
+            
+            <div class="footer-col">
+                <h3>Help & Support</h3>
+                <ul>
+                    <li><a href="faqs.html">FAQs</a></li>
+                    <li><a href="privacy-policy.html">Privacy Policy</a></li>
+                    <li><a href="terms-conditions.html">Terms & Conditions</a></li>
+                    <li><a href="service-charges.html">Service Charges</a></li>
+                    <li><a href="support-center.html">Support Center</a></li>
+                </ul>
+            </div>
+            
+            <div class="footer-col">
+                <h3>Newsletter</h3>
+                <p>Subscribe to our newsletter for updates on new services and special offers.</p>
+                <form class="newsletter-form">
+                    <input type="email" placeholder="Your Email" required>
+                    <button type="submit"><i class="fas fa-paper-plane"></i></button>
+                </form>
+            </div>
+        </div>
+        
+        <div class="copyright">
+            <p>&copy; 2019 Stopper Tech. All Rights Reserved. | Designed with <i class="fas fa-heart" style="color: #e74c3c;"></i> by Stopper Tech Team</p>
+        </div>
+    </footer>
+
+    <script src="js/service-form.js"></script>
+    <script>
+        // Initialize the service form for online shopping
+        document.addEventListener('DOMContentLoaded', function() {
+            const serviceType = 'ONLINE_SHOPPING';
+            
+            // Initialize dynamic pricing
+            if (typeof DynamicPricing !== 'undefined') {
+                DynamicPricing.init();
+            }
+            
+            // Update service amount when sub-service changes
+            const subServiceSelect = document.getElementById('subService');
+            const serviceAmountSpan = document.getElementById('serviceAmount');
+            
+            if (subServiceSelect && serviceAmountSpan) {
+                subServiceSelect.addEventListener('change', function() {
+                    const selectedOption = this.options[this.selectedIndex];
+                    const text = selectedOption.text;
+                    const priceMatch = text.match(/KSh (\d+)/);
+                    
+                    if (priceMatch) {
+                        serviceAmountSpan.textContent = `KSh ${priceMatch[1]}`;
+                    } else {
+                        serviceAmountSpan.textContent = 'KSh 0';
+                    }
+                });
+            }
+            
+            // Handle form submission
+            const form = document.getElementById('serviceForm');
+            if (form) {
+                form.addEventListener('submit', function(e) {
+                    e.preventDefault();
+                    
+                    const formData = new FormData(form);
+                    const serviceDetails = {
+                        serviceType: serviceType,
+                        subService: formData.get('subService'),
+                        shoppingDetails: formData.get('shoppingDetails'),
+                        preferredContact: formData.get('preferredContact')
+                    };
+                    
+                    // Submit the form using the service form handler
+                    if (typeof submitServiceRequest === 'function') {
+                        submitServiceRequest(form, serviceDetails);
+                    }
+                });
+            }
+        });
+    </script>
+</body>
+</html>

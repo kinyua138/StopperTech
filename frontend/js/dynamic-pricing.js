@@ -142,6 +142,9 @@ class DynamicPricingManager {
             case 'COMPUTER_REPAIR':
                 this.updateComputerRepairPrices(pricingData);
                 break;
+            case 'CYBER_CAFE':
+                this.updateCyberCafePrices(pricingData);
+                break;
         }
     }
 
@@ -252,6 +255,26 @@ class DynamicPricingManager {
         } catch (error) {
             console.error('Failed to refresh pricing:', error);
         }
+    }
+
+    /**
+     * Update Cyber Cafe service prices
+     */
+    updateCyberCafePrices(pricingData) {
+        const serviceCards = document.querySelectorAll('.service-detail-card');
+        Object.keys(pricingData).forEach(subService => {
+            const price = pricingData[subService];
+            serviceCards.forEach(card => {
+                const title = card.querySelector('h3');
+                if (title && title.textContent.includes(subService)) {
+                    const priceDisplay = card.querySelector('.price-display strong');
+                    if (priceDisplay) {
+                        priceDisplay.textContent = `KSh ${price}`;
+                        console.log(`Updated Cyber Cafe price for ${subService}: KSh ${price}`);
+                    }
+                }
+            });
+        });
     }
 }
 

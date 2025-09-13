@@ -305,7 +305,7 @@ const serviceRequestSchema = new mongoose.Schema({
     serviceType: { 
         type: String, 
         required: [true, 'Service type is required'],
-        enum: ['KRA', 'SHA', 'NSSF', 'NTSA', 'HELB', 'GHRIS', 'TSC', 'OS_SOFTWARE', 'COMPUTER_REPAIR', 'CYBER_CAFE']
+        enum: ['KRA', 'SHA', 'NSSF', 'NTSA', 'HELB', 'GHRIS', 'TSC', 'OS_SOFTWARE', 'COMPUTER_REPAIR', 'CYBER_CAFE', 'ONLINE_SHOPPING']
     },
     subService: { 
         type: String, 
@@ -370,7 +370,7 @@ const servicePricingSchema = new mongoose.Schema({
     serviceType: {
         type: String,
         required: true,
-        enum: ['KRA', 'SHA', 'NSSF', 'NTSA', 'HELB', 'GHRIS', 'TSC', 'OS_SOFTWARE', 'COMPUTER_REPAIR', 'CYBER_CAFE']
+        enum: ['KRA', 'SHA', 'NSSF', 'NTSA', 'HELB', 'GHRIS', 'TSC', 'OS_SOFTWARE', 'COMPUTER_REPAIR', 'CYBER_CAFE', 'ONLINE_SHOPPING']
     },
     subService: {
         type: String,
@@ -570,6 +570,14 @@ const SERVICE_PRICING = {
         'Lamination (A3)': 80,
         'Binding Services': 100,
         'Passport Photo Printing': 100
+    },
+    ONLINE_SHOPPING: {
+        'Account Setup': 200,
+        'Address Book': 150,
+        'Shopping Assistance': 300,
+        'Order Tracking': 100,
+        'Pickup Service': 100,
+        'Complete Package': 500
     }
 };
 
